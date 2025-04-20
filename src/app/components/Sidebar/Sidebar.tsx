@@ -174,7 +174,7 @@ export default function Sidebar({
             }}
           />
           <div style={{ fontWeight: "bold" }}>INVENTORY SYSTEM</div>
-          <div style={{ fontSize: "0.9em" }}>Inventory Encoder</div>
+          <div style={{ fontSize: "0.9em" }}>Staff/Encoder</div>
         </div>
         <X size={20} onClick={onToggle} style={{ cursor: "pointer" }} />
       </div>
