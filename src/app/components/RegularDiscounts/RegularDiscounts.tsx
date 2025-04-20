@@ -6,12 +6,13 @@ import styles from "./RegularDiscounts.module.scss";
 
 type RegularDiscount = {
   id: string;
-  discountId: string;
-  itemId: number;
+  sku: string;
+  name: string;
+  inventoryId: string;
   itemName: string;
   unit: string;
   discountType: "Percentage" | "Buy X Get Y" | "Fixed Amount";
-  percentage: string; // e.g. '10%'
+  percentage: string; // e.g. '.10'
   value: string; // e.g. 'Buy 10 Get 1' or '₱50 off'
   startDate: string;
   endDate: string;
@@ -21,41 +22,58 @@ type RegularDiscount = {
 const sampleDiscounts: RegularDiscount[] = [
   {
     id: crypto.randomUUID(),
-    discountId: "DISC-001",
-    itemId: 101,
+    sku: "ELE-USB-PC-N",
+    name: "USB Cable",
+    inventoryId: crypto.randomUUID(),
     itemName: "USB Cable",
-    unit: "pack",
+    unit: "pcs",
     discountType: "Percentage",
-    percentage: "10%",
-    value: "10% off",
-    startDate: "2025-05-01",
-    endDate: "2025-05-31",
+    percentage: ".30",
+    value: "30% off",
+    startDate: "2024-01-01",
+    endDate: "2024-02-31",
+    status: "Inactive",
+  },
+  {
+    id: crypto.randomUUID(),
+    sku: "ELE-USB-PC-N",
+    name: "USB Cable",
+    inventoryId: crypto.randomUUID(),
+    itemName: "USB Cable",
+    unit: "pcs",
+    discountType: "Percentage",
+    percentage: ".15",
+    value: "15% off",
+    startDate: "2025-04-01",
+    endDate: "2026-05-31",
     status: "Active",
   },
   {
     id: crypto.randomUUID(),
-    discountId: "DISC-002",
-    itemId: 205,
+    sku: "ELE-USB-PK-N",
+    name: "USB Cable",
+    inventoryId: crypto.randomUUID(),
     itemName: "Wireless Mouse",
-    unit: "pcs",
+    unit: "pack",
     discountType: "Buy X Get Y",
     percentage: "",
     value: "Buy 10 Get 1",
-    startDate: "2025-06-01",
-    endDate: "2025-06-15",
+    startDate: "2025-03-01",
+    endDate: "2025-11-15",
     status: "Active",
   },
   {
     id: crypto.randomUUID(),
-    discountId: "DISC-003",
-    itemId: 310,
+    sku: "ELE-USB-BX-N",
+    name: "USB Cable",
+    inventoryId: crypto.randomUUID(),
     itemName: "HDMI Cable",
-    unit: "case",
-    discountType: "Fixed Amount",
-    percentage: "",
+    unit: "box",
+    discountType: "Percentage",
+    percentage: ".50",
     value: "₱50 off",
-    startDate: "2025-07-01",
-    endDate: "2025-07-31",
+    startDate: "2025-09-01",
+    endDate: "2025-10-31",
     status: "Inactive",
   },
 ];
@@ -64,7 +82,7 @@ export default function RegularDiscounts() {
   const [search, setSearch] = useState<string>("");
   const filtered = sampleDiscounts.filter((d) =>
     [
-      d.discountId.toLowerCase(),
+      d.name.toLowerCase(),
       d.itemName.toLowerCase(),
       d.unit.toLowerCase(),
       d.discountType.toLowerCase(),
@@ -101,10 +119,11 @@ export default function RegularDiscounts() {
         <thead>
           <tr>
             {/* <th>ID</th> */}
-            <th>Discount ID</th>
-            <th>Item (ID)</th>
+            <th>SKU</th>
+            <th>Product Name</th>
+            {/* <th>Inventory ID</th> */}
             <th>Unit</th>
-            <th>Percentage</th>
+            <th>Discount</th>
             <th>Type</th>
             <th>Value</th>
             <th>Start Date</th>
@@ -117,8 +136,9 @@ export default function RegularDiscounts() {
           {filtered.map((d) => (
             <tr key={d.id} className={styles.row}>
               {/* <td className={styles.idColumn}>{d.id}</td> */}
-              <td>{d.discountId}</td>
-              <td>{`${d.itemName} (${d.itemId})`}</td>
+              <td>{d.sku}</td>
+              <td>{d.name}</td>
+              {/* <td>{d.inventoryId}</td> */}
               <td>{d.unit}</td>
               <td>{d.percentage || "-"}</td>
               <td>{d.discountType}</td>

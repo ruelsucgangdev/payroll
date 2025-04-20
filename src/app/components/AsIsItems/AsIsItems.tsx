@@ -6,6 +6,7 @@ import styles from "./AsIsItems.module.scss";
 
 type AsIsItem = {
   id: number;
+  sku: string;
   itemId: number;
   itemName: string;
   condition: "Minor Damage" | "Old Stock" | "Discontinued";
@@ -20,6 +21,7 @@ type AsIsItem = {
 const sampleAsIs: AsIsItem[] = [
   {
     id: 1,
+    sku: "SKU-USB-B",
     itemId: 101,
     itemName: "USB Cable",
     condition: "Minor Damage",
@@ -32,6 +34,7 @@ const sampleAsIs: AsIsItem[] = [
   },
   {
     id: 2,
+    sku: "SKU-WIRE-B",
     itemId: 202,
     itemName: "Wireless Mouse",
     condition: "Old Stock",
@@ -44,6 +47,7 @@ const sampleAsIs: AsIsItem[] = [
   },
   {
     id: 3,
+    sku: "SKU-HDM-B",
     itemId: 303,
     itemName: "HDMI Cable",
     condition: "Discontinued",
@@ -97,6 +101,7 @@ export default function AsIsItems() {
         <thead>
           <tr>
             {/* <th>ID</th> */}
+            <th>SKU</th>
             <th>Item (ID)</th>
             <th>Condition</th>
             <th>Qty</th>
@@ -112,6 +117,7 @@ export default function AsIsItems() {
           {filtered.map((item) => (
             <tr key={item.id} className={styles.row}>
               {/* <td>{item.id}</td> */}
+              <td>{item.sku}</td>
               <td>{`${item.itemName} (ID ${item.itemId})`}</td>
               <td>{item.condition}</td>
               <td>{item.quantity}</td>

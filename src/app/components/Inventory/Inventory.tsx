@@ -6,204 +6,167 @@ import styles from "./Inventory.module.scss";
 type InventoryItem = {
   id: string;
   sku: string;
+  oldsku: string;
   category: string;
   name: string;
   description: string;
   unit: string;
   price: number;
+  qty: number;
   warehouse: string;
-  status: "Active" | "Inactive";
+  condition: "New" | "Damaged" | "Old Stock";
 };
 
 const sampleInventory: InventoryItem[] = [
   // Electronics USB Cable
   {
     id: crypto.randomUUID(),
-    sku: "ABC-001",
+    sku: "ELE-USB-PC-N",
+    oldsku: "",
     category: "Electronics",
     name: "USB Cable",
     description: "Type‑C to A, 1m",
     unit: "pcs",
     price: 5.0,
+    qty: 100,
     warehouse: "Warehouse-1",
-    status: "Active",
+    condition: "New",
   },
   {
     id: crypto.randomUUID(),
-    sku: "ABC-001-2PK",
+    sku: "ELE-USB-PK-N",
+    oldsku: "",
     category: "Electronics",
     name: "USB Cable",
     description: "2‑pack USB cables",
     unit: "pack",
     price: 9.5,
+    qty: 100,
     warehouse: "Warehouse-1",
-    status: "Active",
+    condition: "New",
   },
   {
     id: crypto.randomUUID(),
-    sku: "ABC-001-CASE",
+    sku: "ELE-USB-BX-N",
+    oldsku: "",
     category: "Electronics",
     name: "USB Cable",
     description: "Case of 50 cables",
     unit: "box",
     price: 240.0,
+    qty: 98,
     warehouse: "Warehouse-1",
-    status: "Active",
+    condition: "New",
   },
-
-  // Electronics Wireless Mouse
   {
     id: crypto.randomUUID(),
-    sku: "ABC-002",
+    sku: "ELE-USB-BX-D",
+    oldsku: "ELE-USB-BX-N",
     category: "Electronics",
-    name: "Wireless Mouse",
-    description: "Optical, black",
-    unit: "pcs",
-    price: 12.5,
+    name: "USB Cable",
+    description: "Case of 50 cables",
+    unit: "box",
+    price: 140.0,
+    qty: 1,
     warehouse: "Warehouse-1",
-    status: "Active",
-  },
-  {
-    id: crypto.randomUUID(),
-    sku: "ABC-002-PACK",
-    category: "Electronics",
-    name: "Wireless Mouse",
-    description: "Pack of 5 mice",
-    unit: "pack",
-    price: 55.0,
-    warehouse: "Warehouse-1",
-    status: "Active",
-  },
-
-  // Household AA Battery
-  {
-    id: crypto.randomUUID(),
-    sku: "HHH-005",
-    category: "Household",
-    name: "AA Battery Pack",
-    description: "4‑pack alkaline",
-    unit: "pack",
-    price: 4.99,
-    warehouse: "Warehouse-1",
-    status: "Active",
-  },
-  {
-    id: crypto.randomUUID(),
-    sku: "HHH-005-SACK",
-    category: "Household",
-    name: "AA Battery Pack",
-    description: "Sack of 100 batteries",
-    unit: "sack",
-    price: 120.0,
-    warehouse: "Warehouse-1",
-    status: "Active",
-  },
-
-  // Furniture Office Chair
-  {
-    id: crypto.randomUUID(),
-    sku: "FUR-CHAIR",
-    category: "Furniture",
-    name: "Office Chair",
-    description: "Ergonomic, adjustable",
-    unit: "unit",
-    price: 89.99,
-    warehouse: "Warehouse-1",
-    status: "Active",
-  },
-
-  // Food Rice examples
-  {
-    id: crypto.randomUUID(),
-    sku: "RICE-CK",
-    category: "Food",
-    name: "Rice",
-    description: "50kg sack of rice",
-    unit: "sack",
-    price: 1500.0,
-    warehouse: "Warehouse-1",
-    status: "Active",
-  },
-  {
-    id: crypto.randomUUID(),
-    sku: "RICE-5KG",
-    category: "Food",
-    name: "Rice",
-    description: "5kg bag of rice",
-    unit: "5kg",
-    price: 160.0,
-    warehouse: "Warehouse-1",
-    status: "Active",
-  },
-  {
-    id: crypto.randomUUID(),
-    sku: "RICE-KG",
-    category: "Food",
-    name: "Rice",
-    description: "1kg of rice",
-    unit: "1kg",
-    price: 35.0,
-    warehouse: "Warehouse-1",
-    status: "Active",
+    condition: "Damaged",
   },
 
   // Beverages Water Bottle
   {
     id: crypto.randomUUID(),
-    sku: "WTR-CASE",
+    sku: "BEV-WTR-CASE-N",
+    oldsku: "",
     category: "Beverages",
     name: "Water Bottle",
     description: "Case of 24 bottles",
     unit: "case",
     price: 48.0,
+    qty: 99,
     warehouse: "Warehouse-1",
-    status: "Active",
+    condition: "New",
   },
   {
     id: crypto.randomUUID(),
-    sku: "WTR-BTL",
+    sku: "BEV-WTR-BOT-N",
+    oldsku: "",
     category: "Beverages",
     name: "Water Bottle",
     description: "Single bottle, 500ml",
     unit: "bottle",
     price: 2.0,
+    qty: 100,
     warehouse: "Warehouse-1",
-    status: "Active",
+    condition: "New",
   },
 
-  // Tobacco Cigarette examples
+  // Furniture Office Chair
   {
     id: crypto.randomUUID(),
-    sku: "CIG-BOX",
-    category: "Tobacco",
-    name: "Cigarette",
-    description: "Box of 20 sticks",
-    unit: "box",
-    price: 120.0,
-    warehouse: "Warehouse-1",
-    status: "Active",
-  },
-  {
-    id: crypto.randomUUID(),
-    sku: "CIG-2PK",
-    category: "Tobacco",
-    name: "Cigarette",
-    description: "2‑pack sticks",
-    unit: "pack",
-    price: 12.0,
-    warehouse: "Warehouse-1",
-    status: "Active",
-  },
-  {
-    id: crypto.randomUUID(),
-    sku: "CIG-PCS",
-    category: "Tobacco",
-    name: "Cigarette",
-    description: "Single stick",
+    sku: "FUR-CHAIR-PC-N",
+    oldsku: "",
+    category: "Furniture",
+    name: "Office Chair",
+    description: "Ergonomic, adjustable",
     unit: "pcs",
-    price: 6.0,
+    price: 89.99,
+    qty: 80,
     warehouse: "Warehouse-1",
-    status: "Active",
+    condition: "New",
+  },
+  {
+    id: crypto.randomUUID(),
+    sku: "FUR-CHAIR-PC-D",
+    oldsku: "FUR-CHAIR-PC-N",
+    category: "Furniture",
+    name: "Office Chair",
+    description: "Ergonomic, adjustable",
+    unit: "pcs",
+    price: 45.6,
+    qty: 10,
+    warehouse: "Warehouse-1",
+    condition: "Damaged",
+  },
+
+  // Food Rice examples
+  {
+    id: crypto.randomUUID(),
+    sku: "FUD-RICE-SACK-N",
+    oldsku: "",
+    category: "Food",
+    name: "Rice",
+    description: "50kg sack of rice",
+    unit: "sack",
+    price: 1500.0,
+    qty: 100,
+    warehouse: "Warehouse-1",
+    condition: "New",
+  },
+  {
+    id: crypto.randomUUID(),
+    sku: "FUD-RICE-5KG-N",
+    oldsku: "",
+    category: "Food",
+    name: "Rice",
+    description: "5kg bag of rice",
+    unit: "5kg",
+    price: 160.0,
+    qty: 100,
+    warehouse: "Warehouse-1",
+    condition: "New",
+  },
+  {
+    id: crypto.randomUUID(),
+    sku: "FUD-RICE-1KG-N",
+    oldsku: "",
+    category: "Food",
+    name: "Rice",
+    description: "1kg of rice",
+    unit: "1kg",
+    price: 35.0,
+    qty: 100,
+    warehouse: "Warehouse-1",
+    condition: "New",
   },
 ];
 
@@ -217,7 +180,7 @@ export default function Inventory() {
       item.name.toLowerCase(),
       item.unit.toLowerCase(),
       item.warehouse.toString(),
-      item.status.toLowerCase(),
+      // item.condition.toLowerCase(),
     ].some((field) => field.includes(search.toLowerCase()))
   );
 
@@ -248,13 +211,16 @@ export default function Inventory() {
         <thead>
           <tr>
             {/* <th>ID</th> */}
+            <th>SKU</th>
             <th>Category</th>
             <th>Name</th>
             <th>Description</th>
             <th>Unit</th>
             <th>Price</th>
+            <th>Qty</th>
             <th>Warehouse</th>
-            <th>Status</th>
+            <th>Old SKU</th>
+            <th>Condition</th>
             <th className={styles.actionsHeader}>Actions</th>
           </tr>
         </thead>
@@ -262,13 +228,27 @@ export default function Inventory() {
           {filtered.map((item) => (
             <tr key={item.id} className={styles.row}>
               {/* <td className={styles.idColumn}>{item.id}</td> */}
+              <td>{item.sku}</td>
               <td>{item.category}</td>
               <td>{item.name}</td>
               <td>{item.description}</td>
               <td>{item.unit}</td>
               <td>PHP {item.price.toFixed(2)}</td>
+              <td>{item.qty}</td>
               <td>{item.warehouse}</td>
-              <td>{item.status}</td>
+              <td>{item.oldsku}</td>
+              <td
+                className={`${styles.statusCell} ${
+                  item.condition === "Damaged"
+                    ? styles.statusDamaged
+                    : item.condition === "Old Stock"
+                    ? styles.statusOldStock
+                    : styles.statusNew
+                }`}
+              >
+                {item.condition}
+              </td>
+
               <td className={styles.actionsCell}>
                 <button className={styles.iconButton} title="Edit">
                   <Edit3 size={16} />
