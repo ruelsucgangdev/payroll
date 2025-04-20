@@ -5,78 +5,69 @@ import { Plus, Edit3, Trash2 } from "lucide-react";
 import styles from "./DamageReturns.module.scss";
 
 type DamageReturn = {
-  id: number;
-  returnId: string;
-  itemId: number;
-  itemName: string;
-  quantity: number;
-  reason: string;
-  dateReturned: string;
-  status: "Pending" | "Processed" | "Rejected";
+  id: string;
+  sku: string;
+  category: string;
+  name: string;
+  description: string;
+  unit: string;
+  price: number;
+  qty: number;
+  warehouse: string;
+  status: "For Approval" | "Approved" | "Back To Inventory";
 };
 
 const sampleReturns: DamageReturn[] = [
+  // Electronics USB Cable
   {
-    id: 1,
-    returnId: "RET-1001",
-    itemId: 101,
-    itemName: "USB Cable",
-    quantity: 3,
-    reason: "Broken connector",
-    dateReturned: "2025-04-10",
-    status: "Pending",
+    id: crypto.randomUUID(),
+    sku: "ELE-USB-PK-N",
+    category: "Electronics",
+    name: "USB Cable",
+    description: "2‑pack USB cables",
+    unit: "box",
+    price: 9.5,
+    qty: 1,
+    warehouse: "Warehouse-1",
+    status: "Approved",
   },
   {
-    id: 2,
-    returnId: "RET-1002",
-    itemId: 205,
-    itemName: "Wireless Mouse",
-    quantity: 1,
-    reason: "Dead on arrival",
-    dateReturned: "2025-04-11",
-    status: "Processed",
+    id: crypto.randomUUID(),
+    sku: "FUR-CHAIR-PC-N",
+    category: "Furniture",
+    name: "Office Chair",
+    description: "Ergonomic, adjustable",
+    unit: "pcs",
+    price: 45.6,
+    qty: 10,
+    warehouse: "Warehouse-1",
+    status: "Approved",
   },
   {
-    id: 3,
-    returnId: "RET-1003",
-    itemId: 310,
-    itemName: "HDMI Cable",
-    quantity: 2,
-    reason: "Frayed cable",
-    dateReturned: "2025-04-12",
-    status: "Rejected",
-  },
-  {
-    id: 4,
-    returnId: "RET-1004",
-    itemId: 412,
-    itemName: "Office Chair",
-    quantity: 1,
-    reason: "Broken leg",
-    dateReturned: "2025-04-13",
-    status: "Pending",
-  },
-  {
-    id: 5,
-    returnId: "RET-1005",
-    itemId: 524,
-    itemName: "AA Battery Pack",
-    quantity: 4,
-    reason: "Leakage",
-    dateReturned: "2025-04-14",
-    status: "Processed",
+    id: crypto.randomUUID(),
+    sku: "BEV-WTR-CASE-N",
+    category: "Beverages",
+    name: "Water Bottle",
+    description: "Case of 24 bottles",
+    unit: "case",
+    price: 48.0,
+    qty: 1,
+    warehouse: "Warehouse-1",
+    status: "For Approval",
   },
 ];
 
 export default function DamageReturns() {
   const [search, setSearch] = useState<string>("");
-  const filtered = sampleReturns.filter((ret) =>
+  const filtered = sampleReturns.filter((item) =>
     [
-      ret.returnId.toLowerCase(),
-      ret.itemName.toLowerCase(),
-      ret.reason.toLowerCase(),
-      ret.dateReturned,
-      ret.status.toLowerCase(),
+      item.id.toString(),
+      item.sku.toLowerCase(),
+      item.category.toLowerCase(),
+      item.name.toLowerCase(),
+      item.unit.toLowerCase(),
+      item.warehouse.toString(),
+      item.status,
     ].some((field) => field.includes(search.toLowerCase()))
   );
 
@@ -107,34 +98,38 @@ export default function DamageReturns() {
         <thead>
           <tr>
             {/* <th>ID</th> */}
-            <th>Return ID</th>
-            <th>Item ID</th>
-            <th>Item Name</th>
+            <th>SKU</th>
+            <th>Category</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Unit</th>
+            <th>Price</th>
             <th>Qty</th>
-            <th>Reason</th>
-            <th>Date Returned</th>
+            <th>Warehouse</th>
             <th>Status</th>
             <th className={styles.actionsHeader}>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {filtered.map((ret) => (
-            <tr key={ret.id} className={styles.row}>
-              {/* <td>{ret.id}</td> */}
-              <td>{ret.returnId}</td>
-              <td>{ret.itemId}</td>
-              <td>{ret.itemName}</td>
-              <td>{ret.quantity}</td>
-              <td>{ret.reason}</td>
-              <td>{ret.dateReturned}</td>
-              <td>{ret.status}</td>
+          {filtered.map((item) => (
+            <tr key={item.id} className={styles.row}>
+              {/* <td className={styles.idColumn}>{item.id}</td> */}
+              <td>{item.sku}</td>
+              <td>{item.category}</td>
+              <td>{item.name}</td>
+              <td>{item.description}</td>
+              <td>{item.unit}</td>
+              <td>PHP {item.price.toFixed(2)}</td>
+              <td>{item.qty}</td>
+              <td>{item.warehouse}</td>
+              <td>{item.status}</td>
               <td className={styles.actionsCell}>
-                <button className={styles.iconButton} title="Edit Return">
+                <button className={styles.iconButton} title="Edit">
                   <Edit3 size={16} />
                 </button>
-                <button className={styles.iconButton} title="Delete Return">
+                {/* <button className={styles.iconButton} title="Delete">
                   <Trash2 size={16} />
-                </button>
+                </button> */}
               </td>
             </tr>
           ))}

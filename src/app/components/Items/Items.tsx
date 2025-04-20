@@ -7,59 +7,59 @@ import styles from "./items.module.scss";
 
 type Item = {
   id: string;
-  sku: string;
+  // sku: string;
   name: string;
   description: string;
   category: string;
   brand: string;
-  status: "Active" | "Inactive";
+  // status: "Active" | "Inactive";
 };
 
 const sampleItems: Item[] = [
   {
     id: crypto.randomUUID(),
-    sku: "USB-6201",
+    // sku: "USB-6201",
     name: "USB Cable",
     description: "Type‑C to A, 1m",
     category: "Electronics",
     brand: "Acme",
-    status: "Active",
+    // status: "Active",
   },
   {
     id: crypto.randomUUID(),
-    sku: "WMOUSE-7121",
+    // sku: "WMOUSE-7121",
     name: "Wireless Mouse",
     description: "Optical, black",
     category: "Electronics",
     brand: "LogiTech",
-    status: "Active",
+    // status: "Active",
   },
   {
     id: crypto.randomUUID(),
-    sku: "HDMI-9811",
+    // sku: "HDMI-9811",
     name: "HDMI Cable",
     description: "2m, high‑speed",
     category: "Electronics",
     brand: "CableMaster",
-    status: "Inactive",
+    // status: "Inactive",
   },
   {
     id: crypto.randomUUID(),
-    sku: "BATRY-8711",
+    // sku: "BATRY-8711",
     name: "AA Battery Pack",
     description: "4‑pack alkaline",
     category: "Household",
     brand: "PowerCells",
-    status: "Active",
+    // status: "Active",
   },
   {
     id: crypto.randomUUID(),
-    sku: "CHRS-9811",
+    // sku: "CHRS-9811",
     name: "Office Chair",
     description: "Ergonomic, adjustable",
     category: "Furniture",
     brand: "ComfortWorks",
-    status: "Active",
+    // status: "Active",
   },
 ];
 
@@ -68,11 +68,11 @@ export default function Items() {
   const filtered = sampleItems.filter((it) =>
     [
       it.id.toString().trim(),
-      it.sku.toString(),
+      // it.sku.toString(),
       it.name.toLowerCase(),
       it.category.toLowerCase(),
       it.brand.toLowerCase(),
-      it.status.toLowerCase(),
+      // it.status.toLowerCase(),
     ].some((field) => field.includes(search.toLowerCase()))
   );
 
@@ -103,12 +103,12 @@ export default function Items() {
         <thead>
           <tr>
             <th>ID</th>
-            <th>SKU</th>
-            <th>Name</th>
+            {/* <th>SKU</th> */}
+            <th>Product Name</th>
             <th>Description</th>
             <th>Category</th>
             <th>Brand</th>
-            <th>Status</th>
+            {/* <th>Status</th> */}
             <th className={styles.actionsHeader}>Actions</th>
           </tr>
         </thead>
@@ -116,12 +116,12 @@ export default function Items() {
           {filtered.map((it) => (
             <tr key={it.id} className={styles.row}>
               <td className={styles.idColumn}>{it.id}</td>
-              <td>{it.sku}</td>
+              {/* <td>{it.sku}</td> */}
               <td>{it.name}</td>
               <td>{it.description}</td>
               <td>{it.category}</td>
               <td>{it.brand}</td>
-              <td>{it.status}</td>
+              {/* <td>{it.status}</td> */}
               <td className={styles.actionsCell}>
                 <button className={styles.iconButton} title="Edit Item">
                   <Edit3 size={16} />

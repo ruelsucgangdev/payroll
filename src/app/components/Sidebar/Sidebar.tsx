@@ -37,7 +37,7 @@ const menuItems: MenuItem[] = [
         label: "Regular Discounts",
         icon: <Tag size={16} />,
       },
-      { key: "as-is-items", label: "As‑Is Items", icon: <Gift size={16} /> },
+      // { key: "as-is-items", label: "As‑Is Items", icon: <Gift size={16} /> },
     ],
   },
   {
@@ -47,15 +47,15 @@ const menuItems: MenuItem[] = [
     subItems: [
       {
         key: "damaged-returns",
-        label: "Damage Returns",
+        label: "Customer Return Item",
         icon: <Archive size={16} />,
       },
-      {
-        key: "exchange",
-        label: "Exchange (Wrong Item)",
-        icon: <Sliders size={16} />,
-      },
-      { key: "cash-refund", label: "Cash Refund", icon: <Archive size={16} /> },
+      // {
+      //   key: "exchange",
+      //   label: "Exchange (Wrong Item)",
+      //   icon: <Sliders size={16} />,
+      // },
+      // { key: "cash-refund", label: "Cash Refund", icon: <Archive size={16} /> },
     ],
   },
   {
