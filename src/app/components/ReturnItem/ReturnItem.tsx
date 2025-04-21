@@ -65,7 +65,7 @@ const sampleReturns: ReturnItem[] = [
     price: 48.0,
     qty: 1,
     warehouse: "Warehouse-1",
-    status: "Cancelled",
+    status: "Approved",
   },
 ];
 
@@ -178,10 +178,10 @@ export default function ReturnItem() {
           <span className={styles.legendColorForApproval}></span>
           <span>Pending approval </span>
         </div>
-        <div className={styles.legendItem}>
+        {/* <div className={styles.legendItem}>
           <span className={styles.legendColorCancelled}></span>
           <span>Cancelled returns (Back to Inventory)</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );
