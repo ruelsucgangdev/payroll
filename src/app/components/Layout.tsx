@@ -39,6 +39,7 @@ export default function Layout({ children }: LayoutProps) {
     setWidth(newWidth);
   }, []);
 
+  // on mouse up
   const onMouseUp = useCallback(() => {
     isResizing.current = false;
     window.removeEventListener("mousemove", onMouseMove);
