@@ -33,8 +33,8 @@ const menuItems: MenuItem[] = [
     icon: <Tag size={16} />,
     subItems: [
       {
-        key: "regular-discounts",
-        label: "Regular Discounts",
+        key: "promo-discounts",
+        label: "Promo Discounts",
         icon: <Tag size={16} />,
       },
       // { key: "as-is-items", label: "As‑Is Items", icon: <Gift size={16} /> },

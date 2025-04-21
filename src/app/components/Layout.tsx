@@ -13,7 +13,7 @@ import ExchangeWrongItem from "./ExchangeWrongItem/ExchangeWrongItem";
 import PhysicalCount from "./PhysicalCount/PhysicalCount";
 import CashRefund from "./CashRefund/CashRefund";
 import Warehouse from "./Warehouse/Warehouse";
-import RegularDiscounts from "./RegularDiscounts/RegularDiscounts";
+import RegularDiscounts from "./PromoDiscounts/PromoDiscounts";
 import AsIsItems from "./AsIsItems/AsIsItems";
 import ItemListReport from "./ItemListReport/ItemListReport";
 
@@ -79,7 +79,7 @@ export default function Layout({ children }: LayoutProps) {
           <Dashboard />
         ) : activeKey === "inventory" ? (
           <Inventory />
-        ) : activeKey === "regular-discounts" ? (
+        ) : activeKey === "promo-discounts" ? (
           <RegularDiscounts />
         ) : activeKey === "as-is-items" ? (
           <AsIsItems />

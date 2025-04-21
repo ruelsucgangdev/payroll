@@ -61,7 +61,7 @@ const sampleCounts: CountRecord[] = [
   {
     id: 4,
     sku: "ELE-USB-PK-N",
-    itemName: "USB Cablek",
+    itemName: "USB Cable",
     recordedQty: 200,
     countedQty: 195,
     discrepancy: -5,
