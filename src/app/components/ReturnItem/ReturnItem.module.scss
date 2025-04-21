@@ -85,3 +85,57 @@
 .iconButton:hover {
   background: var(--color-bg-header);
 }
+.legend {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  align-items: center;
+}
+
+.statusApproved {
+  color: green;
+  font-weight: bold;
+}
+
+.statusForApproval {
+  color: goldenrod;
+  font-weight: bold;
+}
+
+.statusCancelled {
+  color: red;
+  font-weight: bold;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 0.9rem;
+}
+
+.legendColorApproved,
+.legendColorForApproval {
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  border: 1px solid var(--color-text-primary);
+}
+.legendColorCancelled {
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  border: 1px solid var(--color-text-primary);
+}
+
+.legendColorApproved {
+  background: green;
+}
+
+.legendColorForApproval {
+  background: goldenrod;
+}
+
+.legendColorCancelled {
+  background: red;
+}
