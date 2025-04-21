@@ -8,7 +8,6 @@ import UnitsOfMeasure from "./UnitsOfMeasure/UnitsOfMeasure";
 import Items from "./Items/Items";
 import Users from "./Users/Users";
 import Inventory from "./Inventory/Inventory";
-import DamageReturns from "./DamageReturns/DamageReturns";
 import ExchangeWrongItem from "./ExchangeWrongItem/ExchangeWrongItem";
 import PhysicalCount from "./PhysicalCount/PhysicalCount";
 import CashRefund from "./CashRefund/CashRefund";
@@ -16,6 +15,7 @@ import Warehouse from "./Warehouse/Warehouse";
 import RegularDiscounts from "./PromoDiscounts/PromoDiscounts";
 import AsIsItems from "./AsIsItems/AsIsItems";
 import ItemListReport from "./ItemListReport/ItemListReport";
+import Returns from "./Returns/Returns";
 
 interface LayoutProps {
   children: ReactNode;
@@ -84,7 +84,7 @@ export default function Layout({ children }: LayoutProps) {
         ) : activeKey === "as-is-items" ? (
           <AsIsItems />
         ) : activeKey === "damaged-returns" ? (
-          <DamageReturns />
+          <Returns />
         ) : activeKey === "exchange" ? (
           <ExchangeWrongItem />
         ) : activeKey === "cash-refund" ? (
