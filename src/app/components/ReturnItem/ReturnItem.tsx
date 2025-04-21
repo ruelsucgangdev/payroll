@@ -14,7 +14,7 @@ type ReturnItem = {
   price: number;
   qty: number;
   warehouse: string;
-  status: "For Approval" | "Approved" | "Back To Inventory";
+  status: "For Approval" | "Approved" | "Cancelled";
 };
 
 const sampleReturns: ReturnItem[] = [
@@ -54,6 +54,18 @@ const sampleReturns: ReturnItem[] = [
     qty: 1,
     warehouse: "Warehouse-1",
     status: "For Approval",
+  },
+  {
+    id: crypto.randomUUID(),
+    sku: "BEV-WTR-CASE-N",
+    category: "Beverages",
+    name: "Water Bottle",
+    description: "Case of 24 bottles",
+    unit: "case",
+    price: 48.0,
+    qty: 1,
+    warehouse: "Warehouse-1",
+    status: "Cancelled",
   },
 ];
 
@@ -122,7 +134,22 @@ export default function ReturnItem() {
               <td>PHP {item.price.toFixed(2)}</td>
               <td>{item.qty}</td>
               <td>{item.warehouse}</td>
-              <td>{item.status}</td>
+              {/* <td>{item.status}</td> */}
+              <td>
+                <span
+                  className={
+                    item.status === "Approved"
+                      ? styles.statusApproved
+                      : item.status === "For Approval"
+                      ? styles.statusForApproval
+                      : item.status === "Cancelled"
+                      ? styles.statusCancelled // added condition for Cancelled
+                      : styles.statusBackToInventory
+                  }
+                >
+                  {item.status}
+                </span>
+              </td>
               <td className={styles.actionsCell}>
                 <button className={styles.iconButton} title="Edit">
                   <Edit3 size={16} />
@@ -142,6 +169,20 @@ export default function ReturnItem() {
           )}
         </tbody>
       </table>
+      <div className={styles.legend}>
+        <div className={styles.legendItem}>
+          <span className={styles.legendColorApproved}></span>
+          <span>Approved items </span>
+        </div>
+        <div className={styles.legendItem}>
+          <span className={styles.legendColorForApproval}></span>
+          <span>Pending approval </span>
+        </div>
+        <div className={styles.legendItem}>
+          <span className={styles.legendColorCancelled}></span>
+          <span>Cancelled returns (Back to Inventory)</span>
+        </div>
+      </div>
     </div>
   );
 }
