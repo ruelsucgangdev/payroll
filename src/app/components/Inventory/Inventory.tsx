@@ -14,7 +14,7 @@ type InventoryItem = {
   price: number;
   qty: number;
   warehouse: string;
-  condition: "New" | "Damaged" | "Old Stock";
+  condition: "New" | "Return" | "Old Stock";
 };
 
 const sampleInventory: InventoryItem[] = [
@@ -69,7 +69,7 @@ const sampleInventory: InventoryItem[] = [
     price: 140.0,
     qty: 1,
     warehouse: "Warehouse-1",
-    condition: "Damaged",
+    condition: "Return",
   },
 
   // Beverages Water Bottle
@@ -125,7 +125,7 @@ const sampleInventory: InventoryItem[] = [
     price: 45.6,
     qty: 10,
     warehouse: "Warehouse-1",
-    condition: "Damaged",
+    condition: "Return",
   },
 
   // Food Rice examples
@@ -239,7 +239,7 @@ export default function Inventory() {
               <td>{item.oldsku}</td>
               <td
                 className={`${styles.statusCell} ${
-                  item.condition === "Damaged"
+                  item.condition === "Return"
                     ? styles.statusDamaged
                     : item.condition === "Old Stock"
                     ? styles.statusOldStock
