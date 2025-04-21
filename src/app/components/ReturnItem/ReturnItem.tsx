@@ -21,12 +21,12 @@ const sampleReturns: ReturnItem[] = [
   // Electronics USB Cable
   {
     id: crypto.randomUUID(),
-    sku: "ELE-USB-PK-N",
+    sku: "ELE-USB-BX-N",
     category: "Electronics",
     name: "USB Cable",
     description: "2‑pack USB cables",
     unit: "box",
-    price: 9.5,
+    price: 240.0,
     qty: 1,
     warehouse: "Warehouse-1",
     status: "Approved",
