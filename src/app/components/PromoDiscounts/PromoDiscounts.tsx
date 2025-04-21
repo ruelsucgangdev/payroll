@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Plus, Edit3, Trash2 } from "lucide-react";
-import styles from "./RegularDiscounts.module.scss";
+import styles from "./PromoDiscounts.module.scss";
 
 type RegularDiscount = {
   id: string;
@@ -94,7 +94,7 @@ export default function RegularDiscounts() {
     <div className={styles.container}>
       {/* Header */}
       <header className={styles.pageHeader}>
-        <h1>Regular Discounts</h1>
+        <h1>Promo Discounts</h1>
         <p className={styles.pageSubtitle}>
           Set up promotional offers on products
         </p>
