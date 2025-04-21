@@ -8,7 +8,6 @@ import UnitsOfMeasure from "./UnitsOfMeasure/UnitsOfMeasure";
 import Items from "./Items/Items";
 import Users from "./Users/Users";
 import Inventory from "./Inventory/Inventory";
-import DamageReturns from "./DamageReturns/DamageReturns";
 import ExchangeWrongItem from "./ExchangeWrongItem/ExchangeWrongItem";
 import PhysicalCount from "./PhysicalCount/PhysicalCount";
 import CashRefund from "./CashRefund/CashRefund";
@@ -16,6 +15,7 @@ import Warehouse from "./Warehouse/Warehouse";
 import RegularDiscounts from "./PromoDiscounts/PromoDiscounts";
 import AsIsItems from "./AsIsItems/AsIsItems";
 import ItemListReport from "./ItemListReport/ItemListReport";
+import ReturnItem from "./ReturnItem/ReturnItem";
 
 interface LayoutProps {
   children: ReactNode;
@@ -83,8 +83,8 @@ export default function Layout({ children }: LayoutProps) {
           <RegularDiscounts />
         ) : activeKey === "as-is-items" ? (
           <AsIsItems />
-        ) : activeKey === "damaged-returns" ? (
-          <DamageReturns />
+        ) : activeKey === "return-item" ? (
+          <ReturnItem />
         ) : activeKey === "exchange" ? (
           <ExchangeWrongItem />
         ) : activeKey === "cash-refund" ? (
@@ -110,73 +110,3 @@ export default function Layout({ children }: LayoutProps) {
     </div>
   );
 }
-
-// "use client";
-
-// import { ReactNode, useState } from "react";
-// import Dashboard from "./Dashboard/Dashboard";
-// import Sidebar from "./Sidebar/Sidebar";
-// import Categories from "./Categories/Categories";
-// import UnitsOfMeasure from "./UnitsOfMeasure/UnitsOfMeasure";
-// import Items from "./Items/Items";
-// import Users from "./Users/Users";
-// import Inventory from "./Inventory/Inventory";
-// import DamageReturns from "./DamageReturns/DamageReturns";
-// import ExchangeWrongItem from "./ExchangeWrongItem/ExchangeWrongItem";
-// import PhysicalCount from "./PhysicalCount/PhysicalCount";
-// import CashRefund from "./CashRefund/CashRefund";
-// import Warehouse from "./Warehouse/Warehouse";
-// import RegularDiscounts from "./RegularDiscounts/RegularDiscounts";
-// import AsIsItems from "./AsIsItems/AsIsItems";
-// import ItemListReport from "./ItemListReport/ItemListReport";
-
-// interface LayoutProps {
-//   children: ReactNode;
-// }
-
-// export default function Layout({ children }: LayoutProps) {
-//   // '' shows the welcome page by default; 'dashboard' shows the Dashboard component
-//   const [activeKey, setActiveKey] = useState<string>("");
-
-//   return (
-//     <div className="app-container">
-//       {/* Sidebar always visible */}
-//       <Sidebar onSelect={setActiveKey} activeKey={activeKey} />
-
-//       <main className="main-content">
-//         {/*  If user clicks "Dashboard", render the Dashboard component. Otherwise render the default children (HomePage welcome). */}
-//         {activeKey === "dashboard" ? (
-//           <Dashboard />
-//         ) : activeKey === "inventory" ? (
-//           <Inventory />
-//         ) : activeKey === "regular-discounts" ? (
-//           <RegularDiscounts />
-//         ) : activeKey === "as-is-items" ? (
-//           <AsIsItems />
-//         ) : activeKey === "damaged-returns" ? (
-//           <DamageReturns />
-//         ) : activeKey === "exchange" ? (
-//           <ExchangeWrongItem />
-//         ) : activeKey === "cash-refund" ? (
-//           <CashRefund />
-//         ) : activeKey === "warehouse" ? (
-//           <Warehouse />
-//         ) : activeKey === "physical-count" ? (
-//           <PhysicalCount />
-//         ) : activeKey === "categories" ? (
-//           <Categories />
-//         ) : activeKey === "unit-of-measure" ? (
-//           <UnitsOfMeasure />
-//         ) : activeKey === "items" ? (
-//           <Items />
-//         ) : activeKey === "user-admin" ? (
-//           <Users />
-//         ) : activeKey === "item-list" ? (
-//           <ItemListReport />
-//         ) : (
-//           children
-//         )}
-//       </main>
-//     </div>
-//   );
-// }

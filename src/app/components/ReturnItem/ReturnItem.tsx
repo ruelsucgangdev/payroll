@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { Plus, Edit3, Trash2 } from "lucide-react";
-import styles from "./DamageReturns.module.scss";
+import styles from "./ReturnItem.module.scss";
 
-type DamageReturn = {
+type ReturnItem = {
   id: string;
   sku: string;
   category: string;
@@ -17,7 +17,7 @@ type DamageReturn = {
   status: "For Approval" | "Approved" | "Back To Inventory";
 };
 
-const sampleReturns: DamageReturn[] = [
+const sampleReturns: ReturnItem[] = [
   // Electronics USB Cable
   {
     id: crypto.randomUUID(),
@@ -57,7 +57,7 @@ const sampleReturns: DamageReturn[] = [
   },
 ];
 
-export default function DamageReturns() {
+export default function ReturnItem() {
   const [search, setSearch] = useState<string>("");
   const filtered = sampleReturns.filter((item) =>
     [
@@ -75,7 +75,7 @@ export default function DamageReturns() {
     <div className={styles.container}>
       {/* Header */}
       <header className={styles.pageHeader}>
-        <h1>Damage Returns</h1>
+        <h1>Return Product</h1>
         <p className={styles.pageSubtitle}>Items returned due to damage</p>
       </header>
 

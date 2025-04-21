@@ -46,8 +46,8 @@ const menuItems: MenuItem[] = [
     icon: <Archive size={16} />,
     subItems: [
       {
-        key: "damaged-returns",
-        label: "Customer Return Item",
+        key: "return-item",
+        label: "Return Product",
         icon: <Archive size={16} />,
       },
       // {
