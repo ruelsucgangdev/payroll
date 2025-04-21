@@ -247,9 +247,7 @@ export default function Inventory() {
               <td>{item.description}</td>
               <td>{item.unit}</td>
               <td>PHP {item.price.toFixed(2)}</td>
-              {/* <td>{item.intQty}</td> */}
               <td> {item.condition === "Return" ? "" : item.intQty}</td>
-
               <td>
                 <span
                   className={
@@ -262,7 +260,6 @@ export default function Inventory() {
                 >
                   {item.currQty}
                 </span>
-
                 {item.intQty !== item.currQty &&
                   item.condition !== "Return" && (
                     <span className={styles.tooltipWrapper}>
@@ -274,7 +271,6 @@ export default function Inventory() {
                     </span>
                   )}
               </td>
-
               <td>{item.warehouse}</td>
               <td>{item.oldsku}</td>
               <td
@@ -309,7 +305,6 @@ export default function Inventory() {
         </tbody>
       </table>
 
-      {/* added: legend under table to explain color meanings */}
       <div className={styles.legend}>
         <div className={styles.legendItem}>
           <span className={styles.legendColorMismatch}></span>
