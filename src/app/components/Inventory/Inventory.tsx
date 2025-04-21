@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Plus, Edit3, Trash2 } from "lucide-react";
+import { Plus, Edit3, Trash2, Info } from "lucide-react";
 import styles from "./Inventory.module.scss";
 
 type InventoryItem = {
@@ -12,7 +12,8 @@ type InventoryItem = {
   description: string;
   unit: string;
   price: number;
-  qty: number;
+  intQty: number;
+  currQty: number;
   warehouse: string;
   condition: "New" | "Return" | "Old Stock";
 };
@@ -28,7 +29,8 @@ const sampleInventory: InventoryItem[] = [
     description: "Type‑C to A, 1m",
     unit: "pcs",
     price: 5.0,
-    qty: 100,
+    intQty: 100,
+    currQty: 100,
     warehouse: "Warehouse-1",
     condition: "New",
   },
@@ -41,7 +43,8 @@ const sampleInventory: InventoryItem[] = [
     description: "2‑pack USB cables",
     unit: "pack",
     price: 9.5,
-    qty: 100,
+    intQty: 100,
+    currQty: 100,
     warehouse: "Warehouse-1",
     condition: "New",
   },
@@ -54,7 +57,8 @@ const sampleInventory: InventoryItem[] = [
     description: "Case of 50 cables",
     unit: "box",
     price: 240.0,
-    qty: 98,
+    intQty: 100,
+    currQty: 98,
     warehouse: "Warehouse-1",
     condition: "New",
   },
@@ -67,7 +71,8 @@ const sampleInventory: InventoryItem[] = [
     description: "Case of 50 cables",
     unit: "box",
     price: 140.0,
-    qty: 1,
+    intQty: 1,
+    currQty: 1,
     warehouse: "Warehouse-1",
     condition: "Return",
   },
@@ -82,7 +87,8 @@ const sampleInventory: InventoryItem[] = [
     description: "Case of 24 bottles",
     unit: "case",
     price: 48.0,
-    qty: 99,
+    intQty: 100,
+    currQty: 99,
     warehouse: "Warehouse-1",
     condition: "New",
   },
@@ -95,7 +101,8 @@ const sampleInventory: InventoryItem[] = [
     description: "Single bottle, 500ml",
     unit: "bottle",
     price: 2.0,
-    qty: 100,
+    intQty: 100,
+    currQty: 100,
     warehouse: "Warehouse-1",
     condition: "New",
   },
@@ -110,7 +117,8 @@ const sampleInventory: InventoryItem[] = [
     description: "Ergonomic, adjustable",
     unit: "pcs",
     price: 89.99,
-    qty: 80,
+    intQty: 100,
+    currQty: 80,
     warehouse: "Warehouse-1",
     condition: "New",
   },
@@ -123,7 +131,8 @@ const sampleInventory: InventoryItem[] = [
     description: "Ergonomic, adjustable",
     unit: "pcs",
     price: 45.6,
-    qty: 10,
+    intQty: 10,
+    currQty: 10,
     warehouse: "Warehouse-1",
     condition: "Return",
   },
@@ -138,7 +147,8 @@ const sampleInventory: InventoryItem[] = [
     description: "50kg sack of rice",
     unit: "sack",
     price: 1500.0,
-    qty: 100,
+    intQty: 100,
+    currQty: 100,
     warehouse: "Warehouse-1",
     condition: "New",
   },
@@ -151,7 +161,8 @@ const sampleInventory: InventoryItem[] = [
     description: "5kg bag of rice",
     unit: "5kg",
     price: 160.0,
-    qty: 100,
+    intQty: 100,
+    currQty: 100,
     warehouse: "Warehouse-1",
     condition: "New",
   },
@@ -164,7 +175,8 @@ const sampleInventory: InventoryItem[] = [
     description: "1kg of rice",
     unit: "1kg",
     price: 35.0,
-    qty: 100,
+    intQty: 100,
+    currQty: 100,
     warehouse: "Warehouse-1",
     condition: "New",
   },
@@ -217,7 +229,8 @@ export default function Inventory() {
             <th>Description</th>
             <th>Unit</th>
             <th>Price</th>
-            <th>Qty</th>
+            <th>Initial Qty</th>
+            <th>Current Qty</th>
             <th>Warehouse</th>
             <th>Old SKU</th>
             <th>Condition</th>
@@ -234,7 +247,30 @@ export default function Inventory() {
               <td>{item.description}</td>
               <td>{item.unit}</td>
               <td>PHP {item.price.toFixed(2)}</td>
-              <td>{item.qty}</td>
+              <td> {item.condition === "Return" ? "" : item.intQty}</td>
+              <td>
+                <span
+                  className={
+                    item.condition === "Return"
+                      ? styles.currQtyReturn
+                      : item.intQty !== item.currQty
+                      ? styles.currQtyMismatch
+                      : undefined
+                  }
+                >
+                  {item.currQty}
+                </span>
+                {item.intQty !== item.currQty &&
+                  item.condition !== "Return" && (
+                    <span className={styles.tooltipWrapper}>
+                      <Info size={16} className={styles.tooltipIconMismatch} />
+                      <span className={styles.tooltipText}>
+                        Current quantity adjusts in real time based on POS
+                        sales.
+                      </span>
+                    </span>
+                  )}
+              </td>
               <td>{item.warehouse}</td>
               <td>{item.oldsku}</td>
               <td
@@ -268,6 +304,17 @@ export default function Inventory() {
           )}
         </tbody>
       </table>
+
+      <div className={styles.legend}>
+        <div className={styles.legendItem}>
+          <span className={styles.legendColorMismatch}></span>
+          <span>Items sold </span>
+        </div>
+        <div className={styles.legendItem}>
+          <span className={styles.legendColorReturn}></span>
+          <span>Return items </span>
+        </div>
+      </div>
     </div>
   );
 }

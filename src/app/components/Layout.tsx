@@ -15,7 +15,7 @@ import Warehouse from "./Warehouse/Warehouse";
 import RegularDiscounts from "./PromoDiscounts/PromoDiscounts";
 import AsIsItems from "./AsIsItems/AsIsItems";
 import ItemListReport from "./ItemListReport/ItemListReport";
-import ReturnItem from "./ReturnItem/ReturnItem";
+import Returns from "./Returns/Returns";
 
 interface LayoutProps {
   children: ReactNode;
