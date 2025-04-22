@@ -7,11 +7,13 @@
 .pageHeader {
   margin-bottom: var(--spacing-sm);
 }
+
 .pageHeader h1 {
   font-size: 1.5rem;
   margin: 0;
   color: var(--color-text-primary);
 }
+
 .pageSubtitle {
   margin: 0;
   font-size: 0.9rem;
@@ -20,26 +22,49 @@
 
 .searchContainer {
   display: flex;
-  gap: var(--spacing-sm);
+  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
 }
 
 .searchInput {
-  flex: 1;
+  width: 300px;
   padding: var(--spacing-sm) var(--spacing-md);
   border: 1px solid var(--color-text-primary);
   border-radius: 4px;
+  flex-shrink: 0;
 }
 
-.addButton {
+.buttonGroup {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: stretch;
+}
+
+.addButton,
+.postButton {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--color-bg-header);
-  border: 1px solid var(--color-text-primary);
   border-radius: 4px;
   cursor: pointer;
+  border: 1px solid var(--color-text-primary);
+  height: 40px;
+}
+
+.addButton {
+  background: var(--color-bg-header);
+}
+
+.postButton {
+  background: green;
+  color: white;
+}
+
+.postButton:hover {
+  background: darkgreen;
 }
 
 .table {
@@ -51,7 +76,6 @@
 .table th,
 .table td {
   border: 1px solid var(--color-text-primary);
-  padding: 4px 8px;
   padding: var(--spacing-sm) var(--spacing-md);
   text-align: left;
 }
@@ -64,14 +88,49 @@
   background: rgba(0, 0, 0, 0.03);
 }
 
+.statusDropdown {
+  padding: 4px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Font color for dropdown based on status */
+.statusPending {
+  color: green;
+  font-weight: bold;
+}
+
+.statusRestocked {
+  color: blue;
+  font-weight: bold;
+}
+
+.statusRefunded {
+  color: blue;
+  font-weight: bold;
+}
+
+.statusRejected {
+  color: red;
+  font-weight: bold;
+}
+
+.isPostedCell {
+  text-align: center;
+  width: 80px;
+}
+
 .actionsHeader {
   text-align: center;
+  width: 100px;
 }
 
 .actionsCell {
   display: flex;
   gap: var(--spacing-sm);
   justify-content: center;
+  align-items: center;
 }
 
 .iconButton {
@@ -85,26 +144,13 @@
 .iconButton:hover {
   background: var(--color-bg-header);
 }
+
+/* Legend Styles */
 .legend {
   display: flex;
   gap: var(--spacing-md);
   margin-top: var(--spacing-md);
   align-items: center;
-}
-
-.statusApproved {
-  color: green;
-  font-weight: bold;
-}
-
-.statusForApproval {
-  color: goldenrod;
-  font-weight: bold;
-}
-
-.statusCancelled {
-  color: red;
-  font-weight: bold;
 }
 
 .legendItem {
@@ -114,28 +160,28 @@
   font-size: 0.9rem;
 }
 
-.legendColorApproved,
-.legendColorForApproval {
-  width: 1rem;
-  height: 1rem;
-  display: inline-block;
-  border: 1px solid var(--color-text-primary);
-}
-.legendColorCancelled {
+.colorPending,
+.colorRestocked,
+.colorRefunded,
+.colorRejected {
   width: 1rem;
   height: 1rem;
   display: inline-block;
   border: 1px solid var(--color-text-primary);
 }
 
-.legendColorApproved {
+.colorPending {
   background: green;
 }
 
-.legendColorForApproval {
-  background: goldenrod;
+.colorRestocked {
+  background: blue;
 }
 
-.legendColorCancelled {
+.colorRefunded {
+  background: blue;
+}
+
+.colorRejected {
   background: red;
 }
