@@ -582,7 +582,7 @@ const sampleData: MasterItem[] = [
     id: crypto.randomUUID(),
     category: "Accessory",
     productCode: "WGT-CASE",
-    productName: "Widget Case",
+    productName: "Ginebra San Miguel",
     description: "Plastic case for widgets",
     warehouse: "Warehouse B",
     details: [
@@ -651,7 +651,7 @@ const sampleData: MasterItem[] = [
       },
       {
         id: crypto.randomUUID(),
-        sku: "WGT-CASE-PCS",
+        sku: "WGT-PCS",
         uom: "pcs",
         quantity: 10,
         sellingPrice: 10,

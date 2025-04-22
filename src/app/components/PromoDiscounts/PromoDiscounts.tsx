@@ -80,6 +80,36 @@ const sampleDiscounts: RegularDiscount[] = [
 
 export default function RegularDiscounts() {
   const [search, setSearch] = useState<string>("");
+  const [editRowId, setEditRowId] = useState<string | null>(null);
+  const [editingDateId, setEditingDateId] = useState<string | null>(null);
+  const [editingField, setEditingField] = useState<
+    "startDate" | "endDate" | null
+  >(null);
+
+  const handleDateChange = (
+    id: string,
+    field: "startDate" | "endDate",
+    value: string
+  ) => {
+    const index = sampleDiscounts.findIndex((item) => item.id === id);
+    if (index !== -1) {
+      const updatedItem = { ...sampleDiscounts[index], [field]: value };
+
+      // Evaluate if the updated range is still Active
+      const today = new Date();
+      const start = new Date(updatedItem.startDate);
+      const end = new Date(updatedItem.endDate);
+
+      const isActive = today >= start && today <= end;
+      updatedItem.status = isActive ? "Active" : "Inactive";
+
+      sampleDiscounts[index] = updatedItem;
+
+      setEditingDateId(null);
+      setEditingField(null);
+    }
+  };
+
   const filtered = sampleDiscounts.filter((d) =>
     [
       d.name.toLowerCase(),
@@ -109,9 +139,14 @@ export default function RegularDiscounts() {
           onChange={(e) => setSearch(e.target.value)}
           className={styles.searchInput}
         />
-        <button className={styles.addButton}>
-          <Plus size={16} /> New Discount
-        </button>
+        <div className={styles.buttonGroup}>
+          <button className={styles.addButton}>
+            <Plus size={16} /> New Discount
+          </button>
+          <button className={styles.postButton}>
+            <Edit3 size={16} /> Apply Promo
+          </button>
+        </div>
       </div>
 
       {/* Discounts List */}
@@ -134,7 +169,15 @@ export default function RegularDiscounts() {
         </thead>
         <tbody>
           {filtered.map((d) => (
-            <tr key={d.id} className={styles.row}>
+            <tr
+              key={d.id}
+              className={`${styles.row} ${
+                new Date() >= new Date(d.startDate) &&
+                new Date() <= new Date(d.endDate)
+                  ? styles.activePromoRow
+                  : ""
+              }`}
+            >
               {/* <td className={styles.idColumn}>{d.id}</td> */}
               <td>{d.sku}</td>
               <td>{d.name}</td>
@@ -143,9 +186,56 @@ export default function RegularDiscounts() {
               <td>{d.percentage || "-"}</td>
               <td>{d.discountType}</td>
               <td>{d.value}</td>
-              <td>{d.startDate}</td>
-              <td>{d.endDate}</td>
-              <td>{d.status}</td>
+
+              <td
+                onClick={() => {
+                  if (d.status !== "Inactive") {
+                    setEditingDateId(d.id);
+                    setEditingField("startDate");
+                  }
+                }}
+              >
+                {editingDateId === d.id && editingField === "startDate" ? (
+                  <input
+                    type="date"
+                    defaultValue={d.startDate}
+                    onBlur={(e) =>
+                      handleDateChange(d.id, "startDate", e.target.value)
+                    }
+                    autoFocus
+                  />
+                ) : (
+                  d.startDate
+                )}
+              </td>
+
+              <td
+                onClick={() => {
+                  if (d.status !== "Inactive") {
+                    setEditingDateId(d.id);
+                    setEditingField("endDate");
+                  }
+                }}
+              >
+                {editingDateId === d.id && editingField === "endDate" ? (
+                  <input
+                    type="date"
+                    defaultValue={d.endDate}
+                    onBlur={(e) =>
+                      handleDateChange(d.id, "endDate", e.target.value)
+                    }
+                    autoFocus
+                  />
+                ) : (
+                  d.endDate
+                )}
+              </td>
+
+              <td
+                className={d.status === "Inactive" ? styles.statusInactive : ""}
+              >
+                {d.status}
+              </td>
               <td className={styles.actionsCell}>
                 <button className={styles.iconButton} title="Edit Discount">
                   <Edit3 size={16} />
