@@ -45,14 +45,14 @@ const sampleData: MasterItem[] = [
   {
     id: crypto.randomUUID(),
     category: "Component",
-    productCode: "SONY-RES",
+    productCode: "PANASONIC V20",
     productName: "Sony Resistor",
     description: "10Ω resistor",
     warehouse: "Warehouse A",
     details: [
       {
         id: crypto.randomUUID(),
-        sku: "SONY-RES",
+        sku: "PANS-PCS",
         uom: "pcs",
         quantity: 10,
         sellingPrice: 12.5,
@@ -62,7 +62,7 @@ const sampleData: MasterItem[] = [
       },
       {
         id: crypto.randomUUID(),
-        sku: "SONY-RES",
+        sku: "PANS-PCS",
         uom: "pcs",
         quantity: -5,
         sellingPrice: 12.5,
@@ -72,7 +72,7 @@ const sampleData: MasterItem[] = [
       },
       {
         id: crypto.randomUUID(),
-        sku: "SONY-RES",
+        sku: "PANS-PCS",
         uom: "pcs",
         quantity: 2,
         sellingPrice: 12.5,
@@ -82,7 +82,7 @@ const sampleData: MasterItem[] = [
       },
       {
         id: crypto.randomUUID(),
-        sku: "SONY-RES",
+        sku: "PANS-PCS",
         uom: "pcs",
         quantity: -3,
         sellingPrice: 12.5,
@@ -92,7 +92,7 @@ const sampleData: MasterItem[] = [
       },
       {
         id: crypto.randomUUID(),
-        sku: "SONY-RES",
+        sku: "PANS-PCS",
         uom: "pcs",
         quantity: 4,
         sellingPrice: 12.5,
@@ -102,7 +102,7 @@ const sampleData: MasterItem[] = [
       },
       {
         id: crypto.randomUUID(),
-        sku: "SONY-RES",
+        sku: "PANS-PCS",
         uom: "pcs",
         quantity: -2,
         sellingPrice: 12.5,
@@ -112,7 +112,7 @@ const sampleData: MasterItem[] = [
       },
       {
         id: crypto.randomUUID(),
-        sku: "SONY-RES",
+        sku: "PANS-PCS",
         uom: "pcs",
         quantity: 4,
         sellingPrice: 12.5,
