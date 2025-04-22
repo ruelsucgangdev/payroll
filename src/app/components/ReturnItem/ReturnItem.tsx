@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Edit3, Trash2 } from "lucide-react";
+import { Plus, Edit3, Send } from "lucide-react";
 import styles from "./ReturnItem.module.scss";
 
 type ReturnItem = {
@@ -12,13 +12,12 @@ type ReturnItem = {
   description: string;
   unit: string;
   price: number;
-  qty: number;
-  warehouse: string;
-  status: "For Approval" | "Approved" | "Cancelled";
+  reason: string;
+  status: "Pending" | "Restocked" | "Refunded" | "Rejected";
+  posted: "Y" | "N";
 };
 
 const sampleReturns: ReturnItem[] = [
-  // Electronics USB Cable
   {
     id: crypto.randomUUID(),
     sku: "ELE-USB-BX-N",
@@ -27,9 +26,9 @@ const sampleReturns: ReturnItem[] = [
     description: "2‑pack USB cables",
     unit: "box",
     price: 240.0,
-    qty: 1,
-    warehouse: "Warehouse-1",
-    status: "Approved",
+    reason: "Damaged during transport",
+    status: "Pending",
+    posted: "N",
   },
   {
     id: crypto.randomUUID(),
@@ -39,9 +38,9 @@ const sampleReturns: ReturnItem[] = [
     description: "Ergonomic, adjustable",
     unit: "pcs",
     price: 45.6,
-    qty: 10,
-    warehouse: "Warehouse-1",
-    status: "Approved",
+    reason: "Wrong item sent",
+    status: "Refunded",
+    posted: "Y",
   },
   {
     id: crypto.randomUUID(),
@@ -51,47 +50,55 @@ const sampleReturns: ReturnItem[] = [
     description: "Case of 24 bottles",
     unit: "case",
     price: 48.0,
-    qty: 1,
-    warehouse: "Warehouse-1",
-    status: "For Approval",
+    reason: "Broken packaging",
+    status: "Restocked",
+    posted: "N",
   },
   {
     id: crypto.randomUUID(),
-    sku: "BEV-WTR-CASE-N",
-    category: "Beverages",
-    name: "Water Bottle",
-    description: "Case of 24 bottles",
-    unit: "case",
-    price: 48.0,
-    qty: 1,
-    warehouse: "Warehouse-1",
-    status: "Approved",
+    sku: "MED-ALC-BOX-N",
+    category: "Medical",
+    name: "Alcohol",
+    description: "70% Solution, 12 bottles",
+    unit: "box",
+    price: 180.0,
+    reason: "Item not in order list",
+    status: "Rejected",
+    posted: "Y",
   },
 ];
 
 export default function ReturnItem() {
   const [search, setSearch] = useState<string>("");
-  const filtered = sampleReturns.filter((item) =>
+  const [returns, setReturns] = useState<ReturnItem[]>(sampleReturns);
+
+  const handleStatusChange = (id: string, newStatus: ReturnItem["status"]) => {
+    setReturns((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, status: newStatus } : item
+      )
+    );
+  };
+
+  const filtered = returns.filter((item) =>
     [
       item.id.toString(),
       item.sku.toLowerCase(),
       item.category.toLowerCase(),
       item.name.toLowerCase(),
       item.unit.toLowerCase(),
-      item.warehouse.toString(),
-      item.status,
+      item.reason.toLowerCase(),
+      item.status.toLowerCase(),
     ].some((field) => field.includes(search.toLowerCase()))
   );
 
   return (
     <div className={styles.container}>
-      {/* Header */}
       <header className={styles.pageHeader}>
         <h1>Return Product</h1>
         <p className={styles.pageSubtitle}>Items returned due to damage</p>
       </header>
 
-      {/* Search & Add */}
       <div className={styles.searchContainer}>
         <input
           type="text"
@@ -100,88 +107,96 @@ export default function ReturnItem() {
           onChange={(e) => setSearch(e.target.value)}
           className={styles.searchInput}
         />
-        <button className={styles.addButton}>
-          <Plus size={16} /> New Return
-        </button>
+        <div className={styles.buttonGroup}>
+          <button className={styles.addButton}>
+            <Plus size={16} /> New Return
+          </button>
+          <button className={styles.postButton}>
+            <Send size={16} /> Post Return Product
+          </button>
+        </div>
       </div>
 
-      {/* Returns List */}
       <table className={styles.table}>
         <thead>
           <tr>
-            {/* <th>ID</th> */}
             <th>SKU</th>
             <th>Category</th>
             <th>Name</th>
             <th>Description</th>
             <th>Unit</th>
             <th>Price</th>
-            <th>Qty</th>
-            <th>Warehouse</th>
+            <th>Reason</th>
             <th>Status</th>
+            <th className={styles.isPostedCell}>Is Posted</th>
             <th className={styles.actionsHeader}>Actions</th>
           </tr>
         </thead>
         <tbody>
           {filtered.map((item) => (
             <tr key={item.id} className={styles.row}>
-              {/* <td className={styles.idColumn}>{item.id}</td> */}
               <td>{item.sku}</td>
               <td>{item.category}</td>
               <td>{item.name}</td>
               <td>{item.description}</td>
               <td>{item.unit}</td>
               <td>PHP {item.price.toFixed(2)}</td>
-              <td>{item.qty}</td>
-              <td>{item.warehouse}</td>
-              {/* <td>{item.status}</td> */}
+              <td>{item.reason}</td>
               <td>
-                <span
-                  className={
-                    item.status === "Approved"
-                      ? styles.statusApproved
-                      : item.status === "For Approval"
-                      ? styles.statusForApproval
-                      : item.status === "Cancelled"
-                      ? styles.statusCancelled // added condition for Cancelled
-                      : styles.statusBackToInventory
+                <select
+                  className={`${styles.statusDropdown} ${
+                    styles[`status${item.status}`]
+                  }`}
+                  value={item.status}
+                  disabled={item.posted === "Y"}
+                  onChange={(e) =>
+                    handleStatusChange(
+                      item.id,
+                      e.target.value as ReturnItem["status"]
+                    )
                   }
                 >
-                  {item.status}
-                </span>
+                  <option value="Pending">Pending</option>
+                  <option value="Restocked">Restocked</option>
+                  <option value="Refunded">Refunded</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
               </td>
+              <td className={styles.isPostedCell}>{item.posted}</td>
               <td className={styles.actionsCell}>
                 <button className={styles.iconButton} title="Edit">
                   <Edit3 size={16} />
                 </button>
-                {/* <button className={styles.iconButton} title="Delete">
-                  <Trash2 size={16} />
-                </button> */}
               </td>
             </tr>
           ))}
           {filtered.length === 0 && (
             <tr>
-              <td colSpan={9} style={{ textAlign: "center", padding: "1rem" }}>
+              <td colSpan={10} style={{ textAlign: "center", padding: "1rem" }}>
                 No damage returns found.
               </td>
             </tr>
           )}
         </tbody>
       </table>
+
       <div className={styles.legend}>
         <div className={styles.legendItem}>
-          <span className={styles.legendColorApproved}></span>
-          <span>Approved items </span>
+          <span className={styles.colorPending}></span>
+          <span>Pending</span>
         </div>
         <div className={styles.legendItem}>
-          <span className={styles.legendColorForApproval}></span>
-          <span>Pending approval </span>
+          <span className={styles.colorRestocked}></span>
+          <span>Restocked</span>
         </div>
-        {/* <div className={styles.legendItem}>
-          <span className={styles.legendColorCancelled}></span>
-          <span>Cancelled returns (Back to Inventory)</span>
-        </div> */}
+        <div className={styles.legendItem}>
+          <span className={styles.colorRefunded}></span>
+          <span>Refunded</span>
+        </div>
+        <div className={styles.legendItem}>
+          <span className={styles.colorRejected}></span>
+          <span>Rejected</span>
+        </div>
       </div>
     </div>
   );

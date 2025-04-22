@@ -91,6 +91,18 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
+    key: "pos",
+    label: "POS",
+    icon: <FileText size={16} />,
+    subItems: [
+      {
+        key: "pos",
+        label: "Point of Sale",
+        icon: <FileText size={16} />,
+      },
+    ],
+  },
+  {
     key: "reports",
     label: "Reports",
     icon: <FileText size={16} />,
