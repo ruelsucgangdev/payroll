@@ -85,3 +85,55 @@
 .iconButton:hover {
   background: var(--color-bg-header);
 }
+
+.buttonGroup {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: stretch;
+}
+
+.addButton,
+.postButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid var(--color-text-primary);
+  height: 40px;
+}
+
+.addButton {
+  background: var(--color-bg-header);
+}
+
+.postButton {
+  background: green;
+  color: white;
+}
+
+.postButton:hover {
+  background: darkgreen;
+}
+
+.commentInput {
+  padding: var(--spacing-xs);
+  font-size: 0.85rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.isPostedCell {
+  text-align: center;
+  width: 80px;
+}
+
+.statusAlert {
+  font-weight: bold;
+  color: red;
+}
+.numericCell {
+  text-align: right;
+}

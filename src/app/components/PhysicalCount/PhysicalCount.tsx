@@ -1,7 +1,8 @@
+// ✅ PhysicalCount.tsx (Updated to match ReturnItem design)
 "use client";
 
 import { useState } from "react";
-import { Plus, Edit3, Trash2 } from "lucide-react";
+import { Plus, Edit3, Trash2, Send } from "lucide-react";
 import styles from "./PhysicalCount.module.scss";
 
 type CountRecord = {
@@ -16,6 +17,7 @@ type CountRecord = {
   qty: string;
   status: "Match" | "Shortage" | "Overage";
   remarks: string;
+  posted: "Y" | "N";
 };
 
 const sampleCounts: CountRecord[] = [
@@ -31,6 +33,7 @@ const sampleCounts: CountRecord[] = [
     qty: "pcs",
     status: "Shortage",
     remarks: "2 cables missing",
+    posted: "N",
   },
   {
     id: 2,
@@ -44,6 +47,7 @@ const sampleCounts: CountRecord[] = [
     qty: "case",
     status: "Match",
     remarks: "No discrepancy",
+    posted: "Y",
   },
   {
     id: 3,
@@ -57,6 +61,7 @@ const sampleCounts: CountRecord[] = [
     qty: "bottle",
     status: "Overage",
     remarks: "2 extra cables found",
+    posted: "N",
   },
   {
     id: 4,
@@ -70,6 +75,7 @@ const sampleCounts: CountRecord[] = [
     qty: "pack",
     status: "Shortage",
     remarks: "Batteries damaged",
+    posted: "Y",
   },
   {
     id: 5,
@@ -83,12 +89,39 @@ const sampleCounts: CountRecord[] = [
     qty: "box",
     status: "Match",
     remarks: "All present",
+    posted: "N",
   },
 ];
 
 export default function PhysicalCount() {
   const [search, setSearch] = useState<string>("");
-  const filtered = sampleCounts.filter((rec) =>
+  const [counts, setCounts] = useState<CountRecord[]>(sampleCounts);
+
+  const handleRemarksChange = (id: number, value: string) => {
+    setCounts((prev) =>
+      prev.map((rec) => (rec.id === id ? { ...rec, remarks: value } : rec))
+    );
+  };
+
+  const handleCountChange = (id: number, value: number) => {
+    setCounts((prev) =>
+      prev.map((rec) => {
+        if (rec.id === id) {
+          const discrepancy = value - rec.recordedQty;
+          const status =
+            discrepancy === 0
+              ? "Match"
+              : discrepancy < 0
+              ? "Shortage"
+              : "Overage";
+          return { ...rec, countedQty: value, discrepancy, status };
+        }
+        return rec;
+      })
+    );
+  };
+
+  const filtered = counts.filter((rec) =>
     [
       rec.id.toString(),
       rec.sku.toString(),
@@ -99,15 +132,22 @@ export default function PhysicalCount() {
     ].some((field) => field.includes(search.toLowerCase()))
   );
 
+  const handlePostClick = () => {
+    const confirmed = window.confirm(
+      "Post selected physical counts to inventory?"
+    );
+    if (confirmed) {
+      console.log("Confirmed physical count post");
+    }
+  };
+
   return (
     <div className={styles.container}>
-      {/* Header */}
       <header className={styles.pageHeader}>
         <h1>Physical Count</h1>
         <p className={styles.pageSubtitle}>Inventory adjustment by count</p>
       </header>
 
-      {/* Search & Add */}
       <div className={styles.searchContainer}>
         <input
           type="text"
@@ -116,16 +156,19 @@ export default function PhysicalCount() {
           onChange={(e) => setSearch(e.target.value)}
           className={styles.searchInput}
         />
-        <button className={styles.addButton}>
-          <Plus size={16} /> New Count
-        </button>
+        <div className={styles.buttonGroup}>
+          <button className={styles.addButton}>
+            <Plus size={16} /> New Count
+          </button>
+          <button className={styles.postButton} onClick={handlePostClick}>
+            <Send size={16} /> Post Physical Count
+          </button>
+        </div>
       </div>
 
-      {/* Count Records List */}
       <table className={styles.table}>
         <thead>
           <tr>
-            {/* <th>ID</th> */}
             <th>SKU</th>
             <th>Product Name</th>
             <th>Recorded Qty</th>
@@ -136,36 +179,49 @@ export default function PhysicalCount() {
             <th>Warehouse</th>
             <th>Status</th>
             <th>Remarks</th>
-            <th className={styles.actionsHeader}>Actions</th>
+            <th>Is Posted</th>
           </tr>
         </thead>
         <tbody>
           {filtered.map((rec) => (
             <tr key={rec.id} className={styles.row}>
-              {/* <td>{rec.id}</td> */}
               <td>{rec.sku}</td>
               <td>{rec.itemName}</td>
-              <td>{rec.recordedQty}</td>
-              <td>{rec.countedQty}</td>
-              <td>{rec.discrepancy}</td>
+              <td className={styles.numericCell}>{rec.recordedQty}</td>
+              <td>
+                <input
+                  type="number"
+                  className={`${styles.commentInput} ${styles.numericCell}`}
+                  value={rec.countedQty}
+                  onChange={(e) =>
+                    handleCountChange(rec.id, Number(e.target.value))
+                  }
+                  disabled={rec.posted === "Y"}
+                />
+              </td>
+              <td className={styles.numericCell}>{rec.discrepancy}</td>
               <td>{rec.qty}</td>
               <td>{rec.dateCounted}</td>
               <td>{rec.warehouse}</td>
-              <td>{rec.status}</td>
-              <td>{rec.remarks}</td>
-              <td className={styles.actionsCell}>
-                <button className={styles.iconButton} title="Edit Count">
-                  <Edit3 size={16} />
-                </button>
-                <button className={styles.iconButton} title="Delete Count">
-                  <Trash2 size={16} />
-                </button>
+              <td className={rec.status !== "Match" ? styles.statusAlert : ""}>
+                {rec.status}
               </td>
+              <td>
+                <input
+                  type="text"
+                  className={styles.commentInput}
+                  value={rec.remarks}
+                  onChange={(e) => handleRemarksChange(rec.id, e.target.value)}
+                  disabled={rec.posted === "Y"}
+                  placeholder="Enter remarks"
+                />
+              </td>
+              <td className={styles.isPostedCell}>{rec.posted}</td>
             </tr>
           ))}
           {filtered.length === 0 && (
             <tr>
-              <td colSpan={10} style={{ textAlign: "center", padding: "1rem" }}>
+              <td colSpan={12} style={{ textAlign: "center", padding: "1rem" }}>
                 No count records found.
               </td>
             </tr>

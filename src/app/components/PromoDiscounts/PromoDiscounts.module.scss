@@ -95,3 +95,47 @@
   white-space: nowrap;
   word-break: break-word;
 }
+.activePromoRow {
+  background-color: #e6ffe6; /* soft green */
+}
+
+.statusInactive {
+  color: red;
+  font-weight: bold;
+}
+
+.input[type="date"] {
+  font-size: 0.85rem;
+  padding: 2px 6px;
+}
+.buttonGroup {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: stretch;
+}
+
+.addButton,
+.postButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-text-primary);
+  border-radius: 4px;
+  height: 40px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.addButton {
+  background: var(--color-bg-header);
+}
+
+.postButton {
+  background: green;
+  color: white;
+}
+
+.postButton:hover {
+  background: darkgreen;
+}

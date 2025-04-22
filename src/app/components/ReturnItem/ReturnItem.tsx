@@ -1,3 +1,4 @@
+// ✅ ReturnItem.tsx
 "use client";
 
 import { useState } from "react";
@@ -9,10 +10,10 @@ type ReturnItem = {
   sku: string;
   category: string;
   name: string;
-  description: string;
   unit: string;
   price: number;
   reason: string;
+  managecomment: string;
   status: "Pending" | "Restocked" | "Refunded" | "Rejected";
   posted: "Y" | "N";
 };
@@ -20,38 +21,38 @@ type ReturnItem = {
 const sampleReturns: ReturnItem[] = [
   {
     id: crypto.randomUUID(),
-    sku: "ELE-USB-BX-N",
-    category: "Electronics",
-    name: "USB Cable",
-    description: "2‑pack USB cables",
-    unit: "box",
-    price: 240.0,
+    sku: "SONY-RES",
+    category: "Component",
+    name: "Sony Resitor",
+    unit: "pcs",
+    price: 12.5,
     reason: "Damaged during transport",
+    managecomment: "",
     status: "Pending",
     posted: "N",
   },
   {
     id: crypto.randomUUID(),
-    sku: "FUR-CHAIR-PC-N",
-    category: "Furniture",
-    name: "Office Chair",
-    description: "Ergonomic, adjustable",
-    unit: "pcs",
-    price: 45.6,
+    sku: "RICE-SACK",
+    category: "Food",
+    name: "RICE-SANDMG",
+    unit: "sack",
+    price: 1500.6,
     reason: "Wrong item sent",
+    managecomment: "Please verify refunded amount",
     status: "Refunded",
     posted: "Y",
   },
   {
     id: crypto.randomUUID(),
-    sku: "BEV-WTR-CASE-N",
-    category: "Beverages",
-    name: "Water Bottle",
-    description: "Case of 24 bottles",
+    sku: "WGT-CASE",
+    category: "Accessory",
+    name: "Ginebra San Miguel",
     unit: "case",
     price: 48.0,
     reason: "Broken packaging",
-    status: "Restocked",
+    managecomment: "",
+    status: "Pending",
     posted: "N",
   },
   {
@@ -59,10 +60,10 @@ const sampleReturns: ReturnItem[] = [
     sku: "MED-ALC-BOX-N",
     category: "Medical",
     name: "Alcohol",
-    description: "70% Solution, 12 bottles",
     unit: "box",
     price: 180.0,
     reason: "Item not in order list",
+    managecomment: "Please investigate",
     status: "Rejected",
     posted: "Y",
   },
@@ -80,6 +81,24 @@ export default function ReturnItem() {
     );
   };
 
+  const handleCommentChange = (id: string, value: string) => {
+    setReturns((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, managecomment: value } : item
+      )
+    );
+  };
+
+  const handlePostClick = () => {
+    const confirm = window.confirm(
+      "Are you sure you want to post these returned items to inventory?"
+    );
+    if (confirm) {
+      // Here you could trigger actual post logic
+      console.log("Confirmed post");
+    }
+  };
+
   const filtered = returns.filter((item) =>
     [
       item.id.toString(),
@@ -88,6 +107,7 @@ export default function ReturnItem() {
       item.name.toLowerCase(),
       item.unit.toLowerCase(),
       item.reason.toLowerCase(),
+      item.managecomment,
       item.status.toLowerCase(),
     ].some((field) => field.includes(search.toLowerCase()))
   );
@@ -111,7 +131,7 @@ export default function ReturnItem() {
           <button className={styles.addButton}>
             <Plus size={16} /> New Return
           </button>
-          <button className={styles.postButton}>
+          <button className={styles.postButton} onClick={handlePostClick}>
             <Send size={16} /> Post Return Product
           </button>
         </div>
@@ -123,10 +143,10 @@ export default function ReturnItem() {
             <th>SKU</th>
             <th>Category</th>
             <th>Name</th>
-            <th>Description</th>
             <th>Unit</th>
             <th>Price</th>
             <th>Reason</th>
+            <th>Inventory Manager Comment</th>
             <th>Status</th>
             <th className={styles.isPostedCell}>Is Posted</th>
             <th className={styles.actionsHeader}>Actions</th>
@@ -138,15 +158,24 @@ export default function ReturnItem() {
               <td>{item.sku}</td>
               <td>{item.category}</td>
               <td>{item.name}</td>
-              <td>{item.description}</td>
               <td>{item.unit}</td>
               <td>PHP {item.price.toFixed(2)}</td>
               <td>{item.reason}</td>
               <td>
+                <input
+                  type="text"
+                  className={styles.commentInput}
+                  value={item.managecomment}
+                  onChange={(e) => handleCommentChange(item.id, e.target.value)}
+                  disabled={item.posted === "Y"}
+                  placeholder="Manager's comment"
+                />
+              </td>
+              <td>
                 <select
                   className={`${styles.statusDropdown} ${
                     styles[`status${item.status}`]
-                  }`}
+                  } ${item.posted === "Y" ? styles.statusDisabled : ""}`}
                   value={item.status}
                   disabled={item.posted === "Y"}
                   onChange={(e) =>
