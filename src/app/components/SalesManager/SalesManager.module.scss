@@ -1,0 +1,166 @@
+/* components/SalesPOSManager.module.scss */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.pageHeader {
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pageHeader h1 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.pageSubtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+.headerButtons {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.batchButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-text-primary);
+  border-radius: 4px;
+  background: var(--color-bg-header);
+  cursor: pointer;
+}
+
+.batchButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.postButton {
+  background: green;
+  color: white;
+  border-color: green;
+}
+
+.postButton:hover {
+  background: darkgreen;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.table th,
+.table td {
+  border: 1px solid var(--color-text-primary);
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+}
+
+/* Right-align and pad numeric cells in main table */
+.table td.numeric {
+  text-align: right;
+  padding-right: var(--spacing-md);
+}
+
+.row:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.checkboxCell {
+  text-align: center;
+  width: 40px;
+}
+
+.expandCell {
+  text-align: center;
+  cursor: pointer;
+}
+
+.nestedTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.nestedTable th,
+.nestedTable td {
+  border: 1px solid var(--color-text-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.85rem;
+  text-align: left;
+  background-color: #ffffff;
+}
+
+/* Light-green hover effect for detail rows */
+.nestedTable tbody tr:hover td {
+  background-color: lightgreen !important;
+}
+
+/* Right-align and pad numeric/detail cells in nested table */
+.nestedTable td.numeric,
+.nestedTable td:nth-child(3),   /* Quantity column */
+.nestedTable td:nth-child(4),   /* Unit Price column */
+.nestedTable td:nth-child(5) {
+  /* Line Total column */
+  text-align: right;
+  padding-right: var(--spacing-md);
+}
+
+/* Bold header and cells for Line Total (5th column) */
+.nestedTable th:nth-child(5),
+.nestedTable td:nth-child(5) {
+  font-weight: bold;
+}
+
+.nestedTable th:nth-child(1),
+.nestedTable td:nth-child(1) {
+  width: 15ch;
+}
+.nestedTable th:nth-child(2),
+.nestedTable td:nth-child(2) {
+  width: 20ch;
+}
+.nestedTable th:nth-child(3),
+.nestedTable td:nth-child(3) {
+  width: 8ch;
+}
+.nestedTable th:nth-child(4),
+.nestedTable td:nth-child(4) {
+  width: 12ch;
+}
+.nestedTable th:nth-child(5),
+.nestedTable td:nth-child(5) {
+  width: 12ch;
+}
+
+.table td.numeric,
+.nestedTable td.numeric {
+  text-align: right;
+  padding-right: var(--spacing-md);
+}
+
+.nestedTable thead th {
+  text-align: center;
+}
+
+.table td:not(.numeric):not(.checkboxCell):not(.expandCell),
+.nestedTable td:not(.numeric) {
+  padding-left: var(--spacing-md);
+}
+
+.table td:not(.numeric):not(.checkboxCell):not(.expandCell),
+.nestedTable td:not(.numeric) {
+  text-align: left;
+}

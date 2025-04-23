@@ -16,6 +16,8 @@ import RegularDiscounts from "./PromoDiscounts/PromoDiscounts";
 import AsIsItems from "./AsIsItems/AsIsItems";
 import ItemListReport from "./ItemListReport/ItemListReport";
 import ReturnItem from "./ReturnItem/ReturnItem";
+import SkuManager from "./SkuManager/SkuManager";
+import SalesManager from "./SalesManager/SalesManager";
 
 interface LayoutProps {
   children: ReactNode;
@@ -92,12 +94,16 @@ export default function Layout({ children }: LayoutProps) {
           <CashRefund />
         ) : activeKey === "warehouse" ? (
           <Warehouse />
+        ) : activeKey === "sku-manager" ? (
+          <SkuManager />
         ) : activeKey === "physical-count" ? (
           <PhysicalCount />
         ) : activeKey === "categories" ? (
           <Categories />
         ) : activeKey === "unit-of-measure" ? (
           <UnitsOfMeasure />
+        ) : activeKey === "pos" ? (
+          <SalesManager />
         ) : activeKey === "items" ? (
           <Items />
         ) : activeKey === "user-admin" ? (

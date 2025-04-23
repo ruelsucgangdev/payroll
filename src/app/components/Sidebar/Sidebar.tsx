@@ -68,6 +68,11 @@ const menuItems: MenuItem[] = [
         label: "Physical Count",
         icon: <Sliders size={16} />,
       },
+      {
+        key: "sku-manager",
+        label: "SKU Manager",
+        icon: <Sliders size={16} />,
+      },
     ],
   },
   {
