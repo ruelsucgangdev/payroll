@@ -18,6 +18,7 @@ import ItemListReport from "./ItemListReport/ItemListReport";
 import ReturnItem from "./ReturnItem/ReturnItem";
 import SkuManager from "./SkuManager/SkuManager";
 import SalesManager from "./SalesManager/SalesManager";
+import ReceivingItemsManager from "./Receive/ReceivingItemsManager";
 
 interface LayoutProps {
   children: ReactNode;
@@ -86,6 +87,8 @@ export default function Layout({ children }: LayoutProps) {
           <RegularDiscounts />
         ) : activeKey === "as-is-items" ? (
           <AsIsItems />
+        ) : activeKey === "receive-item" ? (
+          <ReceivingItemsManager />
         ) : activeKey === "return-item" ? (
           <ReturnItem />
         ) : activeKey === "exchange" ? (
