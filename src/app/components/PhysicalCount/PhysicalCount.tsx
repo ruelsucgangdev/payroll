@@ -222,7 +222,7 @@ export default function PhysicalCount() {
           {filtered.length === 0 && (
             <tr>
               <td colSpan={12} style={{ textAlign: "center", padding: "1rem" }}>
-                No count records found.
+                No count records found. Please consult Admin.
               </td>
             </tr>
           )}
