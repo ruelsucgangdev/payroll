@@ -97,12 +97,12 @@ const menuItems: MenuItem[] = [
   },
   {
     key: "pos",
-    label: "POS",
+    label: "Apply Sales to Stock",
     icon: <FileText size={16} />,
     subItems: [
       {
         key: "pos",
-        label: "Point of Sale",
+        label: "Post Sales",
         icon: <FileText size={16} />,
       },
     ],
