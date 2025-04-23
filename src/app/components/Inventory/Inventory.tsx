@@ -25,8 +25,8 @@ type DetailItem = {
     | "Rejected"
     | "Transferred-In"
     | "Transferred-Out"
-    | "Break-Bulk"
-    | "Build-Up";
+    | "Conversion"
+    | "Conversion";
   remarks: string;
 };
 
@@ -194,7 +194,7 @@ const sampleData: MasterItem[] = [
         remarks: "To Store C",
       },
 
-      // Break-Bulk: sack → kg
+      // Conversion: sack → kg
       {
         id: crypto.randomUUID(),
         sku: "RICE-KG",
@@ -202,7 +202,7 @@ const sampleData: MasterItem[] = [
         quantity: -100,
         sellingPrice: 25,
         sourceDoc: "...",
-        condition: "Build-Up",
+        condition: "Conversion",
         remarks: "[Manual] kg → sack",
       },
       {
@@ -212,7 +212,7 @@ const sampleData: MasterItem[] = [
         quantity: 2,
         sellingPrice: 1600,
         sourceDoc: "...",
-        condition: "Build-Up",
+        condition: "Conversion",
         remarks: "[Auto Generated]",
       },
 
@@ -268,7 +268,7 @@ const sampleData: MasterItem[] = [
         remarks: "To Store C",
       },
 
-      // Build-Up: kg → sack
+      // Conversion: kg → sack
       {
         id: crypto.randomUUID(),
         sku: "RICE-SACK",
@@ -276,7 +276,7 @@ const sampleData: MasterItem[] = [
         quantity: -1,
         sellingPrice: 1500,
         sourceDoc: "...",
-        condition: "Break-Bulk",
+        condition: "Conversion",
         remarks: "[Manual] sack → kg",
       },
       {
@@ -286,7 +286,7 @@ const sampleData: MasterItem[] = [
         quantity: 50,
         sellingPrice: 1500,
         sourceDoc: "...",
-        condition: "Build-Up",
+        condition: "Conversion",
         remarks: "[Auto Generated]",
       },
       // mag input ako ng galing sa supplier.. 150 kilos na bigas..
@@ -385,7 +385,7 @@ const sampleData: MasterItem[] = [
         remarks: "To Outlet D",
       },
 
-      // Break-Bulk: box → pack
+      // Conversion: box → pack
       {
         id: crypto.randomUUID(),
         sku: "CIG-BOX",
@@ -393,7 +393,7 @@ const sampleData: MasterItem[] = [
         quantity: -1,
         sellingPrice: 800,
         sourceDoc: "...",
-        condition: "Break-Bulk",
+        condition: "Conversion",
         remarks: "[Manual] box → packs",
       },
       {
@@ -403,7 +403,7 @@ const sampleData: MasterItem[] = [
         quantity: 20,
         sellingPrice: 40,
         sourceDoc: "...",
-        condition: "Build-Up",
+        condition: "Conversion",
         remarks: "[Auto-Generated] pack → box",
       },
 
@@ -459,7 +459,7 @@ const sampleData: MasterItem[] = [
         remarks: "To Retailer A",
       },
 
-      // Build-Up: pack → box
+      // Conversion: pack → box
       {
         id: crypto.randomUUID(),
         sku: "CIG-PACK",
@@ -467,7 +467,7 @@ const sampleData: MasterItem[] = [
         quantity: -20,
         sellingPrice: 40,
         sourceDoc: "...",
-        condition: "Build-Up",
+        condition: "Conversion",
         remarks: "[Manual ]pack → box",
       },
       {
@@ -477,11 +477,11 @@ const sampleData: MasterItem[] = [
         quantity: 1,
         sellingPrice: 800,
         sourceDoc: "...",
-        condition: "Build-Up",
+        condition: "Conversion",
         remarks: "[Auto Generated]",
       },
 
-      // Break-Bulk: pack → pcs
+      // Conversion: pack → pcs
       {
         id: crypto.randomUUID(),
         sku: "CIG-PACK",
@@ -489,7 +489,7 @@ const sampleData: MasterItem[] = [
         quantity: -1,
         sellingPrice: 40,
         sourceDoc: "...",
-        condition: "Break-Bulk",
+        condition: "Conversion",
         remarks: "[Manual] pack → pcs",
       },
       {
@@ -499,7 +499,7 @@ const sampleData: MasterItem[] = [
         quantity: 12,
         sellingPrice: 40,
         sourceDoc: "...",
-        condition: "Build-Up",
+        condition: "Conversion",
         remarks: "[Auto Generated]",
       },
       {
@@ -509,7 +509,7 @@ const sampleData: MasterItem[] = [
         quantity: -12,
         sellingPrice: 2,
         sourceDoc: "...",
-        condition: "Build-Up",
+        condition: "Conversion",
         remarks: "[Manual] pcs - pack",
       },
       {
@@ -519,7 +519,7 @@ const sampleData: MasterItem[] = [
         quantity: 1,
         sellingPrice: 40,
         sourceDoc: "...",
-        condition: "Build-Up",
+        condition: "Conversion",
         remarks: "[Auto Generated]",
       },
 
@@ -638,7 +638,7 @@ const sampleData: MasterItem[] = [
         remarks: "Damaged",
       },
 
-      // Break-Bulk: case → pcs (1 case = 10 pcs)
+      // Conversion: case → pcs (1 case = 10 pcs)
       {
         id: crypto.randomUUID(),
         sku: "WGT-CASE",
@@ -646,7 +646,7 @@ const sampleData: MasterItem[] = [
         quantity: -1,
         sellingPrice: 75,
         sourceDoc: "CONV-CASE2PCS",
-        condition: "Break-Bulk",
+        condition: "Conversion",
         remarks: "case → pcs",
       },
       {
@@ -656,11 +656,11 @@ const sampleData: MasterItem[] = [
         quantity: 10,
         sellingPrice: 10,
         sourceDoc: "CONV-PCS2CASE",
-        condition: "Build-Up",
+        condition: "Conversion",
         remarks: "pcs → case",
       },
 
-      // Build-Up: pcs → case
+      // Conversion: pcs → case
       {
         id: crypto.randomUUID(),
         sku: "WGT-CASE",
@@ -668,7 +668,7 @@ const sampleData: MasterItem[] = [
         quantity: 1,
         sellingPrice: 75,
         sourceDoc: "CONV-PCS2CASE",
-        condition: "Build-Up",
+        condition: "Conversion",
         remarks: "pcs → case",
       },
     ],
