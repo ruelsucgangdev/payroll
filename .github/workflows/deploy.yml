@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+  workflow_dispatch:
 
 jobs:
   build-and-merge:
@@ -33,5 +34,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_branch: dev
           target_branch: main
-          title: 'Auto Merge: Dev to Main'
-          body: 'This is an automated merge from dev to main after successful build.'
+          title: "Auto Merge: Dev to Main"
+          body: "This is an automated merge from dev to main after successful build."
