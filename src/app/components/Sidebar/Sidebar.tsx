@@ -41,6 +41,18 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
+    key: "receive",
+    label: "Receive",
+    icon: <Archive size={16} />,
+    subItems: [
+      {
+        key: "receive-item",
+        label: "Receive Product",
+        icon: <Archive size={16} />,
+      },
+    ],
+  },
+  {
     key: "returns",
     label: "Returns",
     icon: <Archive size={16} />,

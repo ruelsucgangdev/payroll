@@ -1,0 +1,152 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+.entryForm {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.inputBox {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.wide {
+  grid-column: span 2;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.table th {
+  background-color: #f9f9f9;
+  font-weight: 600;
+  color: #333;
+}
+
+.cellInput {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.cellInput:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.numeric {
+  text-align: right;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.addRow {
+  background-color: #3498db;
+  color: white;
+  font-weight: 500;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.addRow:hover {
+  background-color: #217dbb;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.button {
+  padding: 10px 18px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.cancel {
+  background-color: #b0b0b0;
+  color: white;
+}
+
+.cancel:hover {
+  background-color: #8a8a8a;
+}
+
+.save {
+  background-color: #28a745;
+  color: white;
+}
+
+.save:hover {
+  background-color: #218838;
+}
+
+.deleteIcon {
+  background: none;
+  border: none;
+  color: #dc3545;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteIcon:hover {
+  color: #b52a37;
+}
