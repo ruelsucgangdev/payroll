@@ -1,8 +1,8 @@
-// ✅ PhysicalCount.tsx (Warehouse & Counter filters, professional Add Row, remove warehouse column)
+// ✅ PhysicalCount.tsx (Alignments & static warehouse info)
 "use client";
 
 import { useState } from "react";
-import { Plus, Send } from "lucide-react";
+import { Plus, Send, Eye } from "lucide-react";
 import styles from "./PhysicalCount.module.scss";
 
 type CountRecord = {
@@ -164,6 +164,15 @@ export default function PhysicalCount() {
     setCounts((prev) => [...prev, newRec]);
   };
 
+  const handleSave = () => {
+    if (window.confirm("Save physical counts?"))
+      console.log("Physical counts saved");
+  };
+
+  const handleViewPosting = () => {
+    console.log("Viewing records prepared for posting");
+  };
+
   const filtered = counts.filter((rec) => {
     if (selectedWarehouse && rec.warehouse !== selectedWarehouse) return false;
     if (
@@ -174,11 +183,6 @@ export default function PhysicalCount() {
     return true;
   });
 
-  const handlePostClick = () => {
-    if (window.confirm("Post selected physical counts to inventory?"))
-      console.log("Confirmed physical count post");
-  };
-
   return (
     <div className={styles.container}>
       <header className={styles.pageHeader}>
@@ -186,7 +190,7 @@ export default function PhysicalCount() {
         <p className={styles.pageSubtitle}>Inventory adjustment by count</p>
       </header>
 
-      {/* Filters & Post */}
+      {/* Filters & Actions */}
       <div className={styles.searchContainer}>
         <input
           list="warehouses"
@@ -210,8 +214,11 @@ export default function PhysicalCount() {
           placeholder="Counted by"
         />
 
-        <button className={styles.postButton} onClick={handlePostClick}>
-          <Send size={16} /> Post
+        <button className={styles.postButton} onClick={handleSave}>
+          <Send size={16} /> Save
+        </button>
+        <button className={styles.postButton} onClick={handleViewPosting}>
+          <Eye size={16} /> View Records for Posting
         </button>
       </div>
 
@@ -244,6 +251,7 @@ export default function PhysicalCount() {
                       )
                     )
                   }
+                  style={{ paddingLeft: "8px" }}
                 />
                 <datalist id="sku-list">
                   {sampleCounts.map((s) => (
@@ -261,12 +269,15 @@ export default function PhysicalCount() {
                     handleCountChange(rec.id, Number(e.target.value))
                   }
                   disabled={rec.posted === "Y"}
-                  style={{ width: 60 }}
+                  style={{ width: 60, textAlign: "right", paddingRight: "8px" }}
                 />
               </td>
               <td
                 className={styles.numericCell}
-                style={{ color: rec.discrepancy < 0 ? "red" : "inherit" }}
+                style={{
+                  textAlign: "center",
+                  color: rec.discrepancy < 0 ? "red" : "inherit",
+                }}
               >
                 {rec.discrepancy}
               </td>
@@ -286,9 +297,13 @@ export default function PhysicalCount() {
                   value={rec.countedBy}
                   onChange={(e) => handleCounterChange(rec.id, e.target.value)}
                   placeholder="Name"
+                  style={{ paddingLeft: "8px" }}
                 />
               </td>
-              <td className={rec.status !== "Match" ? styles.statusAlert : ""}>
+              <td
+                className={rec.status != "Match" ? styles.statusAlert : ""}
+                style={{ textAlign: "center" }}
+              >
                 {rec.status}
               </td>
               <td>
@@ -313,9 +328,16 @@ export default function PhysicalCount() {
         </tbody>
       </table>
 
-      {/* Professional Add Row */}
+      {/* Static warehouse info */}
+      <div style={{ marginTop: "1rem", fontSize: "0.9rem", color: "#555" }}>
+        Records filtered by selected
+        {/* warehouse:{" "} */}
+        <strong>{selectedWarehouse || " Warehouse"}</strong>
+      </div>
+
+      {/* Green Add Row button */}
       <button
-        className={styles.addButton}
+        className={styles.postButton}
         onClick={handleAddRow}
         style={{ marginTop: "1rem" }}
       >
