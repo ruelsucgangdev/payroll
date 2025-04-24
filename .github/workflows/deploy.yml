@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - dev
-  workflow_dispatch:
 
 jobs:
   build-and-merge:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -23,9 +23,6 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Optional Test
-        run: npm test || echo "Tests failed, but continuing"
 
       - name: Auto merge dev to main
         uses: devops-infra/action-pull-request@v0.4.4
