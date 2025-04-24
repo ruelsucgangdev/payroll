@@ -1,6 +1,9 @@
-name: Manual Merge Dev to Main
+name: Auto Sync Dev to Main
 
 on:
+  push:
+    branches:
+      - dev
   workflow_dispatch:
 
 permissions:
@@ -27,48 +30,19 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Create PR to merge dev → main
+      - name: Create PR from dev to main
+        id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: auto-merge-dev-to-main
           base: main
-          title: "Sync Dev to Main"
-          body: "Automated merge of dev into main branch."
-# name: Manual Merge Dev to Main
+          title: "Auto Sync: Dev to Main"
+          body: "Automatically created pull request to sync dev into main."
 
-# on:
-#   workflow_dispatch:
-
-# permissions:
-#   contents: write
-#   pull-requests: write
-
-# jobs:
-#   build-and-merge:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout dev branch
-#         uses: actions/checkout@v3
-#         with:
-#           ref: dev
-
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 18
-
-#       - name: Install dependencies
-#         run: npm install
-
-#       - name: Build
-#         run: npm run build
-
-#       - name: Auto merge dev to main
-#         uses: peter-evans/create-pull-request@v5
-#         with:
-#           token: ${{ secrets.GITHUB_TOKEN }}
-#           branch: auto-merge-dev-to-main
-#           base: main
-#           title: "Sync Dev to Main"
-#           body: "Automated merge from dev to main branch."
+      - name: Enable auto-merge
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
