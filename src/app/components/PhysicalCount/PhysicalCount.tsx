@@ -29,7 +29,7 @@ const sampleCounts: CountRecord[] = [
     countedQty: 98,
     discrepancy: -2,
     dateCounted: "2025-04-12",
-    warehouse: "Warehouse-777x",
+    warehouse: "Warehouse-143",
     qty: "pcs",
     status: "Shortage",
     remarks: "2 cables missing",
