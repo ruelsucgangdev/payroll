@@ -10,10 +10,11 @@ permissions:
 jobs:
   build-and-merge:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout dev branch
         uses: actions/checkout@v3
+        with:
+          ref: dev
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -26,7 +27,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Create Pull Request from Dev to Main
+      - name: Auto merge dev to main
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
