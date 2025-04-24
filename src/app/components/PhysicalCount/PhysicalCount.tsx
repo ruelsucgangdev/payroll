@@ -172,7 +172,7 @@ export default function PhysicalCount() {
             <th>SKU</th>
             <th>Product Name</th>
             <th>Recorded Qty</th>
-            <th>Physical Count Qty</th>
+            <th>Actual Count Qty</th>
             <th>Discrepancy</th>
             <th>Qty</th>
             <th>Date Counted</th>
