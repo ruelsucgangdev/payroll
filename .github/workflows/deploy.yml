@@ -26,7 +26,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Auto merge dev to main
+      - name: Create Pull Request from Dev to Main
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
