@@ -27,11 +27,48 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Auto merge dev to main
+      - name: Create PR to merge dev → main
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: auto-merge-dev-to-main
           base: main
           title: "Sync Dev to Main"
-          body: "Automated merge from dev to main branch."
+          body: "Automated merge of dev into main branch."
+# name: Manual Merge Dev to Main
+
+# on:
+#   workflow_dispatch:
+
+# permissions:
+#   contents: write
+#   pull-requests: write
+
+# jobs:
+#   build-and-merge:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout dev branch
+#         uses: actions/checkout@v3
+#         with:
+#           ref: dev
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 18
+
+#       - name: Install dependencies
+#         run: npm install
+
+#       - name: Build
+#         run: npm run build
+
+#       - name: Auto merge dev to main
+#         uses: peter-evans/create-pull-request@v5
+#         with:
+#           token: ${{ secrets.GITHUB_TOKEN }}
+#           branch: auto-merge-dev-to-main
+#           base: main
+#           title: "Sync Dev to Main"
+#           body: "Automated merge from dev to main branch."
