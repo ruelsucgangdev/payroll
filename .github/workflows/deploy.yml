@@ -1,10 +1,7 @@
-# trigger
-name: Build and Auto Merge Dev to Main
+name: Manual Merge Dev to Main
 
 on:
-  push:
-    branches:
-      - dev
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,7 +10,6 @@ permissions:
 jobs:
   build-and-merge:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -35,5 +31,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_branch: dev
           target_branch: main
-          title: "Auto Merge: Dev to Main"
-          body: "This is an automated merge from dev to main after successful build."
+          title: "Manual Merge: Dev to Main"
+          body: "Triggered manually to sync dev with main."
