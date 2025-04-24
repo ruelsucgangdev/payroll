@@ -11,8 +11,10 @@ jobs:
   build-and-merge:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout dev branch
         uses: actions/checkout@v3
+        with:
+          ref: dev
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -26,10 +28,10 @@ jobs:
         run: npm run build
 
       - name: Auto merge dev to main
-        uses: devops-infra/action-pull-request@v0.4.4
+        uses: peter-evans/create-pull-request@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_branch: dev
-          target_branch: main
-          title: "Manual Merge: Dev to Main"
-          body: "Triggered manually to sync dev with main."
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: auto-merge-dev-to-main
+          base: main
+          title: "Sync Dev to Main"
+          body: "Automated merge from dev to main branch."
