@@ -1,9 +1,6 @@
 name: Auto Sync Dev to Main
 
 on:
-  push:
-    branches:
-      - dev
   workflow_dispatch:
 
 permissions:
@@ -31,18 +28,10 @@ jobs:
         run: npm run build
 
       - name: Create PR from dev to main
-        id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: auto-merge-dev-to-main
+          branch: auto-sync-dev-to-main
           base: main
-          title: "Auto Sync: Dev to Main"
-          body: "Automatically created pull request to sync dev into main."
-
-      - name: Enable auto-merge
-        uses: peter-evans/enable-pull-request-automerge@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-          merge-method: squash
+          title: "Sync Dev to Main"
+          body: "Automated PR to sync dev to main branch"
