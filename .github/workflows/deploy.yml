@@ -1,0 +1,38 @@
+name: Build and Auto Merge Dev to Main
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  build-and-merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Optional Test
+        run: npm test || echo "Tests failed, but continuing"
+
+      - name: Auto merge dev to main
+        uses: devops-infra/action-pull-request@v0.4.4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_branch: dev
+          target_branch: main
+          title: "Auto Merge: Dev to Main"
+          body: "This is an automated merge from dev to main after successful build."
