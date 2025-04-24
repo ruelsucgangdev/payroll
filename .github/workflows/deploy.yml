@@ -35,8 +35,8 @@ jobs:
           base: main
           title: "Sync Dev to Main"
           body: "Automated merge of dev into main branch."
-# name: Manual Merge Dev to Main
 
+          # name: Manual Merge Dev to Main
 # on:
 #   workflow_dispatch:
 
