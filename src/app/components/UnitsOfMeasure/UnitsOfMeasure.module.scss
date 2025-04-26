@@ -7,11 +7,13 @@
 .pageHeader {
   margin-bottom: var(--spacing-sm);
 }
+
 .pageHeader h1 {
   font-size: 1.5rem;
   margin: 0;
   color: var(--color-text-primary);
 }
+
 .pageSubtitle {
   margin: 0;
   font-size: 0.9rem;
@@ -31,33 +33,50 @@
   border-radius: 4px;
 }
 
-.addButton {
+.addButtonTop,
+.addButtonBottom {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--color-bg-header);
-  border: 1px solid var(--color-text-primary);
+  background-color: #146c43; // dark green
+  border: none;
+  color: white;
   border-radius: 4px;
+  font-weight: 600;
   cursor: pointer;
+}
+
+.addButtonTop:hover,
+.addButtonBottom:hover {
+  background-color: #0f5132; // darker on hover
+}
+
+.tableWrapper {
+  overflow-x: auto;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
+  background: white;
 }
 
 .table th,
 .table td {
   border: 1px solid var(--color-text-primary);
-  padding: 4px 8px;
   padding: var(--spacing-sm) var(--spacing-md);
   text-align: left;
 }
 
 .table thead tr {
-  background: var(--color-bg-header);
+  background: darkgreen;
+  color: white;
+}
+
+.row {
+  background: white;
 }
 
 .row:hover {
@@ -66,14 +85,14 @@
 
 .actionsHeader {
   text-align: center;
-  width: 50px;
+  width: 60px;
 }
 
 .actionsCell {
   display: flex;
   gap: var(--spacing-sm);
   justify-content: center;
-  width: 50px;
+  width: 60px;
 }
 
 .iconButton {
@@ -88,10 +107,20 @@
   background: var(--color-bg-header);
 }
 
-.idColumn {
-  max-width: 70px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  word-break: break-word;
+.inputCell {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.editingRow {
+  background: white;
+}
+
+.bottomAddContainer {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-start;
 }

@@ -117,16 +117,9 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  email: 'email',
-  username: 'username',
-  name: 'name',
-  status: 'status'
-};
-
 exports.Prisma.CategoryScalarFieldEnum = {
   id: 'id',
+  code: 'code',
   name: 'name',
   description: 'description'
 };
@@ -137,17 +130,6 @@ exports.Prisma.UnitScalarFieldEnum = {
   abbreviation: 'abbreviation'
 };
 
-exports.Prisma.ItemScalarFieldEnum = {
-  id: 'id',
-  sku: 'sku',
-  name: 'name',
-  description: 'description',
-  categoryId: 'categoryId',
-  brand: 'brand',
-  status: 'status',
-  unitId: 'unitId'
-};
-
 exports.Prisma.WarehouseScalarFieldEnum = {
   id: 'id',
   code: 'code',
@@ -155,17 +137,17 @@ exports.Prisma.WarehouseScalarFieldEnum = {
   location: 'location',
   capacity: 'capacity',
   manager: 'manager',
-  remarks: 'remarks'
+  remarks: 'remarks',
+  status: 'status'
 };
 
-exports.Prisma.InventoryScalarFieldEnum = {
+exports.Prisma.ProductScalarFieldEnum = {
   id: 'id',
-  itemId: 'itemId',
+  productCode: 'productCode',
   categoryId: 'categoryId',
-  unitId: 'unitId',
-  warehouseId: 'warehouseId',
-  statusId: 'statusId',
-  price: 'price'
+  sku: 'sku',
+  productName: 'productName',
+  description: 'description'
 };
 
 exports.Prisma.SortOrder = {
@@ -173,14 +155,9 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.UserOrderByRelevanceFieldEnum = {
-  email: 'email',
-  username: 'username',
-  name: 'name'
-};
-
 exports.Prisma.CategoryOrderByRelevanceFieldEnum = {
   id: 'id',
+  code: 'code',
   name: 'name',
   description: 'description'
 };
@@ -191,15 +168,9 @@ exports.Prisma.UnitOrderByRelevanceFieldEnum = {
   abbreviation: 'abbreviation'
 };
 
-exports.Prisma.ItemOrderByRelevanceFieldEnum = {
-  id: 'id',
-  sku: 'sku',
-  name: 'name',
-  description: 'description',
-  categoryId: 'categoryId',
-  brand: 'brand',
-  status: 'status',
-  unitId: 'unitId'
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 
 exports.Prisma.WarehouseOrderByRelevanceFieldEnum = {
@@ -211,23 +182,21 @@ exports.Prisma.WarehouseOrderByRelevanceFieldEnum = {
   remarks: 'remarks'
 };
 
-exports.Prisma.InventoryOrderByRelevanceFieldEnum = {
+exports.Prisma.ProductOrderByRelevanceFieldEnum = {
   id: 'id',
-  itemId: 'itemId',
+  productCode: 'productCode',
   categoryId: 'categoryId',
-  unitId: 'unitId',
-  warehouseId: 'warehouseId',
-  statusId: 'statusId'
+  sku: 'sku',
+  productName: 'productName',
+  description: 'description'
 };
 
 
 exports.Prisma.ModelName = {
-  User: 'User',
   Category: 'Category',
   Unit: 'Unit',
-  Item: 'Item',
   Warehouse: 'Warehouse',
-  Inventory: 'Inventory'
+  Product: 'Product'
 };
 
 /**
