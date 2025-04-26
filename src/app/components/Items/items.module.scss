@@ -131,3 +131,38 @@
   font-size: 0.8rem;
   margin-top: 2px;
 }
+
+.childTable {
+  border-collapse: collapse;
+  margin-bottom: 0.5rem;
+}
+
+.childTable th,
+.childTable td {
+  border: 1px solid #aaa;
+  padding: 0.5rem;
+}
+
+/* Footer under child table */
+.conversionFooter {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+/* Add Conversion button */
+.addConversionButton {
+  background: white;
+  color: darkgreen;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+// /* 既存のボタンスタイル */
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}

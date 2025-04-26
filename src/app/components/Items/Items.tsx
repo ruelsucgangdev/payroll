@@ -1,16 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Plus, Edit3, Trash2, Save, X } from "lucide-react";
+import { Fragment, useState, useEffect } from "react";
+import { Plus, Edit3, Trash2, Save, X, Eye } from "lucide-react";
 import styles from "./items.module.scss";
 import ConfirmationModal from "../ConfirmationModal";
 import { fetchItems, saveItem, deleteItem } from "@/services/items-service";
 import { fetchCategories } from "@/services/categories-service";
+import { fetchUnits } from "@/services/units-service";
 
 type Category = {
   id: string;
   code: string;
   name: string;
+};
+
+type Unit = {
+  id: string;
+  name: string;
+  abbreviation: string;
 };
 
 type Item = {
@@ -22,11 +29,20 @@ type Item = {
   description: string;
 };
 
+type Conversion = {
+  id: string;
+  productCode: string;
+  fromUnitId: string;
+  toUnitId: string;
+  quantity: string;
+};
+
 export default function ItemMaster() {
   const [search, setSearch] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [items, setItems] = useState<Item[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [units, setUnits] = useState<Unit[]>([]);
   const [editData, setEditData] = useState<Partial<Item>>({});
   const [errors, setErrors] = useState<{
     productCode?: string;
@@ -34,20 +50,34 @@ export default function ItemMaster() {
     productName?: string;
     categoryId?: string;
   }>({});
-  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<Item | null>(null);
-
+  const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const [conversionRows, setConversionRows] = useState<{
+    [parentId: string]: Conversion[];
+  }>({});
+  const [convEditing, setConvEditing] = useState<{
+    parentId: string | null;
+    convId: string | null;
+  }>({ parentId: null, convId: null });
+  const [convEditData, setConvEditData] = useState<Partial<Conversion>>({});
+  const [convErrors, setConvErrors] = useState<{
+    fromUnitId?: string;
+    toUnitId?: string;
+    quantity?: string;
+  }>({});
   useEffect(() => {
     loadItems();
     loadCategories();
+    loadUnits();
   }, []);
 
   async function loadItems() {
     try {
       const data = await fetchItems();
       setItems(data);
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      console.error(e);
     }
   }
 
@@ -55,13 +85,22 @@ export default function ItemMaster() {
     try {
       const data = await fetchCategories();
       setCategories(data);
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function loadUnits() {
+    try {
+      const data = await fetchUnits();
+      setUnits(data);
+    } catch (e) {
+      console.error(e);
     }
   }
 
   const handleEdit = (item: Item) => {
-    if (editingId) return;
+    if (editingId || expandedRow) return;
     setEditingId(item.id);
     setEditData({ ...item });
     setErrors({});
@@ -74,36 +113,29 @@ export default function ItemMaster() {
   };
 
   const handleSave = async () => {
-    const newErrors: {
-      productCode?: string;
-      sku?: string;
-      productName?: string;
-      categoryId?: string;
-    } = {};
-
+    const newErr: typeof errors = {};
     if (!editData.productCode?.trim())
-      newErrors.productCode = "Product Code is required";
-    if (!editData.sku?.trim()) newErrors.sku = "SKU is required";
+      newErr.productCode = "Product Code is required";
+    if (!editData.sku?.trim()) newErr.sku = "SKU is required";
     if (!editData.productName?.trim())
-      newErrors.productName = "Product Name is required";
+      newErr.productName = "Product Name is required";
     if (!editData.categoryId?.trim())
-      newErrors.categoryId = "Category is required";
-
-    setErrors(newErrors);
-    if (Object.keys(newErrors).length > 0) return;
+      newErr.categoryId = "Category is required";
+    setErrors(newErr);
+    if (Object.keys(newErr).length) return;
 
     try {
       await saveItem(editData as Item);
       await loadItems();
       setEditingId(null);
       setEditData({});
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      console.error(e);
     }
   };
 
   const handleAddItem = () => {
-    if (editingId) return;
+    if (editingId || expandedRow) return;
     const newItem: Item = {
       id: crypto.randomUUID(),
       productCode: "",
@@ -112,7 +144,7 @@ export default function ItemMaster() {
       productName: "",
       description: "",
     };
-    setItems((prev) => [newItem, ...prev]);
+    setItems((p) => [newItem, ...p]);
     setEditingId(newItem.id);
     setEditData({ ...newItem });
     setErrors({});
@@ -120,7 +152,7 @@ export default function ItemMaster() {
 
   const handleDelete = (item: Item) => {
     setItemToDelete(item);
-    setShowModal(true);
+    setShowDeleteModal(true);
   };
 
   const confirmDelete = async () => {
@@ -128,25 +160,108 @@ export default function ItemMaster() {
     try {
       await deleteItem(itemToDelete.id);
       await loadItems();
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      console.error(e);
     } finally {
-      setShowModal(false);
+      setShowDeleteModal(false);
       setItemToDelete(null);
     }
   };
 
+  const handleToggleExpand = (item: Item) => {
+    if (editingId) return;
+    const pid = item.id;
+    if (expandedRow === pid) {
+      setExpandedRow(null);
+    } else {
+      setExpandedRow(pid);
+      setConversionRows((p) => ({
+        ...p,
+        [pid]: p[pid] || [],
+      }));
+    }
+    setConvEditing({ parentId: null, convId: null });
+  };
+
+  const handleAddConversion = (parentId: string) => {
+    if (convEditing.parentId) return;
+    const newConv: Conversion = {
+      id: crypto.randomUUID(),
+      productCode: "",
+      fromUnitId: "",
+      toUnitId: "",
+      quantity: "",
+    };
+    setConversionRows((p) => ({
+      ...p,
+      [parentId]: [newConv, ...(p[parentId] || [])],
+    }));
+    setConvEditing({ parentId, convId: newConv.id });
+    setConvEditData(newConv);
+    setConvErrors({});
+  };
+
+  const handleConvEdit = (parentId: string, conv: Conversion) => {
+    if (convEditing.parentId) return;
+    setConvEditing({ parentId, convId: conv.id });
+    setConvEditData({ ...conv });
+    setConvErrors({});
+  };
+
+  const handleConvCancel = () => {
+    const { parentId, convId } = convEditing;
+    if (parentId && convId) {
+      const isNew =
+        conversionRows[parentId].find((c) => c.id === convId)?.productCode ===
+        "";
+      if (isNew) {
+        setConversionRows((p) => ({
+          ...p,
+          [parentId]: p[parentId].filter((c) => c.id !== convId),
+        }));
+      }
+    }
+    setConvEditing({ parentId: null, convId: null });
+    setConvEditData({});
+    setConvErrors({});
+  };
+
+  const handleConvSave = (parentId: string) => {
+    const e: typeof convErrors = {};
+    if (!convEditData.fromUnitId) e.fromUnitId = "Select UOM";
+    if (!convEditData.toUnitId) e.toUnitId = "Select UOM";
+    if (!convEditData.quantity?.trim()) e.quantity = "Required";
+    setConvErrors(e);
+    if (Object.keys(e).length) return;
+
+    setConversionRows((p) => ({
+      ...p,
+      [parentId]: p[parentId].map((c) =>
+        c.id === convEditing.convId ? { ...c, ...convEditData } : c
+      ),
+    }));
+    setConvEditing({ parentId: null, convId: null });
+    setConvEditData({});
+    setConvErrors({});
+  };
+
+  const handleConvDelete = (parentId: string, convId: string) => {
+    if (convEditing.parentId === parentId && convEditing.convId === convId)
+      return;
+    setConversionRows((p) => ({
+      ...p,
+      [parentId]: p[parentId].filter((c) => c.id !== convId),
+    }));
+  };
+
   const filtered = items.filter((i) =>
-    [i.productCode, i.sku, i.productName].some((field) =>
-      field?.toLowerCase().includes(search.toLowerCase())
+    [i.productCode, i.sku, i.productName].some((f) =>
+      f?.toLowerCase().includes(search.toLowerCase())
     )
   );
 
-  const getCategoryName = (categoryId: string) => {
-    const category = categories.find((c) => c.id === categoryId);
-    return category ? category.code || category.name : "";
-  };
-
+  const getCategoryName = (cid: string) =>
+    categories.find((c) => c.id === cid)?.code || "";
   return (
     <div className={styles.container}>
       <header className={styles.pageHeader}>
@@ -165,7 +280,7 @@ export default function ItemMaster() {
         <button
           className={styles.addButtonTop}
           onClick={handleAddItem}
-          disabled={!!editingId}
+          disabled={!!editingId || !!expandedRow}
         >
           <Plus size={16} /> Add Item
         </button>
@@ -186,193 +301,335 @@ export default function ItemMaster() {
           <tbody>
             {filtered.map((item) => {
               const isEditing = editingId === item.id;
+              const isExpanded = expandedRow === item.id;
+
               return (
-                <tr
-                  key={item.id}
-                  className={`${styles.row} ${
-                    isEditing ? styles.editingRow : ""
-                  }`}
-                >
-                  <td>
-                    {isEditing ? (
-                      <>
+                <Fragment key={item.id}>
+                  {/* Parent row */}
+                  <tr
+                    className={`${styles.row} ${
+                      isEditing ? styles.editingRow : ""
+                    }`}
+                  >
+                    <td>
+                      {isEditing ? (
+                        <>
+                          <input
+                            type="text"
+                            value={editData.sku || ""}
+                            onChange={(e) =>
+                              setEditData((d) => ({
+                                ...d,
+                                sku: e.target.value,
+                              }))
+                            }
+                            className={styles.inputCell}
+                          />
+                          {errors.sku && (
+                            <div className={styles.errorText}>{errors.sku}</div>
+                          )}
+                        </>
+                      ) : (
+                        item.sku
+                      )}
+                    </td>
+                    <td>
+                      {isEditing ? (
+                        <>
+                          <select
+                            value={editData.categoryId || ""}
+                            onChange={(e) =>
+                              setEditData((d) => ({
+                                ...d,
+                                categoryId: e.target.value,
+                              }))
+                            }
+                            className={styles.selectCell}
+                          >
+                            <option value="">-- Select Category --</option>
+                            {categories.map((c) => (
+                              <option key={c.id} value={c.id}>
+                                {c.code}
+                              </option>
+                            ))}
+                          </select>
+                          {errors.categoryId && (
+                            <div className={styles.errorText}>
+                              {errors.categoryId}
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        getCategoryName(item.categoryId)
+                      )}
+                    </td>
+                    <td>
+                      {isEditing ? (
+                        <>
+                          <input
+                            type="text"
+                            value={editData.productCode || ""}
+                            onChange={(e) =>
+                              setEditData((d) => ({
+                                ...d,
+                                productCode: e.target.value,
+                              }))
+                            }
+                            className={styles.inputCell}
+                          />
+                          {errors.productCode && (
+                            <div className={styles.errorText}>
+                              {errors.productCode}
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        item.productCode
+                      )}
+                    </td>
+                    <td>
+                      {isEditing ? (
+                        <>
+                          <input
+                            type="text"
+                            value={editData.productName || ""}
+                            onChange={(e) =>
+                              setEditData((d) => ({
+                                ...d,
+                                productName: e.target.value,
+                              }))
+                            }
+                            className={styles.inputCell}
+                          />
+                          {errors.productName && (
+                            <div className={styles.errorText}>
+                              {errors.productName}
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        item.productName
+                      )}
+                    </td>
+                    <td>
+                      {isEditing ? (
                         <input
                           type="text"
-                          value={editData.sku || ""}
+                          value={editData.description || ""}
                           onChange={(e) =>
-                            setEditData({ ...editData, sku: e.target.value })
+                            setEditData((d) => ({
+                              ...d,
+                              description: e.target.value,
+                            }))
                           }
                           className={styles.inputCell}
                         />
-                        {errors.sku && (
-                          <div className={styles.errorText}>{errors.sku}</div>
-                        )}
-                      </>
-                    ) : (
-                      item.sku
-                    )}
-                  </td>
-                  <td>
-                    {isEditing ? (
-                      <>
-                        <select
-                          value={editData.categoryId || ""}
-                          onChange={(e) =>
-                            setEditData({
-                              ...editData,
-                              categoryId: e.target.value,
-                            })
-                          }
-                          className={styles.selectCell}
-                        >
-                          <option value="">-- Select Category --</option>
-                          {categories.map((c) => (
-                            <option key={c.id} value={c.id}>
-                              {c.code || c.name}
-                            </option>
-                          ))}
-                        </select>
-                        {errors.categoryId && (
-                          <div className={styles.errorText}>
-                            {errors.categoryId}
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      getCategoryName(item.categoryId)
-                    )}
-                  </td>
-                  <td>
-                    {isEditing ? (
-                      <>
-                        <input
-                          type="text"
-                          value={editData.productCode || ""}
-                          onChange={(e) =>
-                            setEditData({
-                              ...editData,
-                              productCode: e.target.value,
-                            })
-                          }
-                          className={styles.inputCell}
-                        />
-                        {errors.productCode && (
-                          <div className={styles.errorText}>
-                            {errors.productCode}
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      item.productCode
-                    )}
-                  </td>
-                  <td>
-                    {isEditing ? (
-                      <>
-                        <input
-                          type="text"
-                          value={editData.productName || ""}
-                          onChange={(e) =>
-                            setEditData({
-                              ...editData,
-                              productName: e.target.value,
-                            })
-                          }
-                          className={styles.inputCell}
-                        />
-                        {errors.productName && (
-                          <div className={styles.errorText}>
-                            {errors.productName}
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      item.productName
-                    )}
-                  </td>
-                  <td>
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        value={editData.description || ""}
-                        onChange={(e) =>
-                          setEditData({
-                            ...editData,
-                            description: e.target.value,
-                          })
-                        }
-                        className={styles.inputCell}
-                      />
-                    ) : (
-                      item.description
-                    )}
-                  </td>
-                  <td className={styles.actionsCell}>
-                    {isEditing ? (
-                      <>
+                      ) : (
+                        item.description
+                      )}
+                    </td>
+                    <td className={styles.actionsCell}>
+                      {isEditing ? (
+                        <>
+                          <button
+                            className={styles.iconButton}
+                            onClick={handleSave}
+                          >
+                            <Save size={16} />
+                          </button>
+                          <button
+                            className={styles.iconButton}
+                            onClick={handleCancel}
+                          >
+                            <X size={16} />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            className={styles.iconButton}
+                            onClick={() => handleEdit(item)}
+                          >
+                            <Edit3 size={16} />
+                          </button>
+                          <button
+                            className={styles.iconButton}
+                            onClick={() => handleToggleExpand(item)}
+                          >
+                            <Eye size={16} />
+                          </button>
+                          <button
+                            className={styles.iconButton}
+                            onClick={() => handleDelete(item)}
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </>
+                      )}
+                    </td>
+                  </tr>
+
+                  {/* Child row for conversions */}
+                  {isExpanded && (
+                    <tr className={styles.childRow}>
+                      <td colSpan={6}>
+                        <table className={styles.childTable}>
+                          <thead>
+                            <tr>
+                              <th>Product Code</th>
+                              <th>From UOM</th>
+                              <th>To UOM</th>
+                              <th>Quantity</th>
+                              <th>Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {(conversionRows[item.id] || []).map((conv) => {
+                              const isConvEditing =
+                                convEditing.parentId === item.id &&
+                                convEditing.convId === conv.id;
+                              return (
+                                <tr key={conv.id}>
+                                  <td>
+                                    {/* Child Product Code label only, bold */}
+                                    <span
+                                      className={styles.childProductCodeLabel}
+                                    >
+                                      {item.productCode}
+                                    </span>
+                                  </td>
+                                  <td>
+                                    {isConvEditing ? (
+                                      <select
+                                        value={convEditData.fromUnitId || ""}
+                                        onChange={(e) =>
+                                          setConvEditData((d) => ({
+                                            ...d,
+                                            fromUnitId: e.target.value,
+                                          }))
+                                        }
+                                        className={styles.selectCell}
+                                      >
+                                        <option value="">-- Select --</option>
+                                        {units.map((u) => (
+                                          <option key={u.id} value={u.id}>
+                                            {u.abbreviation || u.name}
+                                          </option>
+                                        ))}
+                                      </select>
+                                    ) : (
+                                      units.find(
+                                        (u) => u.id === conv.fromUnitId
+                                      )?.abbreviation || ""
+                                    )}
+                                  </td>
+                                  <td>
+                                    {isConvEditing ? (
+                                      <select
+                                        value={convEditData.toUnitId || ""}
+                                        onChange={(e) =>
+                                          setConvEditData((d) => ({
+                                            ...d,
+                                            toUnitId: e.target.value,
+                                          }))
+                                        }
+                                        className={styles.selectCell}
+                                      >
+                                        <option value="">-- Select --</option>
+                                        {units.map((u) => (
+                                          <option key={u.id} value={u.id}>
+                                            {u.abbreviation || u.name}
+                                          </option>
+                                        ))}
+                                      </select>
+                                    ) : (
+                                      units.find((u) => u.id === conv.toUnitId)
+                                        ?.abbreviation || ""
+                                    )}
+                                  </td>
+                                  <td>
+                                    {isConvEditing ? (
+                                      <input
+                                        type="text"
+                                        value={convEditData.quantity || ""}
+                                        onChange={(e) =>
+                                          setConvEditData((d) => ({
+                                            ...d,
+                                            quantity: e.target.value,
+                                          }))
+                                        }
+                                        className={styles.inputCell}
+                                      />
+                                    ) : (
+                                      conv.quantity
+                                    )}
+                                  </td>
+                                  <td>
+                                    {isConvEditing ? (
+                                      <>
+                                        <button
+                                          className={styles.iconButton}
+                                          onClick={() =>
+                                            handleConvSave(item.id)
+                                          }
+                                        >
+                                          <Save size={16} />
+                                        </button>
+                                        <button
+                                          className={styles.iconButton}
+                                          onClick={handleConvCancel}
+                                        >
+                                          <X size={16} />
+                                        </button>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <button
+                                          className={styles.iconButton}
+                                          onClick={() =>
+                                            handleConvEdit(item.id, conv)
+                                          }
+                                        >
+                                          <Edit3 size={16} />
+                                        </button>
+                                        <button
+                                          className={styles.iconButton}
+                                          onClick={() =>
+                                            handleConvDelete(item.id, conv.id)
+                                          }
+                                        >
+                                          <Trash2 size={16} />
+                                        </button>
+                                      </>
+                                    )}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
                         <button
-                          className={styles.iconButton}
-                          onClick={handleSave}
+                          className={styles.addConversionButton}
+                          onClick={() => handleAddConversion(item.id)}
                         >
-                          <Save size={16} />
+                          + Add Conversion
                         </button>
-                        <button
-                          className={styles.iconButton}
-                          onClick={handleCancel}
-                        >
-                          <X size={16} />
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <button
-                          className={styles.iconButton}
-                          onClick={() => handleEdit(item)}
-                        >
-                          <Edit3 size={16} />
-                        </button>
-                        <button
-                          className={styles.iconButton}
-                          onClick={() => handleDelete(item)}
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </>
-                    )}
-                  </td>
-                </tr>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
               );
             })}
-            {filtered.length === 0 && (
-              <tr>
-                <td
-                  colSpan={6}
-                  style={{ textAlign: "center", padding: "1rem" }}
-                >
-                  No items found.
-                </td>
-              </tr>
-            )}
           </tbody>
         </table>
-
-        <div className={styles.bottomAddContainer}>
-          <button
-            className={styles.addButtonBottom}
-            onClick={handleAddItem}
-            disabled={!!editingId}
-          >
-            <Plus size={16} /> Add Item
-          </button>
-        </div>
       </div>
 
       <ConfirmationModal
-        isOpen={showModal}
+        isOpen={showDeleteModal}
         title="Delete Item"
         message={`Are you sure you want to delete "${itemToDelete?.productName}"?`}
         onConfirm={confirmDelete}
-        onCancel={() => setShowModal(false)}
+        onCancel={() => setShowDeleteModal(false)}
       />
     </div>
   );
