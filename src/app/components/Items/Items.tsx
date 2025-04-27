@@ -339,7 +339,7 @@ export default function ItemMaster() {
             minHeight: "30px",
             padding: "2px 12px",
             fontSize: "0.8rem",
-            whiteSpace: "nowrap", // 🔥 Para hindi mag wrap
+            whiteSpace: "nowrap",
           }}
         >
           Add Item
@@ -781,8 +781,7 @@ export default function ItemMaster() {
         </Table>
         <div
           style={{
-            backgroundColor: "#006400", // Dark green background
-            padding: "12px", // Konting padding para hindi dikit
+            backgroundColor: "#006400",
             textAlign: "left",
           }}
         >
@@ -792,7 +791,7 @@ export default function ItemMaster() {
             onClick={handleAddItem}
             size="small"
             sx={{
-              backgroundColor: greenColor, // Button mismo
+              backgroundColor: greenColor,
               minHeight: "30px",
               padding: "2px 12px",
               fontSize: "0.8rem",
