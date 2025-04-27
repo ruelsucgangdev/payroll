@@ -150,6 +150,14 @@ exports.Prisma.ProductScalarFieldEnum = {
   description: 'description'
 };
 
+exports.Prisma.ConversionMatrixScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  fromUomId: 'fromUomId',
+  toUomId: 'toUomId',
+  qty: 'qty'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -191,12 +199,20 @@ exports.Prisma.ProductOrderByRelevanceFieldEnum = {
   description: 'description'
 };
 
+exports.Prisma.ConversionMatrixOrderByRelevanceFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  fromUomId: 'fromUomId',
+  toUomId: 'toUomId'
+};
+
 
 exports.Prisma.ModelName = {
   Category: 'Category',
   Unit: 'Unit',
   Warehouse: 'Warehouse',
-  Product: 'Product'
+  Product: 'Product',
+  ConversionMatrix: 'ConversionMatrix'
 };
 
 /**
