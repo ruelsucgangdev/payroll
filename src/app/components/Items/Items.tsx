@@ -45,6 +45,8 @@ export default function ItemMaster() {
     convId: string;
   } | null>(null);
 
+  const [showParentDelete, setShowParentDelete] = useState(false);
+  const [parentToDelete, setParentToDelete] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [items, setItems] = useState<any[]>([]);
@@ -125,12 +127,35 @@ export default function ItemMaster() {
     setShowDelete(true);
   };
 
-  const confirmDelete = async () => {
-    if (!itemToDelete) return;
-    await deleteItem(itemToDelete.id);
-    await loadItems();
-    setShowDelete(false);
+  // const confirmDelete = async () => {
+  //   if (!itemToDelete) return;
+  //   await deleteItem(itemToDelete.id);
+  //   await loadItems();
+  //   setShowDelete(false);
+  // };
+
+  const confirmDeleteProduct = async () => {
+    if (!parentToDelete) return;
+
+    try {
+      // Delete product and its conversions
+      const response = await fetch(`/api/items?id=${parentToDelete}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        const updatedItems = items.filter((item) => item.id !== parentToDelete);
+        setItems(updatedItems);
+      } else {
+        console.error("Failed to delete product from server");
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+
+    setShowParentDelete(false);
   };
+
   const confirmDeleteConversion = async () => {
     if (!childToDelete) return;
 
@@ -499,9 +524,18 @@ export default function ItemMaster() {
                         >
                           <Visibility />
                         </IconButton>
-                        <IconButton
+                        {/* <IconButton
                           onClick={() => handleDelete(item)}
                           color="error"
+                        >
+                          <Delete />
+                        </IconButton> */}
+                        <IconButton
+                          color="error"
+                          onClick={() => {
+                            setParentToDelete(item.id);
+                            setShowParentDelete(true);
+                          }}
                         >
                           <Delete />
                         </IconButton>
@@ -808,6 +842,14 @@ export default function ItemMaster() {
         message="Are you sure you want to delete this conversion?"
         onConfirm={confirmDeleteConversion}
         onCancel={() => setShowChildDelete(false)}
+      />
+
+      <ConfirmationModal
+        isOpen={showParentDelete}
+        title="Confirm Product Deletion"
+        message="Are you sure you want to delete this product and all its conversions?"
+        onConfirm={confirmDeleteProduct}
+        onCancel={() => setShowParentDelete(false)}
       />
     </div>
   );

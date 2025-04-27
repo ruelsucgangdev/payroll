@@ -53,9 +53,20 @@ export async function DELETE(request: Request) {
     return new NextResponse("Missing ID", { status: 400 });
   }
 
-  await prisma.product.delete({
-    where: { id },
-  });
+  try {
+    // Delete all conversions first
+    await prisma.conversionMatrix.deleteMany({
+      where: { productId: id },
+    });
 
-  return NextResponse.json({ success: true });
+    // Then delete the product
+    await prisma.product.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting product and conversions:", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
 }
