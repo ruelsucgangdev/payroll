@@ -333,7 +333,14 @@ export default function ItemMaster() {
           variant="contained"
           startIcon={<Add />}
           onClick={handleAddItem}
-          sx={{ backgroundColor: greenColor }}
+          size="small"
+          sx={{
+            backgroundColor: greenColor,
+            minHeight: "30px",
+            padding: "2px 12px",
+            fontSize: "0.8rem",
+            whiteSpace: "nowrap", // 🔥 Para hindi mag wrap
+          }}
         >
           Add Item
         </Button>
@@ -772,6 +779,29 @@ export default function ItemMaster() {
             ))}
           </TableBody>
         </Table>
+        <div
+          style={{
+            backgroundColor: "#006400", // Dark green background
+            padding: "12px", // Konting padding para hindi dikit
+            textAlign: "left",
+          }}
+        >
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            onClick={handleAddItem}
+            size="small"
+            sx={{
+              backgroundColor: greenColor, // Button mismo
+              minHeight: "30px",
+              padding: "2px 12px",
+              fontSize: "0.8rem",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Add Item
+          </Button>
+        </div>
       </TableContainer>
       <ConfirmationModal
         isOpen={showChildDelete}
