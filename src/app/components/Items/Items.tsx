@@ -34,10 +34,17 @@ import styles from "./items.module.scss"; // ✅ gamitin natin ang bagong SCSS
 import { fetchItems, saveItem, deleteItem } from "@/services/items-service";
 import { fetchCategories } from "@/services/categories-service";
 import { fetchUnits } from "@/services/units-service";
+import ConfirmationModal from "../ConfirmationModal";
 
 const greenColor = "#006400";
 
 export default function ItemMaster() {
+  const [showChildDelete, setShowChildDelete] = useState(false);
+  const [childToDelete, setChildToDelete] = useState<{
+    parentId: string;
+    convId: string;
+  } | null>(null);
+
   const [search, setSearch] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [items, setItems] = useState<any[]>([]);
@@ -123,6 +130,38 @@ export default function ItemMaster() {
     await deleteItem(itemToDelete.id);
     await loadItems();
     setShowDelete(false);
+  };
+  const confirmDeleteConversion = async () => {
+    if (!childToDelete) return;
+
+    const { parentId, convId } = childToDelete;
+
+    try {
+      // Call backend API to delete from database
+      const response = await fetch(`/api/conversionmatrix?id=${convId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        // Update local state para mawala din sa UI
+        const updatedItems = items.map((item) => {
+          if (item.id === parentId) {
+            item.conversions = item.conversions.filter(
+              (c: any) => c.id !== convId
+            );
+          }
+          return item;
+        });
+
+        setItems(updatedItems);
+      } else {
+        console.error("Failed to delete conversion from server");
+      }
+    } catch (error) {
+      console.error("Error deleting conversion:", error);
+    }
+
+    setShowChildDelete(false);
   };
 
   const handleToggleExpand = async (id: string) => {
@@ -330,7 +369,7 @@ export default function ItemMaster() {
               <Fragment key={item.id}>
                 {/* Parent Row */}
                 <TableRow hover className={styles.smallRow}>
-                  <TableCell>
+                  <TableCell className={styles.smallCell}>
                     {editingId === item.id ? (
                       <TextField
                         value={editData.sku}
@@ -374,7 +413,7 @@ export default function ItemMaster() {
                       ""
                     )}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className={styles.smallCell}>
                     {editingId === item.id ? (
                       <TextField
                         value={editData.productCode}
@@ -680,7 +719,7 @@ export default function ItemMaster() {
                                       >
                                         <Edit />
                                       </IconButton>
-                                      <IconButton
+                                      {/* <IconButton
                                         onClick={() =>
                                           handleDeleteConversion(
                                             item.id,
@@ -688,6 +727,18 @@ export default function ItemMaster() {
                                           )
                                         }
                                         color="error"
+                                      >
+                                        <Delete />
+                                      </IconButton> */}
+                                      <IconButton
+                                        color="error"
+                                        onClick={() => {
+                                          setChildToDelete({
+                                            parentId: item.id,
+                                            convId: conv.id,
+                                          });
+                                          setShowChildDelete(true);
+                                        }}
                                       >
                                         <Delete />
                                       </IconButton>
@@ -722,6 +773,13 @@ export default function ItemMaster() {
           </TableBody>
         </Table>
       </TableContainer>
+      <ConfirmationModal
+        isOpen={showChildDelete}
+        title="Confirm Deletion"
+        message="Are you sure you want to delete this conversion?"
+        onConfirm={confirmDeleteConversion}
+        onCancel={() => setShowChildDelete(false)}
+      />
     </div>
   );
 }
