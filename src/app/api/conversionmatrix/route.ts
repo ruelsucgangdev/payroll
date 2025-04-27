@@ -3,13 +3,21 @@ import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const productId = searchParams.get("productId");
+
+  if (!productId) {
+    return new NextResponse("Missing Product ID", { status: 400 });
+  }
+
   const conversions = await prisma.conversionMatrix.findMany({
+    where: { productId },
     orderBy: { qty: "asc" },
   });
+
   return NextResponse.json(conversions);
 }
-
 export async function POST(request: Request) {
   const data = await request.json();
 

@@ -125,8 +125,37 @@ export default function ItemMaster() {
     setShowDelete(false);
   };
 
-  const handleToggleExpand = (itemId: string) => {
-    setExpandedRow(expandedRow === itemId ? null : itemId);
+  const handleToggleExpand = async (id: string) => {
+    if (expandedRow === id) {
+      setExpandedRow(null);
+    } else {
+      setExpandedRow(id);
+
+      try {
+        const response = await fetch(`/api/conversionmatrix?productId=${id}`);
+        const data = await response.json();
+
+        const mappedData = data.map((conv: any) => ({
+          id: conv.id,
+          fromUOM: conv.fromUomId,
+          toUOM: conv.toUomId,
+          quantity: conv.qty,
+          isNew: false,
+          isEditing: false,
+        }));
+
+        const updatedItems = items.map((item) => {
+          if (item.id === id) {
+            return { ...item, conversions: mappedData };
+          }
+          return item;
+        });
+
+        setItems(updatedItems);
+      } catch (error) {
+        console.error("Failed to fetch conversions", error);
+      }
+    }
   };
 
   const filtered = items.filter((i) =>
@@ -483,6 +512,8 @@ export default function ItemMaster() {
                                 <TableCell>
                                   <strong>{item.productCode}</strong>
                                 </TableCell>
+
+                                {/* From UOM */}
                                 <TableCell>
                                   {conv.isNew || conv.isEditing ? (
                                     <Select
@@ -515,9 +546,11 @@ export default function ItemMaster() {
                                     </Select>
                                   ) : (
                                     units.find((u) => u.id === conv.fromUOM)
-                                      ?.abbreviation || ""
+                                      ?.abbreviation || "-"
                                   )}
                                 </TableCell>
+
+                                {/* To UOM */}
                                 <TableCell>
                                   {conv.isNew || conv.isEditing ? (
                                     <Select
@@ -550,9 +583,11 @@ export default function ItemMaster() {
                                     </Select>
                                   ) : (
                                     units.find((u) => u.id === conv.toUOM)
-                                      ?.abbreviation || ""
+                                      ?.abbreviation || "-"
                                   )}
                                 </TableCell>
+
+                                {/* Quantity */}
                                 <TableCell>
                                   {conv.isNew || conv.isEditing ? (
                                     <TextField
@@ -585,28 +620,30 @@ export default function ItemMaster() {
                                       }}
                                     />
                                   ) : (
-                                    conv.quantity
+                                    conv.quantity ?? "-"
                                   )}
                                 </TableCell>
+
+                                {/* Actions */}
                                 <TableCell>
                                   {conv.isNew ? (
                                     <>
                                       <IconButton
-                                        color="success"
                                         onClick={() =>
                                           handleSaveConversion(item.id, conv)
                                         }
+                                        color="success"
                                       >
                                         <Save />
                                       </IconButton>
                                       <IconButton
-                                        color="warning"
                                         onClick={() =>
                                           handleCancelConversion(
                                             item.id,
                                             conv.id
                                           )
                                         }
+                                        color="warning"
                                       >
                                         <Close />
                                       </IconButton>
@@ -614,21 +651,21 @@ export default function ItemMaster() {
                                   ) : conv.isEditing ? (
                                     <>
                                       <IconButton
-                                        color="success"
                                         onClick={() =>
                                           handleSaveConversion(item.id, conv)
                                         }
+                                        color="success"
                                       >
                                         <Save />
                                       </IconButton>
                                       <IconButton
-                                        color="warning"
                                         onClick={() =>
                                           handleCancelEditConversion(
                                             item.id,
                                             conv.id
                                           )
                                         }
+                                        color="warning"
                                       >
                                         <Close />
                                       </IconButton>
@@ -636,21 +673,21 @@ export default function ItemMaster() {
                                   ) : (
                                     <>
                                       <IconButton
-                                        color="primary"
                                         onClick={() =>
                                           handleEditConversion(item.id, conv.id)
                                         }
+                                        color="primary"
                                       >
                                         <Edit />
                                       </IconButton>
                                       <IconButton
-                                        color="error"
                                         onClick={() =>
                                           handleDeleteConversion(
                                             item.id,
                                             conv.id
                                           )
                                         }
+                                        color="error"
                                       >
                                         <Delete />
                                       </IconButton>
