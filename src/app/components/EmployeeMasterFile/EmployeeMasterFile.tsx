@@ -9,7 +9,7 @@ import {
 } from "../../services/employee-service";
 import { Pencil, Trash2, Plus, UserCircle } from "lucide-react";
 import styles from "./EmployeeMasterFile.module.scss";
-import EmployeeDataEntryModal from "./EmployeeDataEntryModal";
+import EmployeeDataEntryModal from "../EmployeeDataEntryModal/EmployeeDataEntryModal";
 import ConfirmationModal from "../ConfirmationModal";
 
 type Employee = {
@@ -58,15 +58,15 @@ export default function EmployeeMasterFile() {
     setShowModal(true);
   };
 
-  const handleSave = (data: any) => {
+  const handleSave = (formData: any) => {
     if (modalMode === "add") {
-      createEmployee(data).then((newEmp) => {
-        setEmployees((prev) => [...prev, newEmp]);
-      });
-    } else if (modalMode === "edit" && selectedEmployee) {
-      updateEmployee(selectedEmployee.id, data).then((upd) => {
-        setEmployees((prev) => prev.map((e) => (e.id === upd.id ? upd : e)));
-      });
+      createEmployee(formData).then((newEmp) =>
+        setEmployees((prev) => [...prev, newEmp])
+      );
+    } else {
+      updateEmployee(selectedEmployee!.id, formData).then((upd) =>
+        setEmployees((prev) => prev.map((e) => (e.id === upd.id ? upd : e)))
+      );
     }
     setShowModal(false);
   };
@@ -150,6 +150,15 @@ export default function EmployeeMasterFile() {
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={6}>
+              <button onClick={openAdd} className={styles.addButtonBottom}>
+                <Plus size={16} /> Add Employee
+              </button>
+            </td>
+          </tr>
+        </tfoot>
       </table>
 
       {showModal && (

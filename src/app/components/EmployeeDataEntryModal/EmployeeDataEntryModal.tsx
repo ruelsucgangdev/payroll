@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./EmployeeDataEntryModal.module.scss";
 import { UserCog } from "lucide-react";
 import ConfirmationModal from "../ConfirmationModal";
@@ -8,7 +8,7 @@ import ConfirmationModal from "../ConfirmationModal";
 type Props = {
   onClose: () => void;
   mode: "add" | "edit";
-  initialData?: any;
+  initialData?: Record<string, any>;
   onSave: (data: any) => void;
 };
 
@@ -19,6 +19,9 @@ export default function EmployeeDataEntryModal({
   onSave,
 }: Props) {
   const [showConfirm, setShowConfirm] = useState(false);
+
+  // helper: extract YYYY-MM-DD from ISO DateTime or date-only string
+  const formatDate = (iso?: string) => (iso ? iso.split("T")[0] : "");
 
   const handleSubmit = () => {
     const data = {
@@ -77,16 +80,19 @@ export default function EmployeeDataEntryModal({
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
+
+          {/* Date of Birth: format to YYYY-MM-DD */}
           <input
             id="dateOfBirth"
             type="date"
-            defaultValue={initialData?.dateOfBirth || ""}
+            defaultValue={formatDate(initialData?.dateOfBirth)}
           />
+
           <input
             id="age"
             type="number"
             placeholder="Age"
-            defaultValue={initialData?.age || ""}
+            defaultValue={initialData?.age ?? ""}
           />
           <input
             id="contactNumber"
@@ -98,11 +104,14 @@ export default function EmployeeDataEntryModal({
             placeholder="Address"
             defaultValue={initialData?.address || ""}
           />
+
+          {/* Date Hired: format to YYYY-MM-DD */}
           <input
             id="dateHired"
             type="date"
-            defaultValue={initialData?.dateHired || ""}
+            defaultValue={formatDate(initialData?.dateHired)}
           />
+
           <input
             id="sss"
             placeholder="SSS"
