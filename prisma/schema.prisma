@@ -5,6 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 // npx prisma generate
 // npx prisma db push
+// npx prisma db push --force-reset   (use this instead if the the table has data)
 
 generator client {
   provider = "prisma-client-js"
@@ -16,20 +17,25 @@ datasource db {
 }
 
 model Employee {
-  id             String   @id @default(uuid())
-  employeeNumber String
-  lastName       String
-  firstName      String
-  gender         String
-  dateOfBirth    DateTime
-  age            Int
-  contactNumber  String
-  address        String
-  dateHired      DateTime
-  sss            String
-  tin            String
-  pagibig        String
-  philhealth     String
-  status         String  
+  id                 String   @id @default(uuid())
+  employeeNumber     String
+  lastName           String
+  firstName          String
+  middleName         String
+  position           String
+  department         String
+  gender             String
+  dateOfBirth        DateTime
+  age                Int
+  contactNumber      String
+  address            String
+  dateHired          DateTime
+  sss                String
+  tin                String
+  pagibig            String
+  philhealth         String
+  isSSSMember        Boolean  @default(true)
+  isPhilhealthMember Boolean  @default(true)
+  isPagibigMember    Boolean  @default(true)
+  status             String
 }
-

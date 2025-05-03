@@ -1,61 +1,74 @@
 .sidebar {
-  width: var(--sidebar-width);
-  background: var(--color-bg-sidebar);
-  border-right: 1px solid var(--color-text-primary);
+  width: 250px;
+  background-color: #1e3a1e; /* Dark green */
+  height: 100vh;
+  padding: 1rem;
+  overflow-y: auto;
+  color: #ffffff;
 }
 
-.header {
+.menuGroup {
+  margin-bottom: 1rem;
+}
+
+.menuParent {
   display: flex;
   align-items: center;
-  padding: var(--spacing-md);
-  background: var(--color-bg-header);
-  border-bottom: 1px solid var(--color-text-primary);
-}
-
-.logo {
-  width: var(--logo-size);
-  height: var(--logo-size);
-  background: var(--color-placeholder);
-  border-radius: 50%;
-  margin-right: var(--spacing-md);
-}
-
-.title {
   font-weight: bold;
+  cursor: pointer;
+  padding: 0.6rem;
+  border-radius: 4px;
+  color: #ffffff;
+  background-color: #2a4f2a;
+
+  &:hover {
+    background-color: #356935;
+  }
+
+  svg {
+    margin-right: 8px;
+  }
+
+  span {
+    flex-grow: 1;
+    font-size: 0.95rem;
+  }
 }
 
-.subtitle {
-  font-size: 0.9em;
-}
-
-.menuList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.subMenu {
+  margin-top: 0.25rem;
+  margin-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .menuItem {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-size: var(--font-size-main);
+  padding: 0.4rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #dcdcdc;
   cursor: pointer;
+
+  &:hover {
+    background-color: #4b8a4b;
+    color: #ffffff;
+  }
+
+  svg {
+    margin-right: 6px;
+    font-size: 16px;
+  }
 }
 
-.menuItemActive {
+.active {
+  background-color: #ffffff;
+  color: #1e3a1e;
   font-weight: bold;
 }
 
-.subMenu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  padding-left: calc(var(--spacing-md) * 2);
-}
-
-.subMenuItem {
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-size: var(--font-size-sub);
-  cursor: pointer;
+/* Specifically enlarge the Dashboard font */
+.menuItem span {
+  font-size: 1rem;
 }
