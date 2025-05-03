@@ -1,4 +1,9 @@
 :root {
+  /* theme colors */
+  --green-dark: #264d3d;
+  --green-light: #3b5f4c;
+  --white: #ffffff;
+
   /* Existing tokens… */
   --color-bg-header: #fff9f9;
   --color-bg-sidebar: #fffafa;

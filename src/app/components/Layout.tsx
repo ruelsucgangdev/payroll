@@ -3,22 +3,6 @@
 import { ReactNode, useState, useRef, useCallback } from "react";
 import Dashboard from "./Dashboard/Dashboard";
 import Sidebar from "./Sidebar/Sidebar";
-import Categories from "./Categories/Categories";
-import UnitsOfMeasure from "./UnitsOfMeasure/UnitsOfMeasure";
-import Items from "./Items/Items";
-import Users from "./Users/Users";
-import Inventory from "./Inventory/Inventory";
-import ExchangeWrongItem from "./ExchangeWrongItem/ExchangeWrongItem";
-import PhysicalCount from "./PhysicalCount/PhysicalCount";
-import CashRefund from "./CashRefund/CashRefund";
-import Warehouse from "./Warehouse/Warehouse";
-import RegularDiscounts from "./PromoDiscounts/PromoDiscounts";
-import AsIsItems from "./AsIsItems/AsIsItems";
-import ItemListReport from "./ItemListReport/ItemListReport";
-import ReturnItem from "./ReturnItem/ReturnItem";
-import SkuManager from "./SkuManager/SkuManager";
-import SalesManager from "./SalesManager/SalesManager";
-import ReceivingItemsManager from "./Receive/ReceivingItemsManager";
 import EmployeeMasterFile from "./EmployeeMasterFile/EmployeeMasterFile";
 
 interface LayoutProps {
@@ -90,40 +74,8 @@ export default function Layout({ children }: LayoutProps) {
       >
         {activeKey === "dashboard" ? (
           <Dashboard />
-        ) : activeKey === "inventory" ? (
-          <Inventory />
         ) : activeKey === "employee-masterfile" ? (
           <EmployeeMasterFile />
-        ) : activeKey === "promo-discounts" ? (
-          <RegularDiscounts />
-        ) : activeKey === "as-is-items" ? (
-          <AsIsItems />
-        ) : activeKey === "receive-item" ? (
-          <ReceivingItemsManager />
-        ) : activeKey === "return-item" ? (
-          <ReturnItem />
-        ) : activeKey === "exchange" ? (
-          <ExchangeWrongItem />
-        ) : activeKey === "cash-refund" ? (
-          <CashRefund />
-        ) : activeKey === "warehouse" ? (
-          <Warehouse />
-        ) : activeKey === "sku-manager" ? (
-          <SkuManager />
-        ) : activeKey === "physical-count" ? (
-          <PhysicalCount />
-        ) : activeKey === "categories" ? (
-          <Categories />
-        ) : activeKey === "unit-of-measure" ? (
-          <UnitsOfMeasure />
-        ) : activeKey === "pos" ? (
-          <SalesManager />
-        ) : activeKey === "items" ? (
-          <Items />
-        ) : activeKey === "user-admin" ? (
-          <Users />
-        ) : activeKey === "item-list" ? (
-          <ItemListReport />
         ) : (
           children
         )}
