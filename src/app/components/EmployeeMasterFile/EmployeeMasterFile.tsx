@@ -1,5 +1,12 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import {
+  getEmployees,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee,
+} from "../../services/employee-service";
 import { Pencil, Trash2, Plus, UserCircle } from "lucide-react";
 import styles from "./EmployeeMasterFile.module.scss";
 import EmployeeDataEntryModal from "./EmployeeDataEntryModal";
@@ -7,7 +14,7 @@ import ConfirmationModal from "../ConfirmationModal";
 
 type Employee = {
   id: string;
-  employeeNo: string;
+  employeeNumber: string;
   lastName: string;
   firstName: string;
   gender: string;
@@ -24,6 +31,7 @@ type Employee = {
 };
 
 export default function EmployeeMasterFile() {
+  const [employees, setEmployees] = useState<Employee[]>([]);
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
@@ -33,35 +41,48 @@ export default function EmployeeMasterFile() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [toDeleteId, setToDeleteId] = useState<string | null>(null);
 
-  const [employees, setEmployees] = useState<Employee[]>([
-    {
-      id: crypto.randomUUID(),
-      employeeNo: "EMP-001",
-      lastName: "Reyes",
-      firstName: "Juan",
-      gender: "Male",
-      dateOfBirth: "1990-01-01",
-      age: 33,
-      contactNumber: "09171234567",
-      address: "123 Street",
-      dateHired: "2022-08-15",
-      sss: "1234567",
-      tin: "123-456-789",
-      pagibig: "1234567890",
-      philhealth: "9876543210",
-      status: "Active",
-    },
-  ]);
+  // load on mount
+  useEffect(() => {
+    getEmployees().then(setEmployees).catch(console.error);
+  }, []);
 
-  const handleEdit = (emp: Employee) => {
+  const openAdd = () => {
+    setModalMode("add");
+    setSelectedEmployee(null);
+    setShowModal(true);
+  };
+
+  const openEdit = (emp: Employee) => {
     setModalMode("edit");
     setSelectedEmployee(emp);
     setShowModal(true);
   };
 
+  const handleSave = (data: any) => {
+    if (modalMode === "add") {
+      createEmployee(data).then((newEmp) => {
+        setEmployees((prev) => [...prev, newEmp]);
+      });
+    } else if (modalMode === "edit" && selectedEmployee) {
+      updateEmployee(selectedEmployee.id, data).then((upd) => {
+        setEmployees((prev) => prev.map((e) => (e.id === upd.id ? upd : e)));
+      });
+    }
+    setShowModal(false);
+  };
+
+  const confirmDelete = () => {
+    if (!toDeleteId) return;
+    deleteEmployee(toDeleteId).then(() => {
+      setEmployees((prev) => prev.filter((e) => e.id !== toDeleteId));
+      setToDeleteId(null);
+      setShowConfirm(false);
+    });
+  };
+
   const filtered = employees.filter(
     (emp) =>
-      emp.employeeNo.toLowerCase().includes(search.toLowerCase()) ||
+      emp.employeeNumber.toLowerCase().includes(search.toLowerCase()) ||
       emp.firstName.toLowerCase().includes(search.toLowerCase()) ||
       emp.lastName.toLowerCase().includes(search.toLowerCase())
   );
@@ -69,8 +90,8 @@ export default function EmployeeMasterFile() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <UserCircle size={24} color="white" /> Employee Master File
+        <h1>
+          <UserCircle size={24} /> Employee Master File
         </h1>
         <p className={styles.subtitle}>
           Centralized list of all employee records
@@ -89,15 +110,8 @@ export default function EmployeeMasterFile() {
         />
       </div>
 
-      <button
-        className={styles.addButton}
-        onClick={() => {
-          setModalMode("add");
-          setSelectedEmployee(null);
-          setShowModal(true);
-        }}
-      >
-        <Plus size={16} color="white" /> Add Employee
+      <button onClick={openAdd} className={styles.addButton}>
+        <Plus size={16} /> Add Employee
       </button>
 
       <table className={styles.table}>
@@ -114,13 +128,13 @@ export default function EmployeeMasterFile() {
         <tbody>
           {filtered.map((emp) => (
             <tr key={emp.id}>
-              <td>{emp.employeeNo}</td>
+              <td>{emp.employeeNumber}</td>
               <td>{emp.lastName}</td>
               <td>{emp.firstName}</td>
               <td>{emp.dateHired}</td>
               <td>{emp.tin}</td>
               <td className={styles.actionsCell}>
-                <button onClick={() => handleEdit(emp)} title="Edit">
+                <button onClick={() => openEdit(emp)} title="Edit">
                   <Pencil size={16} color="white" />
                 </button>
                 <button
@@ -140,46 +154,25 @@ export default function EmployeeMasterFile() {
 
       {showModal && (
         <EmployeeDataEntryModal
-          onClose={() => setShowModal(false)}
           mode={modalMode}
           initialData={selectedEmployee || undefined}
-          onSave={(data) => {
-            if (modalMode === "add") {
-              setEmployees((prev) => [
-                ...prev,
-                { id: crypto.randomUUID(), ...data },
-              ]);
-            } else {
-              setEmployees((prev) =>
-                prev.map((emp) =>
-                  emp.id === selectedEmployee?.id ? { ...emp, ...data } : emp
-                )
-              );
-            }
-            setShowModal(false);
-          }}
+          onSave={handleSave}
+          onClose={() => setShowModal(false)}
         />
       )}
 
-      <ConfirmationModal
-        isOpen={showConfirm}
-        title="Confirm Delete"
-        message="Are you sure you want to delete this employee?"
-        confirmLabel="Delete"
-        cancelLabel="Cancel"
-        type="delete"
-        onConfirm={() => {
-          if (toDeleteId) {
-            setEmployees((prev) => prev.filter((emp) => emp.id !== toDeleteId));
-            setToDeleteId(null);
-          }
-          setShowConfirm(false);
-        }}
-        onCancel={() => {
-          setToDeleteId(null);
-          setShowConfirm(false);
-        }}
-      />
+      {showConfirm && (
+        <ConfirmationModal
+          isOpen={showConfirm}
+          title="Confirm Delete"
+          message="Are you sure you want to delete this employee?"
+          confirmLabel="Delete"
+          cancelLabel="Cancel"
+          type="delete"
+          onConfirm={confirmDelete}
+          onCancel={() => setShowConfirm(false)}
+        />
+      )}
     </div>
   );
 }
