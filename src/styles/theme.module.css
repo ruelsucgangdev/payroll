@@ -1,0 +1,25 @@
+:root {
+  --color-green-dark: #264d3d;
+  --color-green: #388e3c;
+  --color-green-light: #e8f5e9;
+  --color-white: #ffffff;
+  --color-gray-light: #f1f1f1;
+  --border-radius: 8px;
+  --shadow-default: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper {
+  background-color: var(--color-green-dark);
+  color: var(--color-white);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-default);
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.pageBackground {
+  background-color: var(--color-green-dark);
+
+  padding: 2rem;
+}

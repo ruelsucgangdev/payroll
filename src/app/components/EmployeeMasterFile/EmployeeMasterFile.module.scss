@@ -1,0 +1,82 @@
+:root {
+  --green-dark: #264d3d;
+  --green-light: #3b5f4c;
+  --white: #ffffff;
+}
+
+.container {
+  background-color: var(--green-dark);
+  color: var(--white);
+  padding: 2rem;
+  border-radius: 10px;
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.searchSection {
+  margin: 1rem 0;
+  label {
+    margin-right: 0.5rem;
+  }
+}
+
+.searchBox {
+  padding: 0.5rem;
+  border: 1px solid var(--white);
+  border-radius: 4px;
+  background-color: transparent;
+  color: var(--white);
+}
+
+.addButton,
+.addButtonBottom {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  background-color: var(--green-light);
+  color: var(--white);
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+
+  th,
+  td {
+    border: 1px solid var(--white);
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  th {
+    background-color: var(--green-light);
+  }
+
+  input {
+    padding: 4px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f3f3f3;
+    color: #000;
+  }
+}
+
+.actionsCell button {
+  background: transparent;
+  border: none;
+  margin-right: 0.25rem;
+  cursor: pointer;
+}

@@ -117,45 +117,22 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.CategoryScalarFieldEnum = {
+exports.Prisma.EmployeeScalarFieldEnum = {
   id: 'id',
-  code: 'code',
-  name: 'name',
-  description: 'description'
-};
-
-exports.Prisma.UnitScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  abbreviation: 'abbreviation'
-};
-
-exports.Prisma.WarehouseScalarFieldEnum = {
-  id: 'id',
-  code: 'code',
-  name: 'name',
-  location: 'location',
-  capacity: 'capacity',
-  manager: 'manager',
-  remarks: 'remarks',
+  employeeNumber: 'employeeNumber',
+  lastName: 'lastName',
+  firstName: 'firstName',
+  gender: 'gender',
+  dateOfBirth: 'dateOfBirth',
+  age: 'age',
+  contactNumber: 'contactNumber',
+  address: 'address',
+  dateHired: 'dateHired',
+  sss: 'sss',
+  tin: 'tin',
+  pagibig: 'pagibig',
+  philhealth: 'philhealth',
   status: 'status'
-};
-
-exports.Prisma.ProductScalarFieldEnum = {
-  id: 'id',
-  productCode: 'productCode',
-  categoryId: 'categoryId',
-  sku: 'sku',
-  productName: 'productName',
-  description: 'description'
-};
-
-exports.Prisma.ConversionMatrixScalarFieldEnum = {
-  id: 'id',
-  productId: 'productId',
-  fromUomId: 'fromUomId',
-  toUomId: 'toUomId',
-  qty: 'qty'
 };
 
 exports.Prisma.SortOrder = {
@@ -163,56 +140,24 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.CategoryOrderByRelevanceFieldEnum = {
+exports.Prisma.EmployeeOrderByRelevanceFieldEnum = {
   id: 'id',
-  code: 'code',
-  name: 'name',
-  description: 'description'
-};
-
-exports.Prisma.UnitOrderByRelevanceFieldEnum = {
-  id: 'id',
-  name: 'name',
-  abbreviation: 'abbreviation'
-};
-
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
-};
-
-exports.Prisma.WarehouseOrderByRelevanceFieldEnum = {
-  id: 'id',
-  code: 'code',
-  name: 'name',
-  location: 'location',
-  manager: 'manager',
-  remarks: 'remarks'
-};
-
-exports.Prisma.ProductOrderByRelevanceFieldEnum = {
-  id: 'id',
-  productCode: 'productCode',
-  categoryId: 'categoryId',
-  sku: 'sku',
-  productName: 'productName',
-  description: 'description'
-};
-
-exports.Prisma.ConversionMatrixOrderByRelevanceFieldEnum = {
-  id: 'id',
-  productId: 'productId',
-  fromUomId: 'fromUomId',
-  toUomId: 'toUomId'
+  employeeNumber: 'employeeNumber',
+  lastName: 'lastName',
+  firstName: 'firstName',
+  gender: 'gender',
+  contactNumber: 'contactNumber',
+  address: 'address',
+  sss: 'sss',
+  tin: 'tin',
+  pagibig: 'pagibig',
+  philhealth: 'philhealth',
+  status: 'status'
 };
 
 
 exports.Prisma.ModelName = {
-  Category: 'Category',
-  Unit: 'Unit',
-  Warehouse: 'Warehouse',
-  Product: 'Product',
-  ConversionMatrix: 'ConversionMatrix'
+  Employee: 'Employee'
 };
 
 /**

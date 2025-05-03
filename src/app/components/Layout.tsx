@@ -19,6 +19,7 @@ import ReturnItem from "./ReturnItem/ReturnItem";
 import SkuManager from "./SkuManager/SkuManager";
 import SalesManager from "./SalesManager/SalesManager";
 import ReceivingItemsManager from "./Receive/ReceivingItemsManager";
+import EmployeeMasterFile from "./EmployeeMasterFile/EmployeeMasterFile";
 
 interface LayoutProps {
   children: ReactNode;
@@ -78,11 +79,21 @@ export default function Layout({ children }: LayoutProps) {
         />
       )}
 
-      <main className="main-content" style={{ flex: 1, overflow: "auto" }}>
+      <main
+        className="main-content"
+        style={{
+          flex: 1,
+          overflow: "auto",
+          backgroundColor: "#264d3d",
+          padding: "1rem",
+        }}
+      >
         {activeKey === "dashboard" ? (
           <Dashboard />
         ) : activeKey === "inventory" ? (
           <Inventory />
+        ) : activeKey === "employee-masterfile" ? (
+          <EmployeeMasterFile />
         ) : activeKey === "promo-discounts" ? (
           <RegularDiscounts />
         ) : activeKey === "as-is-items" ? (

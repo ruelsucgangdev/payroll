@@ -1,14 +1,16 @@
-// File: src/app/page.tsx
+import styles from "../styles/theme.module.css";
 
 export default function HomePage() {
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Welcome to IMS</h1>
-      <p>
-        Your one‑stop solution for tracking stock levels, managing returns, and
-        generating reports.
-      </p>
-      <p>Select a feature from the sidebar to begin.</p>
+    <div className={styles.pageBackground}>
+      <div className={styles.wrapper}>
+        <h1>Welcome to Payroll Management System (PMS)</h1>
+        <p>
+          Your all-in-one solution for managing employee records, tracking
+          attendance, and automating payroll processing.
+        </p>
+        <p>Select a feature from the sidebar to begin.</p>
+      </div>
     </div>
   );
 }

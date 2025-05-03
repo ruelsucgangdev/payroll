@@ -16,44 +16,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Category {
-  id          String   @id @default(uuid())
-  code        String   @unique
-  name        String
-  description String
-}
-
-model Unit {
-  id           String  @id @default(uuid())
-  name         String
-  abbreviation String
-}
-
-model Warehouse {
-  id        String   @id @default(uuid())
-  code      String   @unique
-  name      String
-  location  String
-  capacity  Int
-  manager   String
-  remarks   String?
-  status    Boolean   // true = active, false = inactive
-}
-
-model Product {
-  id           String   @id @default(uuid())
-  productCode  String
-  categoryId   String
-  sku          String   @unique
-  productName  String
-  description  String?
-}
-
-model ConversionMatrix {
-  id          String   @id @default(uuid()) @db.Char(36)
-  productId   String
-  fromUomId   String
-  toUomId     String
-  qty         Decimal
+model Employee {
+  id             String   @id @default(uuid())
+  employeeNumber String
+  lastName       String
+  firstName      String
+  gender         String
+  dateOfBirth    DateTime
+  age            Int
+  contactNumber  String
+  address        String
+  dateHired      DateTime
+  sss            String
+  tin            String
+  pagibig        String
+  philhealth     String
+  status         String  
 }
 

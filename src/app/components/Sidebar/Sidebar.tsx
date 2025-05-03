@@ -28,6 +28,11 @@ const menuItems: MenuItem[] = [
   { key: "dashboard", label: "Dashboard", icon: <Home size={16} /> },
   { key: "inventory", label: "Inventory", icon: <Package size={16} /> },
   {
+    key: "employee-masterfile",
+    label: "Employee Masterfile",
+    icon: <Package size={16} />,
+  },
+  {
     key: "discounts",
     label: "Discounts",
     icon: <Tag size={16} />,
@@ -202,7 +207,7 @@ export default function Sidebar({
               marginBottom: tokens.spacing.sm,
             }}
           />
-          <div style={{ fontWeight: "bold" }}>INVENTORY SYSTEM</div>
+          <div style={{ fontWeight: "bold" }}>PAYROLL SYSTEM</div>
           <div style={{ fontSize: "0.9em" }}>Staff/Encoder</div>
         </div>
         <X size={20} onClick={onToggle} style={{ cursor: "pointer" }} />
