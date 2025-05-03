@@ -1,11 +1,10 @@
-// src/app/services/employee-service.ts
 export async function getEmployees() {
   const res = await fetch("/api/employees");
   if (!res.ok) throw new Error("Failed to load employees");
   const raw: any[] = await res.json();
   return raw.map((e) => ({
     ...e,
-    employeeNo: e.employeeNumber, // copy employeeNumber into employeeNo
+    employeeNo: e.employeeNumber,
   }));
 }
 

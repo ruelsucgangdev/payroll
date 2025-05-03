@@ -1,4 +1,3 @@
-// PUT update an employee, DELETE remove one
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
