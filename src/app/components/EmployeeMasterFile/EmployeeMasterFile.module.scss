@@ -1,33 +1,55 @@
+/* src/app/components/EmployeeMasterFile/EmployeeMasterFile.module.scss */
+
 .container {
   background-color: var(--green-dark);
   color: var(--white);
-  padding: 2rem;
-  border-radius: 10px;
+  padding: 0; /* flush to match Dashboard */
+  border-radius: 0; /* no rounded corners */
   min-height: 100vh;
 }
 
 .header {
-  margin-bottom: 1rem;
+  margin-bottom: 1rem; /* same as Dashboard header */
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--white);
+    margin: 0;
+
+    svg {
+      color: var(--white);
+    }
+  }
 }
 
 .subtitle {
-  font-size: 0.95rem;
+  font-size: 1rem;
+  color: var(--white);
   opacity: 0.8;
+  margin: 0;
 }
 
 .searchSection {
   margin: 1rem 0;
+
   label {
     margin-right: 0.5rem;
+    color: var(--white);
   }
-}
 
-.searchBox {
-  padding: 0.5rem;
-  border: 1px solid var(--white);
-  border-radius: 4px;
-  background-color: transparent;
-  color: var(--white);
+  .searchBox {
+    padding: 0.5rem;
+    border: 1px solid var(--white);
+    border-radius: 4px;
+    background-color: transparent;
+    color: var(--white);
+  }
 }
 
 .addButton,
@@ -53,24 +75,40 @@
     border: 1px solid var(--white);
     padding: 0.75rem;
     text-align: left;
+    background-color: var(--green-dark);
+    color: var(--white);
   }
 
   th {
     background-color: var(--green-light);
+    color: var(--white);
   }
 
   input {
     padding: 4px;
     border: none;
     border-radius: 4px;
-    background-color: #f3f3f3;
-    color: #000;
+    background-color: transparent;
+    color: var(--white);
   }
 }
 
-.actionsCell button {
-  background: transparent;
-  border: none;
-  margin-right: 0.25rem;
-  cursor: pointer;
+.actionsCell {
+  /* match other cells */
+  background-color: var(--green-dark);
+  color: var(--white);
+  border: 1px solid var(--white);
+
+  button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    svg {
+      color: var(--white);
+    }
+  }
 }
