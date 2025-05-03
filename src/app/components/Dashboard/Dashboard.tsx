@@ -1,116 +1,82 @@
 "use client";
+
 import styles from "./Dashboard.module.scss";
 import {
-  AlertCircle,
-  Box,
-  Megaphone,
-  DollarSign,
-  ShoppingCart,
-  Clock,
-  TrendingUp,
   Users,
-  Package,
+  DollarSign,
+  Calendar,
+  Clock,
+  FileText,
+  AlertCircle,
+  LayoutDashboard,
 } from "lucide-react";
 
 export default function Dashboard() {
   return (
     <>
-      {/* Page header */}
+      {/* Page header with icon */}
       <header className={styles.pageHeader}>
-        <h1>Dashboard</h1>
+        <h1>
+          <LayoutDashboard size={24} /> Dashboard
+        </h1>
         <p className={styles.pageSubtitle}>
-          Real‑time overview of inventory, orders & system alerts
+          Overview of payroll KPIs and pending tasks
         </p>
       </header>
-      <div className={styles.dashboardContainer}></div>
 
       <div className={styles.dashboardContainer}>
-        {/* Low Stock Alerts */}
+        {/* Total Employees */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <Box size={16} />
-            <h2>Low Stock Alerts</h2>
+            <Users size={20} />
+            <h2>Total Employees</h2>
           </div>
-          <ul>
-            <li>
-              Item A - Qty: <span className={styles.flagged}>3</span> (Reorder
-              level: 5)
-            </li>
-            <li>
-              Item B - Qty: <span className={styles.flagged}>2</span> (Reorder
-              level: 4)
-            </li>
-          </ul>
+          <p className={styles.cardValue}>128</p>
         </div>
 
-        {/* Reorder Summary */}
+        {/* Gross Payroll This Period */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <AlertCircle size={16} />
-            <h2>Reorder Summary</h2>
+            <span style={{ fontSize: 20, lineHeight: 0 }}>₱</span>
+            <h2>Gross Payroll</h2>
           </div>
-          <p>2 items need immediate reordering.</p>
+          <p className={styles.cardValue}>₱ 3,452,000.00</p>
         </div>
 
-        {/* Announcements */}
+        {/* Next Pay Date */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <Megaphone size={16} />
-            <h2>Announcements</h2>
+            <Calendar size={20} />
+            <h2>Next Pay Date</h2>
           </div>
-          <ul>
-            <li>System maintenance on Friday at 10PM.</li>
-            <li>New item categories have been added.</li>
-          </ul>
+          <p className={styles.cardValue}>2025-05-15</p>
         </div>
 
-        {/* Additional Info Cards */}
+        {/* Pending Approvals */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <Package size={16} />
-            <h2>Total Items</h2>
+            <Clock size={20} />
+            <h2>Pending Approvals</h2>
           </div>
-          <p>1,245 items in inventory.</p>
+          <p className={styles.cardValue}>5</p>
         </div>
 
+        {/* Leave Requests */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <span style={{ fontSize: 16, lineHeight: 1 }}>₱</span>
-            <h2>Stock Value</h2>
+            <FileText size={20} />
+            <h2>Leave Requests</h2>
           </div>
-          <p>Total value: PHP 48,560.00</p>
+          <p className={styles.cardValue}>12</p>
         </div>
 
+        {/* Overdue Timesheets */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <ShoppingCart size={16} />
-            <h2>Sales Today</h2>
+            <AlertCircle size={20} />
+            <h2>Overdue Timesheets</h2>
           </div>
-          <p>34 transactions completed.</p>
-        </div>
-
-        <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <Clock size={16} />
-            <h2>Pending Orders</h2>
-          </div>
-          <p>5 orders awaiting fulfillment.</p>
-        </div>
-
-        <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <TrendingUp size={16} />
-            <h2>Top Selling Item</h2>
-          </div>
-          <p>Item C – 124 units sold this week.</p>
-        </div>
-
-        <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <Users size={16} />
-            <h2>Active Users</h2>
-          </div>
-          <p>8 users currently logged in.</p>
+          <p className={styles.cardValue}>3</p>
         </div>
       </div>
     </>
