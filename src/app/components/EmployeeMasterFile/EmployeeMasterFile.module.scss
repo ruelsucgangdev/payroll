@@ -69,27 +69,67 @@
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 2rem;
+  flex: 1;
+  tfoot {
+    tr {
+      height: 1px;
+    }
+    td {
+      padding: 0.1rem 0.5rem;
+    }
+  }
 
   th,
   td {
     border: 1px solid var(--white);
-    padding: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.75rem;
     text-align: left;
     background-color: var(--green-dark);
     color: var(--white);
   }
 
+  /* tighten header font a bit */
   th {
+    font-size: 0.85rem;
     background-color: var(--green-light);
-    color: var(--white);
   }
 
-  input {
-    padding: 4px;
-    border: none;
-    border-radius: 4px;
-    background-color: transparent;
-    color: var(--white);
+  /* 2. Column‐specific widths */
+  /* Last Name (2nd) */
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: 180px;
+  }
+  /* First Name (3rd) */
+  th:nth-child(3),
+  td:nth-child(3) {
+    width: 180px;
+  }
+  /* Date Hired (4th) */
+  th:nth-child(4),
+  td:nth-child(4) {
+    width: 120px;
+  }
+
+  /* 3. Action column just wide enough for 3 icons */
+  .actionsCell {
+    width: 100px;
+    padding: 0;
+    text-align: center;
+
+    button {
+      margin: 0 2px;
+      padding: 4px;
+      svg {
+        color: var(--white);
+      }
+    }
+  }
+
+  /* hover */
+  tbody tr:hover td {
+    background-color: var(--green-light);
   }
 }
 

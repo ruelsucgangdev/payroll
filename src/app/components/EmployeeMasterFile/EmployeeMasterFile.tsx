@@ -7,9 +7,9 @@ import {
   updateEmployee,
   deleteEmployee,
 } from "../../services/employee-service";
-import { Pencil, Trash2, Plus, UserCircle } from "lucide-react";
+import { Pencil, Trash2, Plus, UserCircle, Eye } from "lucide-react";
 import styles from "./EmployeeMasterFile.module.scss";
-import EmployeeDataEntryModal from "./EmployeeDataEntryModal";
+import EmployeeDataEntryModal from "../EmployeeDataEntryModal/EmployeeDataEntryModal";
 import ConfirmationModal from "../ConfirmationModal";
 
 type Employee = {
@@ -34,12 +34,13 @@ export default function EmployeeMasterFile() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] = useState<"add" | "edit">("add");
+  const [modalMode, setModalMode] = useState<"add" | "edit" | "view">("add");
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
     null
   );
   const [showConfirm, setShowConfirm] = useState(false);
   const [toDeleteId, setToDeleteId] = useState<string | null>(null);
+  const [showView, setShowView] = useState(false);
 
   // load on mount
   useEffect(() => {
@@ -58,15 +59,21 @@ export default function EmployeeMasterFile() {
     setShowModal(true);
   };
 
-  const handleSave = (data: any) => {
+  const openView = (emp: any) => {
+    setModalMode("view");
+    setSelectedEmployee(emp);
+    setShowView(true);
+  };
+
+  const handleSave = (formData: any) => {
     if (modalMode === "add") {
-      createEmployee(data).then((newEmp) => {
-        setEmployees((prev) => [...prev, newEmp]);
-      });
-    } else if (modalMode === "edit" && selectedEmployee) {
-      updateEmployee(selectedEmployee.id, data).then((upd) => {
-        setEmployees((prev) => prev.map((e) => (e.id === upd.id ? upd : e)));
-      });
+      createEmployee(formData).then((newEmp) =>
+        setEmployees((prev) => [...prev, newEmp])
+      );
+    } else {
+      updateEmployee(selectedEmployee!.id, formData).then((upd) =>
+        setEmployees((prev) => prev.map((e) => (e.id === upd.id ? upd : e)))
+      );
     }
     setShowModal(false);
   };
@@ -131,7 +138,7 @@ export default function EmployeeMasterFile() {
               <td>{emp.employeeNumber}</td>
               <td>{emp.lastName}</td>
               <td>{emp.firstName}</td>
-              <td>{emp.dateHired}</td>
+              <td>{emp.dateHired.split("T")[0]}</td>
               <td>{emp.tin}</td>
               <td className={styles.actionsCell}>
                 <button onClick={() => openEdit(emp)} title="Edit">
@@ -146,18 +153,40 @@ export default function EmployeeMasterFile() {
                 >
                   <Trash2 size={16} color="white" />
                 </button>
+                <button title="View" onClick={() => openView(emp)}>
+                  <Eye size={16} color="white" />
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={6}>
+              <button onClick={openAdd} className={styles.addButtonBottom}>
+                <Plus size={16} /> Add Employee
+              </button>
+            </td>
+          </tr>
+        </tfoot>
       </table>
 
+      {/* Add/Edit Modal */}
       {showModal && (
         <EmployeeDataEntryModal
           mode={modalMode}
           initialData={selectedEmployee || undefined}
           onSave={handleSave}
           onClose={() => setShowModal(false)}
+        />
+      )}
+
+      {/* View-Only Modal */}
+      {showView && (
+        <EmployeeDataEntryModal
+          mode="view"
+          initialData={selectedEmployee || undefined}
+          onClose={() => setShowView(false)}
         />
       )}
 
