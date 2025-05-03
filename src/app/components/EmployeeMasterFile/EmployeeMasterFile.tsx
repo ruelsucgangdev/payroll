@@ -7,7 +7,7 @@ import {
   updateEmployee,
   deleteEmployee,
 } from "../../services/employee-service";
-import { Pencil, Trash2, Plus, UserCircle } from "lucide-react";
+import { Pencil, Trash2, Plus, UserCircle, Eye } from "lucide-react";
 import styles from "./EmployeeMasterFile.module.scss";
 import EmployeeDataEntryModal from "../EmployeeDataEntryModal/EmployeeDataEntryModal";
 import ConfirmationModal from "../ConfirmationModal";
@@ -34,12 +34,13 @@ export default function EmployeeMasterFile() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] = useState<"add" | "edit">("add");
+  const [modalMode, setModalMode] = useState<"add" | "edit" | "view">("add");
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
     null
   );
   const [showConfirm, setShowConfirm] = useState(false);
   const [toDeleteId, setToDeleteId] = useState<string | null>(null);
+  const [showView, setShowView] = useState(false);
 
   // load on mount
   useEffect(() => {
@@ -56,6 +57,12 @@ export default function EmployeeMasterFile() {
     setModalMode("edit");
     setSelectedEmployee(emp);
     setShowModal(true);
+  };
+
+  const openView = (emp: any) => {
+    setModalMode("view");
+    setSelectedEmployee(emp);
+    setShowView(true);
   };
 
   const handleSave = (formData: any) => {
@@ -131,7 +138,7 @@ export default function EmployeeMasterFile() {
               <td>{emp.employeeNumber}</td>
               <td>{emp.lastName}</td>
               <td>{emp.firstName}</td>
-              <td>{emp.dateHired}</td>
+              <td>{emp.dateHired.split("T")[0]}</td>
               <td>{emp.tin}</td>
               <td className={styles.actionsCell}>
                 <button onClick={() => openEdit(emp)} title="Edit">
@@ -145,6 +152,9 @@ export default function EmployeeMasterFile() {
                   title="Delete"
                 >
                   <Trash2 size={16} color="white" />
+                </button>
+                <button title="View" onClick={() => openView(emp)}>
+                  <Eye size={16} color="white" />
                 </button>
               </td>
             </tr>
@@ -161,12 +171,22 @@ export default function EmployeeMasterFile() {
         </tfoot>
       </table>
 
+      {/* Add/Edit Modal */}
       {showModal && (
         <EmployeeDataEntryModal
           mode={modalMode}
           initialData={selectedEmployee || undefined}
           onSave={handleSave}
           onClose={() => setShowModal(false)}
+        />
+      )}
+
+      {/* View-Only Modal */}
+      {showView && (
+        <EmployeeDataEntryModal
+          mode="view"
+          initialData={selectedEmployee || undefined}
+          onClose={() => setShowView(false)}
         />
       )}
 
