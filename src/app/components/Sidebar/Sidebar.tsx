@@ -1,287 +1,147 @@
 "use client";
 
-import { JSX, useState } from "react";
-import {
-  Menu,
-  X,
-  ChevronDown,
-  ChevronRight,
-  Home,
-  Package,
-  Tag,
-  Gift,
-  Archive,
-  Sliders,
-  Database,
-  FileText,
-} from "lucide-react";
-import tokens from "../tokens";
+import { useState } from "react";
+import { Home, Package, ChevronDown, ChevronRight } from "lucide-react";
+import styles from "./Sidebar.module.scss";
 
-type MenuItem = {
+interface MenuItem {
   key: string;
   label: string;
-  icon: JSX.Element;
-  subItems?: Omit<MenuItem, "subItems">[];
-};
+  icon: React.ReactNode;
+  subItems?: MenuItem[];
+}
 
 const menuItems: MenuItem[] = [
-  { key: "dashboard", label: "Dashboard", icon: <Home size={16} /> },
-  { key: "inventory", label: "Inventory", icon: <Package size={16} /> },
   {
-    key: "employee-masterfile",
-    label: "Employee Masterfile",
+    key: "dashboard",
+    label: "Dashboard",
+    icon: <Home size={16} />,
+  },
+  {
+    key: "payroll",
+    label: "Payroll",
     icon: <Package size={16} />,
-  },
-  {
-    key: "discounts",
-    label: "Discounts",
-    icon: <Tag size={16} />,
     subItems: [
       {
-        key: "promo-discounts",
-        label: "Promo Discounts",
-        icon: <Tag size={16} />,
+        key: "generate-payroll",
+        label: "Generate Payroll",
+        icon: <Package size={16} />,
       },
-      // { key: "as-is-items", label: "As‑Is Items", icon: <Gift size={16} /> },
+      { key: "payslip", label: "Payslip", icon: <Package size={16} /> },
+      { key: "payroll-reports", label: "Reports", icon: <Package size={16} /> },
     ],
   },
   {
-    key: "receive",
-    label: "Receive",
-    icon: <Archive size={16} />,
+    key: "employee",
+    label: "Employee",
+    icon: <Package size={16} />,
     subItems: [
       {
-        key: "receive-item",
-        label: "Receive Product",
-        icon: <Archive size={16} />,
+        key: "employee-masterfile",
+        label: "Masterfile",
+        icon: <Package size={16} />,
       },
-    ],
-  },
-  {
-    key: "returns",
-    label: "Returns",
-    icon: <Archive size={16} />,
-    subItems: [
+      { key: "employee-loans", label: "Loans", icon: <Package size={16} /> },
       {
-        key: "return-item",
-        label: "Return Product",
-        icon: <Archive size={16} />,
-      },
-      // {
-      //   key: "exchange",
-      //   label: "Exchange (Wrong Item)",
-      //   icon: <Sliders size={16} />,
-      // },
-      // { key: "cash-refund", label: "Cash Refund", icon: <Archive size={16} /> },
-    ],
-  },
-  {
-    key: "adjustments",
-    label: "Adjustments",
-    icon: <Sliders size={16} />,
-    subItems: [
-      {
-        key: "physical-count",
-        label: "Physical Count",
-        icon: <Sliders size={16} />,
+        key: "employee-deductions",
+        label: "Deductions",
+        icon: <Package size={16} />,
       },
       {
-        key: "sku-manager",
-        label: "SKU Manager",
-        icon: <Sliders size={16} />,
+        key: "leave-management",
+        label: "Leave Management",
+        icon: <Package size={16} />,
       },
     ],
   },
   {
-    key: "master-files",
-    label: "Master Files",
-    icon: <Database size={16} />,
+    key: "timekeeping",
+    label: "Timekeeping",
+    icon: <Package size={16} />,
     subItems: [
-      { key: "categories", label: "Categories", icon: <Database size={16} /> },
-      {
-        key: "unit-of-measure",
-        label: "Unit of Measure",
-        icon: <Database size={16} />,
-      },
-      { key: "items", label: "Item Setup", icon: <Database size={16} /> },
-      {
-        key: "user-admin",
-        label: "User Administration",
-        icon: <Database size={16} />,
-      },
-      { key: "warehouse", label: "Warehouse", icon: <Database size={16} /> },
+      { key: "attendance", label: "Attendance", icon: <Package size={16} /> },
+      { key: "schedules", label: "Schedules", icon: <Package size={16} /> },
     ],
   },
   {
-    key: "pos",
-    label: "Apply Sales to Stock",
-    icon: <FileText size={16} />,
+    key: "system",
+    label: "System",
+    icon: <Package size={16} />,
     subItems: [
       {
-        key: "pos",
-        label: "Post Sales",
-        icon: <FileText size={16} />,
+        key: "user-accounts",
+        label: "User Accounts",
+        icon: <Package size={16} />,
       },
-    ],
-  },
-  {
-    key: "reports",
-    label: "Reports",
-    icon: <FileText size={16} />,
-    subItems: [
-      {
-        key: "item-list",
-        label: "Item List Report",
-        icon: <FileText size={16} />,
-      },
+      { key: "settings", label: "Settings", icon: <Package size={16} /> },
     ],
   },
 ];
 
 interface SidebarProps {
-  collapsed: boolean;
-  width: number;
-  onToggle: () => void;
   onSelect: (key: string) => void;
   activeKey: string;
 }
 
-export default function Sidebar({
-  collapsed,
-  width,
-  onToggle,
-  onSelect,
-  activeKey,
-}: SidebarProps) {
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
+function Sidebar({ onSelect, activeKey }: SidebarProps) {
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
 
-  const toggleGroup = (key: string) => {
-    setOpenGroups((prev) => ({ ...prev, [key]: !prev[key] }));
+  const toggleOpen = (key: string) => {
+    setOpenKeys((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+    );
   };
 
-  if (collapsed) {
-    return (
-      <div
-        style={{
-          width: 48,
-          background: tokens.colors.bgSidebar,
-          borderRight: `1px solid ${tokens.colors.textPrimary}`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Menu size={24} onClick={onToggle} style={{ cursor: "pointer" }} />
-      </div>
-    );
-  }
-
-  return (
-    <div
-      style={{
-        width,
-        background: tokens.colors.bgSidebar,
-        borderRight: `1px solid ${tokens.colors.textPrimary}`,
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {/* Header + collapse button */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: tokens.spacing.md,
-          background: tokens.colors.bgHeader,
-          borderBottom: `1px solid ${tokens.colors.textPrimary}`,
-        }}
-      >
-        <div>
-          <div
-            style={{
-              width: 40,
-              height: 40,
-              background: "#ccc",
-              borderRadius: "50%",
-              marginBottom: tokens.spacing.sm,
-            }}
-          />
-          <div style={{ fontWeight: "bold" }}>PAYROLL SYSTEM</div>
-          <div style={{ fontSize: "0.9em" }}>Staff/Encoder</div>
-        </div>
-        <X size={20} onClick={onToggle} style={{ cursor: "pointer" }} />
-      </div>
-
-      {/* Menu Items */}
-      <div style={{ flex: 1, overflowY: "auto" }}>
-        <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-          {menuItems.map((item) => (
-            <li key={item.key}>
+  const renderMenu = () =>
+    menuItems.map((item) => {
+      const isActive = activeKey === item.key;
+      return (
+        <div key={item.key} className={styles.menuGroup}>
+          {item.subItems ? (
+            <>
               <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-                  cursor: "pointer",
-                  fontWeight: activeKey === item.key ? "bold" : "normal",
-                }}
-                onClick={() =>
-                  item.subItems ? toggleGroup(item.key) : onSelect(item.key)
-                }
+                className={styles.menuParent}
+                onClick={() => toggleOpen(item.key)}
               >
-                <span
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: tokens.spacing.sm,
-                  }}
-                >
-                  {item.icon}
-                  {item.label}
-                </span>
-                {item.subItems &&
-                  (openGroups[item.key] ? (
-                    <ChevronDown size={16} />
-                  ) : (
-                    <ChevronRight size={16} />
-                  ))}
+                {item.icon}
+                <span>{item.label}</span>
+                {openKeys.includes(item.key) ? (
+                  <ChevronDown size={14} />
+                ) : (
+                  <ChevronRight size={14} />
+                )}
               </div>
-              {/* Submenu */}
-              {item.subItems && openGroups[item.key] && (
-                <ul
-                  style={{
-                    listStyle: "none",
-                    margin: 0,
-                    paddingLeft: tokens.spacing.md,
-                  }}
-                >
+              {openKeys.includes(item.key) && (
+                <div className={styles.subMenu}>
                   {item.subItems.map((sub) => (
-                    <li key={sub.key}>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: tokens.spacing.sm,
-                          padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-                          cursor: "pointer",
-                          fontWeight: activeKey === sub.key ? "bold" : "normal",
-                          fontSize: "0.9em",
-                        }}
-                        onClick={() => onSelect(sub.key)}
-                      >
-                        {sub.icon}
-                        {sub.label}
-                      </div>
-                    </li>
+                    <div
+                      key={sub.key}
+                      className={`${styles.menuItem} ${
+                        activeKey === sub.key ? styles.active : ""
+                      }`}
+                      onClick={() => onSelect(sub.key)}
+                    >
+                      {sub.icon}
+                      <span>{sub.label}</span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               )}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
+            </>
+          ) : (
+            <div
+              className={`${styles.menuItem} ${isActive ? styles.active : ""}`}
+              onClick={() => onSelect(item.key)}
+            >
+              {item.icon}
+              <span>{item.label}</span>
+            </div>
+          )}
+        </div>
+      );
+    });
+
+  return <aside className={styles.sidebar}>{renderMenu()}</aside>;
 }
+
+export default Sidebar;

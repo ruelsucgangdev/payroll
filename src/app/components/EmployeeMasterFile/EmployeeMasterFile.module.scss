@@ -65,19 +65,78 @@
   gap: 0.5rem;
 }
 
+// .table {
+//   width: 100%;
+//   border-collapse: collapse;
+//   margin-bottom: 2rem;
+//   flex: 1;
+//   tfoot {
+//     tr {
+//       height: 1px;
+//     }
+//     td {
+//       padding: 0.1rem 0.5rem;
+//     }
+//   }
+
+//   th,
+//   td {
+//     border: 1px solid var(--white);
+//     padding: 0.4rem 0.6rem;
+//     font-size: 0.75rem;
+//     text-align: left;
+//     background-color: var(--green-dark);
+//     color: var(--white);
+//   }
+
+//   /* tighten header font a bit */
+//   th {
+//     font-size: 0.85rem;
+//     background-color: var(--green-light);
+//   }
+
+//   /* 2. Column‐specific widths */
+//   /* Last Name (2nd) */
+//   th:nth-child(2),
+//   td:nth-child(2) {
+//     width: 180px;
+//   }
+//   /* First Name (3rd) */
+//   th:nth-child(3),
+//   td:nth-child(3) {
+//     width: 180px;
+//   }
+//   /* Date Hired (4th) */
+//   th:nth-child(4),
+//   td:nth-child(4) {
+//     width: 120px;
+//   }
+
+//   /* 3. Action column just wide enough for 3 icons */
+//   .actionsCell {
+//     width: 100px;
+//     padding: 0;
+//     text-align: center;
+
+//     button {
+//       margin: 0 2px;
+//       padding: 4px;
+//       svg {
+//         color: var(--white);
+//       }
+//     }
+//   }
+
+//   /* hover */
+//   tbody tr:hover td {
+//     background-color: var(--green-light);
+//   }
+// }
 .table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 2rem;
   flex: 1;
-  tfoot {
-    tr {
-      height: 1px;
-    }
-    td {
-      padding: 0.1rem 0.5rem;
-    }
-  }
 
   th,
   td {
@@ -85,34 +144,50 @@
     padding: 0.4rem 0.6rem;
     font-size: 0.75rem;
     text-align: left;
-    background-color: var(--green-dark);
     color: var(--white);
+    background: var(--green-dark);
   }
 
-  /* tighten header font a bit */
   th {
     font-size: 0.85rem;
-    background-color: var(--green-light);
+    background: var(--green-light);
   }
 
-  /* 2. Column‐specific widths */
-  /* Last Name (2nd) */
-  th:nth-child(2),
-  td:nth-child(2) {
-    width: 180px;
+  /* 1) Slim down Employee No. column (1st) */
+  th:nth-child(1),
+  td:nth-child(1) {
+    width: 100px;
   }
-  /* First Name (3rd) */
+
+  /* 2) Last Name (2nd) & First Name (3rd) */
+  th:nth-child(2),
+  td:nth-child(2),
   th:nth-child(3),
   td:nth-child(3) {
     width: 180px;
   }
-  /* Date Hired (4th) */
+
+  /* 3) Date Hired (4th) */
   th:nth-child(4),
   td:nth-child(4) {
     width: 120px;
   }
 
-  /* 3. Action column just wide enough for 3 icons */
+  /* 4) TIN (5th) */
+  th:nth-child(5),
+  td:nth-child(5) {
+    width: 140px;
+  }
+
+  /* 5) SSS (6th) & PhilHealth (7th) */
+  th:nth-child(6),
+  td:nth-child(6),
+  th:nth-child(7),
+  td:nth-child(7) {
+    width: 140px;
+  }
+
+  /* 6) Action (8th) – no changes, stays as you had it */
   .actionsCell {
     width: 100px;
     padding: 0;
@@ -127,9 +202,15 @@
     }
   }
 
-  /* hover */
+  /* hover row */
   tbody tr:hover td {
     background-color: var(--green-light);
+  }
+
+  /* compact footer */
+  tfoot tr td {
+    padding: 0.2rem 0.5rem;
+    height: auto;
   }
 }
 

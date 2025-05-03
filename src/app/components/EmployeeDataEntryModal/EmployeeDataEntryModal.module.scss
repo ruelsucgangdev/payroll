@@ -2,9 +2,9 @@
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.6);
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,51 +12,172 @@
 }
 
 .modal {
-  background-color: #fff;
-  color: #000;
+  background: #ffffff;
   padding: 2rem;
-  border-radius: 10px;
-  max-width: 960px;
+  border-radius: 8px;
   width: 90%;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  max-width: 900px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.modal h2 {
-  margin-bottom: 1rem;
+.modalHeader {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #1e3a1e;
+  margin-bottom: 1.5rem;
+
+  svg {
+    margin-right: 0.6rem;
+  }
 }
 
 .formGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+
+  label {
+    font-size: 0.85rem;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  input,
+  select {
+    padding: 0.45rem;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  input:disabled,
+  select:disabled {
+    background-color: #f2f2f2;
+    color: #888;
+  }
 }
 
-.formGrid input,
-.formGrid select {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+/* 🔹 For Last/First/Middle name alignment */
+.row3 {
+  display: flex;
+  gap: 1rem;
+
+  label {
+    flex: 1;
+    font-size: 0.85rem;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  input {
+    padding: 0.45rem;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  input:disabled {
+    background-color: #f2f2f2;
+    color: #888;
+  }
+}
+
+/* 🔹 Small width for date fields */
+.smallDate {
+  width: 140px;
+}
+
+.checkGroup {
+  grid-column: span 3;
+  display: flex;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #222;
+  }
+
+  input[type="checkbox"] {
+    transform: scale(1.1);
+    accent-color: green;
+  }
 }
 
 .modalActions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 1.5rem;
   gap: 1rem;
+  margin-top: 2rem;
 }
 
-.modalActions button {
-  padding: 0.5rem 1rem;
+.cancelBtn {
+  background-color: #ccc;
+  color: #333;
+  padding: 0.6rem 1.2rem;
   border: none;
   border-radius: 4px;
+  font-size: 0.85rem;
   cursor: pointer;
 }
 
-.modalActions button:first-of-type {
-  background-color: #ccc;
+.primaryBtn {
+  background-color: #1e3a1e;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
 }
 
-.modalActions button:last-of-type {
-  background-color: #264d3d;
-  color: white;
+.primaryBtn:hover {
+  background-color: #145014;
+}
+
+.row3 {
+  grid-column: span 3; // occupy full width of the grid
+  display: flex;
+  gap: 1rem;
+
+  label {
+    flex: 1;
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  input {
+    padding: 0.45rem;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  input:disabled {
+    background-color: #f2f2f2;
+    color: #888;
+  }
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+  }
+}
+.smallDate {
+  width: 160px;
+}
+
+.smallAge {
+  width: 70px;
+  text-align: right;
 }
