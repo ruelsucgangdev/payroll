@@ -1,52 +1,48 @@
 "use client";
 
-import { Tabs } from "@mui/material";
-import { TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
+import * as Tabs from "@radix-ui/react-tabs";
+import { Settings } from "lucide-react";
 import SSSMatrixSettings from "../SSSMatrix/SSSMatrix";
+import styles from "./deduction-settings-tabs.module.scss";
 
-// Uncomment these when components are ready
+// Uncomment these when ready:
 // import PagibigMatrixSettings from "./PagibigMatrix";
 // import PhilhealthMatrixSettings from "./PhilhealthMatrix";
 // import TaxMatrixSettings from "./TaxMatrix";
 
 export default function DeductionSettingsTabs() {
   return (
-    <div className="p-4 bg-[#14342b] text-white rounded-md shadow-md">
-      <h2 className="text-xl font-bold mb-2 flex items-center gap-2">
-        <span className="text-white">Deduction Matrix Settings</span>
-      </h2>
-      <p className="text-sm text-[#c0e4d6] mb-4">
-        Configure each matrix according to company deduction rules
-      </p>
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <h1>
+          <Settings size={24} />
+          Deduction Matrix Settings
+        </h1>
+        <p className={styles.subtitle}>
+          Configure each matrix according to company deduction rules
+        </p>
+      </header>
 
-      <Tabs defaultValue="sss" className="w-full">
-        <TabsList className="bg-[#1a4733] border border-[#2c7055]">
-          <TabsTrigger value="sss">SSS</TabsTrigger>
-          <TabsTrigger value="pagibig" disabled>
+      <Tabs.Root defaultValue="sss" className={styles.tabsRoot}>
+        <Tabs.List className={styles.tabsList}>
+          <Tabs.Trigger value="sss" className={styles.tab}>
+            SSS
+          </Tabs.Trigger>
+          <Tabs.Trigger value="pagibig" className={styles.tab} disabled>
             Pag-IBIG
-          </TabsTrigger>
-          <TabsTrigger value="philhealth" disabled>
+          </Tabs.Trigger>
+          <Tabs.Trigger value="philhealth" className={styles.tab} disabled>
             PhilHealth
-          </TabsTrigger>
-          <TabsTrigger value="tax" disabled>
+          </Tabs.Trigger>
+          <Tabs.Trigger value="tax" className={styles.tab} disabled>
             Tax
-          </TabsTrigger>
-        </TabsList>
+          </Tabs.Trigger>
+        </Tabs.List>
 
-        <TabsContent value="sss">
+        <Tabs.Content value="sss" className={styles.tabContent}>
           <SSSMatrixSettings />
-        </TabsContent>
-
-        {/* <TabsContent value="pagibig">
-          <PagibigMatrixSettings />
-        </TabsContent>
-        <TabsContent value="philhealth">
-          <PhilhealthMatrixSettings />
-        </TabsContent>
-        <TabsContent value="tax">
-          <TaxMatrixSettings />
-        </TabsContent> */}
-      </Tabs>
+        </Tabs.Content>
+      </Tabs.Root>
     </div>
   );
 }

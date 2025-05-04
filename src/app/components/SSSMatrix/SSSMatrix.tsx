@@ -1,6 +1,8 @@
+"use client";
+
 import { useState } from "react";
 import styles from "./sss-settings.module.scss";
-import { Pencil, Trash2, Save, XCircle, Plus } from "lucide-react";
+import { Plus, Pencil, Trash2, Save, XCircle, Table } from "lucide-react";
 
 interface SSSMatrix {
   id: string;
@@ -11,85 +13,113 @@ interface SSSMatrix {
   total: number;
   effectivityDate: string;
   remarks?: string;
+  isNew?: boolean;
 }
 
 export default function SSSMatrixSettings() {
   const [data, setData] = useState<SSSMatrix[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [newRow, setNewRow] = useState<Partial<SSSMatrix>>({});
+  const [filters, setFilters] = useState({
+    minSalary: "",
+    effectivityDate: "",
+  });
 
-  const handleChange = (
+  const handleFieldChange = (
     e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
     field: keyof SSSMatrix
   ) => {
-    setNewRow((prev) => ({
-      ...prev,
+    const updated = [...data];
+    updated[index] = {
+      ...updated[index],
       [field]:
         field === "total" ? parseFloat(e.target.value) || 0 : e.target.value,
-    }));
+    };
+    setData(updated);
   };
 
   const handleAdd = () => {
-    if (
-      !newRow.minSalary ||
-      !newRow.maxSalary ||
-      !newRow.employeeShare ||
-      !newRow.employerShare ||
-      !newRow.total ||
-      !newRow.effectivityDate
-    )
-      return;
-    const entry: SSSMatrix = {
+    const newEntry: SSSMatrix = {
       id: crypto.randomUUID(),
-      minSalary: Number(newRow.minSalary),
-      maxSalary: Number(newRow.maxSalary),
-      employeeShare: Number(newRow.employeeShare),
-      employerShare: Number(newRow.employerShare),
-      total: Number(newRow.total),
-      effectivityDate: newRow.effectivityDate,
-      remarks: newRow.remarks || "",
+      minSalary: 0,
+      maxSalary: 0,
+      employeeShare: 0,
+      employerShare: 0,
+      total: 0,
+      effectivityDate: "",
+      remarks: "",
+      isNew: true,
     };
-    setData((prev) => [...prev, entry]);
-    setNewRow({});
+    setData((prev) => [...prev, newEntry]);
+    setEditingIndex(data.length); // point to the newly added row
+  };
+
+  const handleSave = (index: number) => {
+    const updated = [...data];
+    delete updated[index].isNew;
+    setData(updated);
+    setEditingIndex(null);
+  };
+
+  const handleCancel = (index: number) => {
+    const updated = [...data];
+    if (updated[index].isNew) {
+      updated.splice(index, 1); // remove new row
+    }
+    setData(updated);
+    setEditingIndex(null);
   };
 
   const handleEdit = (index: number) => {
     setEditingIndex(index);
-    setNewRow(data[index]);
-  };
-
-  const handleSave = () => {
-    if (editingIndex === null) return;
-    const updated = [...data];
-    updated[editingIndex] = {
-      ...updated[editingIndex],
-      ...newRow,
-      minSalary: Number(newRow.minSalary),
-      maxSalary: Number(newRow.maxSalary),
-      employeeShare: Number(newRow.employeeShare),
-      employerShare: Number(newRow.employerShare),
-      total: Number(newRow.total),
-    };
-    setData(updated);
-    setEditingIndex(null);
-    setNewRow({});
-  };
-
-  const handleCancel = () => {
-    setEditingIndex(null);
-    setNewRow({});
   };
 
   const handleDelete = (id: string) => {
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const filteredData = data.filter((item) => {
+    const matchesMin =
+      filters.minSalary === "" ||
+      item.minSalary.toString().includes(filters.minSalary);
+    const matchesDate =
+      filters.effectivityDate === "" ||
+      item.effectivityDate === filters.effectivityDate;
+    return matchesMin && matchesDate;
+  });
+
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>SSS Contribution Matrix</h2>
-      <p className={styles.subtitle}>
-        Define salary ranges and SSS contribution breakdowns
-      </p>
+      <header className={styles.header}>
+        <h1>
+          <Table size={24} color="white" /> SSS Contribution Matrix
+        </h1>
+        <p className={styles.subtitle}>
+          Define salary ranges and SSS contributions
+        </p>
+      </header>
+
+      <div className={styles.searchSection}>
+        <input
+          type="text"
+          placeholder="Search Min Salary"
+          value={filters.minSalary}
+          onChange={(e) =>
+            setFilters({ ...filters, minSalary: e.target.value })
+          }
+        />
+        <input
+          type="date"
+          value={filters.effectivityDate}
+          onChange={(e) =>
+            setFilters({ ...filters, effectivityDate: e.target.value })
+          }
+        />
+      </div>
+
+      <button onClick={handleAdd} className={styles.addButton}>
+        <Plus size={16} /> Add Entry
+      </button>
 
       <table className={styles.table}>
         <thead>
@@ -105,65 +135,71 @@ export default function SSSMatrixSettings() {
           </tr>
         </thead>
         <tbody>
-          {data.map((row, index) => (
+          {filteredData.map((row, index) => (
             <tr key={row.id}>
               {editingIndex === index ? (
                 <>
                   <td>
                     <input
                       type="number"
-                      value={newRow.minSalary ?? ""}
-                      onChange={(e) => handleChange(e, "minSalary")}
+                      value={row.minSalary}
+                      onChange={(e) => handleFieldChange(e, index, "minSalary")}
                     />
                   </td>
                   <td>
                     <input
                       type="number"
-                      value={newRow.maxSalary ?? ""}
-                      onChange={(e) => handleChange(e, "maxSalary")}
+                      value={row.maxSalary}
+                      onChange={(e) => handleFieldChange(e, index, "maxSalary")}
                     />
                   </td>
                   <td>
                     <input
                       type="number"
-                      value={newRow.employeeShare ?? ""}
-                      onChange={(e) => handleChange(e, "employeeShare")}
+                      value={row.employeeShare}
+                      onChange={(e) =>
+                        handleFieldChange(e, index, "employeeShare")
+                      }
                     />
                   </td>
                   <td>
                     <input
                       type="number"
-                      value={newRow.employerShare ?? ""}
-                      onChange={(e) => handleChange(e, "employerShare")}
+                      value={row.employerShare}
+                      onChange={(e) =>
+                        handleFieldChange(e, index, "employerShare")
+                      }
                     />
                   </td>
                   <td>
                     <input
                       type="number"
-                      value={newRow.total ?? ""}
-                      onChange={(e) => handleChange(e, "total")}
+                      value={row.total}
+                      onChange={(e) => handleFieldChange(e, index, "total")}
                     />
                   </td>
                   <td>
                     <input
                       type="date"
-                      value={newRow.effectivityDate ?? ""}
-                      onChange={(e) => handleChange(e, "effectivityDate")}
+                      value={row.effectivityDate}
+                      onChange={(e) =>
+                        handleFieldChange(e, index, "effectivityDate")
+                      }
                     />
                   </td>
                   <td>
                     <input
                       type="text"
-                      value={newRow.remarks ?? ""}
-                      onChange={(e) => handleChange(e, "remarks")}
+                      value={row.remarks}
+                      onChange={(e) => handleFieldChange(e, index, "remarks")}
                     />
                   </td>
                   <td>
-                    <button onClick={handleSave}>
-                      <Save size={16} />
+                    <button onClick={() => handleSave(index)}>
+                      <Save size={16} color="white" />
                     </button>
-                    <button onClick={handleCancel}>
-                      <XCircle size={16} />
+                    <button onClick={() => handleCancel(index)}>
+                      <XCircle size={16} color="white" />
                     </button>
                   </td>
                 </>
@@ -178,10 +214,10 @@ export default function SSSMatrixSettings() {
                   <td>{row.remarks}</td>
                   <td>
                     <button onClick={() => handleEdit(index)}>
-                      <Pencil size={16} />
+                      <Pencil size={16} color="white" />
                     </button>
                     <button onClick={() => handleDelete(row.id)}>
-                      <Trash2 size={16} />
+                      <Trash2 size={16} color="white" />
                     </button>
                   </td>
                 </>
@@ -190,12 +226,6 @@ export default function SSSMatrixSettings() {
           ))}
         </tbody>
       </table>
-
-      <div className={styles.actionsBottom}>
-        <button onClick={handleAdd} className={styles.addButton}>
-          <Plus size={16} /> Add Entry
-        </button>
-      </div>
     </div>
   );
 }

@@ -1,0 +1,92 @@
+.container {
+  background-color: var(--green-dark);
+  color: var(--white);
+  padding: 0; /* flush to match Dashboard */
+  border-radius: 0; /* no rounded corners */
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: 1rem; /* same as Dashboard header */
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--white);
+    margin: 0;
+
+    svg {
+      color: var(--white);
+    }
+  }
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--white);
+  opacity: 0.8;
+  margin: 0;
+}
+
+.wrapper {
+  padding: 1rem;
+  background-color: #14342b;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.tabsRoot {
+  width: 100%;
+}
+
+.tabsList {
+  display: flex;
+  gap: 0.5rem;
+  background-color: #1a4733;
+  border: 1px solid #2c7055;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.tab {
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  background: transparent;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: #2e5e49;
+  }
+}
+
+.tabContent {
+  margin-top: 1rem;
+}

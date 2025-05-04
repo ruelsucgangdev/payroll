@@ -120,57 +120,6 @@ export default function EmployeeMasterFile() {
       <button onClick={openAdd} className={styles.addButton}>
         <Plus size={16} /> Add Employee
       </button>
-
-      {/* <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Employee No.</th>
-            <th>Last Name</th>
-            <th>First Name</th>
-            <th>Date Hired</th>
-            <th>TIN</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.map((emp) => (
-            <tr key={emp.id}>
-              <td>{emp.employeeNumber}</td>
-              <td>{emp.lastName}</td>
-              <td>{emp.firstName}</td>
-              <td>{emp.dateHired.split("T")[0]}</td>
-              <td>{emp.tin}</td>
-              <td className={styles.actionsCell}>
-                <button onClick={() => openEdit(emp)} title="Edit">
-                  <Pencil size={16} color="white" />
-                </button>
-                <button
-                  onClick={() => {
-                    setToDeleteId(emp.id);
-                    setShowConfirm(true);
-                  }}
-                  title="Delete"
-                >
-                  <Trash2 size={16} color="white" />
-                </button>
-                <button title="View" onClick={() => openView(emp)}>
-                  <Eye size={16} color="white" />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={6}>
-              <button onClick={openAdd} className={styles.addButtonBottom}>
-                <Plus size={16} /> Add Employee
-              </button>
-            </td>
-          </tr>
-        </tfoot>
-      </table> */}
-
       <table className={styles.table}>
         <thead>
           <tr>
