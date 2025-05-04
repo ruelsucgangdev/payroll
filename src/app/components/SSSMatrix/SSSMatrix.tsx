@@ -21,7 +21,11 @@ export default function SSSMatrixSettings() {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [filters, setFilters] = useState({
     minSalary: "",
+    maxSalary: "",
+    employeeShare: "",
+    employerShare: "",
     effectivityDate: "",
+    remarks: "",
   });
 
   const handleFieldChange = (
@@ -30,10 +34,31 @@ export default function SSSMatrixSettings() {
     field: keyof SSSMatrix
   ) => {
     const updated = [...data];
+    const value = parseFloat(e.target.value) || 0;
+
     updated[index] = {
       ...updated[index],
-      [field]:
-        field === "total" ? parseFloat(e.target.value) || 0 : e.target.value,
+      [field]: value,
+      total:
+        field === "employeeShare" || field === "employerShare"
+          ? field === "employeeShare"
+            ? value + updated[index].employerShare
+            : updated[index].employeeShare + value
+          : updated[index].total,
+    };
+
+    setData(updated);
+  };
+
+  const handleTextChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+    field: keyof SSSMatrix
+  ) => {
+    const updated = [...data];
+    updated[index] = {
+      ...updated[index],
+      [field]: e.target.value,
     };
     setData(updated);
   };
@@ -86,13 +111,15 @@ export default function SSSMatrixSettings() {
   }, [data]);
 
   const filteredData = data.filter((item) => {
-    const matchesMin =
-      filters.minSalary === "" ||
-      item.minSalary.toString().includes(filters.minSalary);
-    const matchesDate =
-      filters.effectivityDate === "" ||
-      item.effectivityDate === filters.effectivityDate;
-    return matchesMin && matchesDate;
+    return (
+      item.minSalary.toString().includes(filters.minSalary) &&
+      item.maxSalary.toString().includes(filters.maxSalary) &&
+      item.employeeShare.toString().includes(filters.employeeShare) &&
+      item.employerShare.toString().includes(filters.employerShare) &&
+      (filters.effectivityDate === "" ||
+        item.effectivityDate === filters.effectivityDate) &&
+      (item.remarks || "").toLowerCase().includes(filters.remarks.toLowerCase())
+    );
   });
 
   return (
@@ -109,10 +136,34 @@ export default function SSSMatrixSettings() {
       <div className={styles.searchSection}>
         <input
           type="text"
-          placeholder="Search Min Salary"
+          placeholder="Min Salary"
           value={filters.minSalary}
           onChange={(e) =>
             setFilters({ ...filters, minSalary: e.target.value })
+          }
+        />
+        <input
+          type="text"
+          placeholder="Max Salary"
+          value={filters.maxSalary}
+          onChange={(e) =>
+            setFilters({ ...filters, maxSalary: e.target.value })
+          }
+        />
+        <input
+          type="text"
+          placeholder="Employee Share"
+          value={filters.employeeShare}
+          onChange={(e) =>
+            setFilters({ ...filters, employeeShare: e.target.value })
+          }
+        />
+        <input
+          type="text"
+          placeholder="Employer Share"
+          value={filters.employerShare}
+          onChange={(e) =>
+            setFilters({ ...filters, employerShare: e.target.value })
           }
         />
         <select
@@ -128,6 +179,12 @@ export default function SSSMatrixSettings() {
             </option>
           ))}
         </select>
+        <input
+          type="text"
+          placeholder="Remarks"
+          value={filters.remarks}
+          onChange={(e) => setFilters({ ...filters, remarks: e.target.value })}
+        />
       </div>
 
       <button onClick={handleAdd} className={styles.addButton}>
@@ -155,6 +212,7 @@ export default function SSSMatrixSettings() {
                   <td>
                     <input
                       type="number"
+                      className={styles.numberInput}
                       value={row.minSalary}
                       onChange={(e) => handleFieldChange(e, index, "minSalary")}
                     />
@@ -162,6 +220,7 @@ export default function SSSMatrixSettings() {
                   <td>
                     <input
                       type="number"
+                      className={styles.numberInput}
                       value={row.maxSalary}
                       onChange={(e) => handleFieldChange(e, index, "maxSalary")}
                     />
@@ -169,6 +228,7 @@ export default function SSSMatrixSettings() {
                   <td>
                     <input
                       type="number"
+                      className={styles.numberInput}
                       value={row.employeeShare}
                       onChange={(e) =>
                         handleFieldChange(e, index, "employeeShare")
@@ -178,25 +238,22 @@ export default function SSSMatrixSettings() {
                   <td>
                     <input
                       type="number"
+                      className={styles.numberInput}
                       value={row.employerShare}
                       onChange={(e) =>
                         handleFieldChange(e, index, "employerShare")
                       }
                     />
                   </td>
-                  <td>
-                    <input
-                      type="number"
-                      value={row.total}
-                      onChange={(e) => handleFieldChange(e, index, "total")}
-                    />
+                  <td className={styles.readonlyField}>
+                    {row.total.toLocaleString()}
                   </td>
                   <td>
                     <input
                       type="date"
                       value={row.effectivityDate}
                       onChange={(e) =>
-                        handleFieldChange(e, index, "effectivityDate")
+                        handleTextChange(e, index, "effectivityDate")
                       }
                     />
                   </td>
@@ -204,7 +261,7 @@ export default function SSSMatrixSettings() {
                     <input
                       type="text"
                       value={row.remarks}
-                      onChange={(e) => handleFieldChange(e, index, "remarks")}
+                      onChange={(e) => handleTextChange(e, index, "remarks")}
                     />
                   </td>
                   <td>
@@ -218,13 +275,23 @@ export default function SSSMatrixSettings() {
                 </>
               ) : (
                 <>
-                  <td>{row.minSalary}</td>
-                  <td>{row.maxSalary}</td>
-                  <td>{row.employeeShare}</td>
-                  <td>{row.employerShare}</td>
-                  <td>{row.total}</td>
-                  <td>{row.effectivityDate}</td>
-                  <td>{row.remarks}</td>
+                  <td className={styles.salaryColumn}>
+                    {row.minSalary.toLocaleString()}
+                  </td>
+                  <td className={styles.salaryColumn}>
+                    {row.maxSalary.toLocaleString()}
+                  </td>
+                  <td className={styles.shareColumn}>
+                    {row.employeeShare.toLocaleString()}
+                  </td>
+                  <td className={styles.shareColumn}>
+                    {row.employerShare.toLocaleString()}
+                  </td>
+                  <td className={styles.shareColumn}>
+                    {row.total.toLocaleString()}
+                  </td>
+                  <td className={styles.dateColumn}>{row.effectivityDate}</td>
+                  <td className={styles.remarksColumn}>{row.remarks}</td>
                   <td>
                     <button onClick={() => handleEdit(index)}>
                       <Pencil size={16} color="white" />

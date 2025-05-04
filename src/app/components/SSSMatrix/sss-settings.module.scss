@@ -104,3 +104,46 @@
     background-color: #2a4b3b;
   }
 }
+
+.dateColumn {
+  width: 100px;
+}
+
+.remarksColumn {
+  width: 350px;
+}
+
+/* Right-align all numeric values */
+.salaryColumn,
+.shareColumn,
+.readonlyField,
+.numberInput {
+  text-align: right;
+}
+
+/* Table cell values when NOT in edit mode */
+.table td.salaryColumn,
+.table td.shareColumn,
+.table td.readonlyField {
+  text-align: right;
+}
+
+.salaryColumn {
+  width: 80px;
+  text-align: right;
+}
+
+.shareColumn {
+  width: 90px;
+  text-align: right;
+}
+
+.readonlyField {
+  width: 100px;
+  text-align: right;
+}
+
+.numberInput {
+  text-align: right;
+  width: 200px;
+}
