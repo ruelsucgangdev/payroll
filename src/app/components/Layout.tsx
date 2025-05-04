@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard/Dashboard";
 import Sidebar from "./Sidebar/Sidebar";
 import EmployeeMasterFile from "./EmployeeMasterFile/EmployeeMasterFile";
 import DeductionSettingsTabs from "./DeductionSettingsTabs/DeductionSettingsTabs";
+import TimekeepingEntry from "./EmployeeTimekeepingComponent/EmployeeTimekeepingComponent";
 
 interface LayoutProps {
   children: ReactNode;
@@ -71,6 +72,8 @@ export default function Layout({ children }: LayoutProps) {
           <EmployeeMasterFile />
         ) : activeKey === "deduction-settings" ? (
           <DeductionSettingsTabs />
+        ) : activeKey === "attendance" ? (
+          <TimekeepingEntry />
         ) : (
           children
         )}

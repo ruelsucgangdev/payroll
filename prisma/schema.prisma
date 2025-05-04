@@ -3,9 +3,19 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-// npx prisma generate
-// npx prisma db push
+
+// 1. npx prisma db push
+// 2. npx prisma generate
 // npx prisma db push --force-reset   (use this instead if the the table has data)
+
+//generator client {
+//  provider = "prisma-client-js"
+//}
+//datasource db {
+//  provider = "sqlserver"
+//  url      = env("DATABASE_URL")
+//}
+
 
 generator client {
   provider = "prisma-client-js"
@@ -15,6 +25,7 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
 
 model Employee {
   id                 String   @id @default(uuid())
@@ -30,6 +41,7 @@ model Employee {
   contactNumber      String
   address            String
   dateHired          DateTime
+  basicSalary        Float?
   sss                String
   tin                String
   pagibig            String
@@ -98,4 +110,43 @@ model EmployeeLoan {
   isActive     Boolean  @default(true)
   remarks      String?
   createdAt    DateTime @default(now())
+}
+
+model Timekeeping {
+  id            String   @id @default(uuid())
+  employeeId    String   // Just a raw ID reference, no Prisma relation
+  date          DateTime // Date of work
+  timeIn        DateTime? // Actual log-in
+  timeOut       DateTime? // Actual log-out
+
+  source        String   // "FIXED" or "ROLE-BASED"
+  role          String?  // e.g., "Driver", only if ROLE-BASED
+  rate          Float?   // Rate if ROLE-BASED
+  rateType      String?  // "PER_HOUR" or "PER_DAY"
+  hoursWorked   Float?   // Useful for hourly roles
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+
+model RoleCatalog {
+  id        String   @id @default(uuid())
+  name      String   // e.g., "Driver", "Janitor", "Security Guard"
+  rate      Float    // Default rate
+  rateType  String   // "PER_HOUR" or "PER_DAY"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WorkSchedule {
+  id         String   @id @default(uuid())
+  name       String   // e.g., "Morning Shift", "Night Shift"
+  timeIn     String   // e.g., "06:30"
+  timeOut    String   // e.g., "15:30"
+  gracePeriodMinutes Int  // How long before considered late (e.g., 15)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
