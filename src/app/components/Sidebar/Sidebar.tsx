@@ -1,7 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { Home, Package, ChevronDown, ChevronRight } from "lucide-react";
+import {
+  Home,
+  FileText,
+  Users,
+  Clock,
+  Settings,
+  Menu,
+  Briefcase,
+  ChevronDown,
+  ChevronRight,
+  FileCog,
+  UserCog,
+  ListChecks,
+  ClipboardList,
+} from "lucide-react";
 import styles from "./Sidebar.module.scss";
 
 interface MenuItem {
@@ -11,79 +25,112 @@ interface MenuItem {
   subItems?: MenuItem[];
 }
 
+interface SidebarProps {
+  collapsed: boolean;
+  width: number;
+  onToggle: () => void;
+  onSelect: (key: string) => void;
+  activeKey: string;
+}
+
 const menuItems: MenuItem[] = [
   {
     key: "dashboard",
     label: "Dashboard",
-    icon: <Home size={16} />,
+    icon: <Home size={16} color="white" />,
   },
   {
     key: "payroll",
     label: "Payroll",
-    icon: <Package size={16} />,
+    icon: <FileText size={16} color="white" />,
     subItems: [
       {
         key: "generate-payroll",
         label: "Generate Payroll",
-        icon: <Package size={16} />,
+        icon: <FileText size={16} color="white" />,
       },
-      { key: "payslip", label: "Payslip", icon: <Package size={16} /> },
-      { key: "payroll-reports", label: "Reports", icon: <Package size={16} /> },
+      {
+        key: "payslip",
+        label: "Payslip",
+        icon: <FileText size={16} color="white" />,
+      },
+      {
+        key: "payroll-reports",
+        label: "Reports",
+        icon: <FileText size={16} color="white" />,
+      },
     ],
   },
   {
     key: "employee",
     label: "Employee",
-    icon: <Package size={16} />,
+    icon: <Users size={16} color="white" />,
     subItems: [
       {
         key: "employee-masterfile",
         label: "Masterfile",
-        icon: <Package size={16} />,
+        icon: <UserCog size={16} color="white" />,
       },
-      { key: "employee-loans", label: "Loans", icon: <Package size={16} /> },
+      {
+        key: "employee-loans",
+        label: "Loans",
+        icon: <UserCog size={16} color="white" />,
+      },
       {
         key: "employee-deductions",
         label: "Deductions",
-        icon: <Package size={16} />,
+        icon: <ListChecks size={16} color="white" />,
       },
       {
         key: "leave-management",
         label: "Leave Management",
-        icon: <Package size={16} />,
+        icon: <ClipboardList size={16} color="white" />,
       },
     ],
   },
   {
     key: "timekeeping",
     label: "Timekeeping",
-    icon: <Package size={16} />,
+    icon: <Clock size={16} color="white" />,
     subItems: [
-      { key: "attendance", label: "Attendance", icon: <Package size={16} /> },
-      { key: "schedules", label: "Schedules", icon: <Package size={16} /> },
+      {
+        key: "attendance",
+        label: "Attendance",
+        icon: <Clock size={16} color="white" />,
+      },
+      {
+        key: "schedules",
+        label: "Schedules",
+        icon: <Clock size={16} color="white" />,
+      },
     ],
   },
   {
     key: "system",
     label: "System",
-    icon: <Package size={16} />,
+    icon: <Settings size={16} color="white" />,
     subItems: [
       {
         key: "user-accounts",
         label: "User Accounts",
-        icon: <Package size={16} />,
+        icon: <Settings size={16} color="white" />,
       },
-      { key: "settings", label: "Settings", icon: <Package size={16} /> },
+      {
+        key: "deduction-settings",
+        label: "Deduction Settings",
+        icon: <FileCog size={16} color="white" />,
+      },
     ],
   },
 ];
 
-interface SidebarProps {
-  onSelect: (key: string) => void;
-  activeKey: string;
-}
-
-function Sidebar({ onSelect, activeKey }: SidebarProps) {
+export default function Sidebar({
+  collapsed,
+  width,
+  onToggle,
+  onSelect,
+  activeKey,
+}: SidebarProps) {
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   const toggleOpen = (key: string) => {
@@ -92,10 +139,72 @@ function Sidebar({ onSelect, activeKey }: SidebarProps) {
     );
   };
 
-  const renderMenu = () =>
-    menuItems.map((item) => {
-      const isActive = activeKey === item.key;
-      return (
+  return (
+    <aside
+      className={styles.sidebar}
+      style={{ width: collapsed ? "60px" : `${width}px` }}
+    >
+      {/* <div className={styles.sidebarHeader}>
+        <button className={styles.toggleBtn} onClick={onToggle}>
+          <Menu size={20} color="white" />
+        </button>
+        {!collapsed && (
+          <div className={styles.brandWrapper}>
+            <Briefcase
+              size={20}
+              color="white"
+              style={{ marginRight: "10px", marginTop: "4px" }}
+            />
+            <span
+              className={styles.brand}
+              style={{ paddingTop: "4px", fontWeight: "bold" }}
+            >
+              Payroll Management System
+            </span>
+          </div>
+        )}
+      </div> */}
+
+      <div
+        className={styles.sidebarHeader}
+        style={{
+          paddingTop: "12px",
+          paddingBottom: "12px",
+          paddingLeft: "10px",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <button
+          className={styles.toggleBtn}
+          onClick={onToggle}
+          style={{
+            marginRight: "12px",
+            background: "transparent",
+            border: "none",
+          }}
+        >
+          <Menu size={24} color="white" />
+        </button>
+        {!collapsed && (
+          <div
+            className={styles.brandWrapper}
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <Briefcase size={20} color="white" style={{ marginRight: "8px" }} />
+            <span
+              className={styles.brand}
+              style={{ fontWeight: "bold", color: "white" }}
+            >
+              Payroll Management System
+            </span>
+          </div>
+        )}
+      </div>
+
+      <hr className={styles.menuDivider} />
+
+      {menuItems.map((item) => (
         <div key={item.key} className={styles.menuGroup}>
           {item.subItems ? (
             <>
@@ -104,14 +213,15 @@ function Sidebar({ onSelect, activeKey }: SidebarProps) {
                 onClick={() => toggleOpen(item.key)}
               >
                 {item.icon}
-                <span>{item.label}</span>
-                {openKeys.includes(item.key) ? (
-                  <ChevronDown size={14} />
-                ) : (
-                  <ChevronRight size={14} />
-                )}
+                {!collapsed && <span>{item.label}</span>}
+                {!collapsed &&
+                  (openKeys.includes(item.key) ? (
+                    <ChevronDown size={14} color="white" />
+                  ) : (
+                    <ChevronRight size={14} color="white" />
+                  ))}
               </div>
-              {openKeys.includes(item.key) && (
+              {!collapsed && openKeys.includes(item.key) && (
                 <div className={styles.subMenu}>
                   {item.subItems.map((sub) => (
                     <div
@@ -130,18 +240,17 @@ function Sidebar({ onSelect, activeKey }: SidebarProps) {
             </>
           ) : (
             <div
-              className={`${styles.menuItem} ${isActive ? styles.active : ""}`}
+              className={`${styles.menuItem} ${
+                activeKey === item.key ? styles.active : ""
+              }`}
               onClick={() => onSelect(item.key)}
             >
               {item.icon}
-              <span>{item.label}</span>
+              {!collapsed && <span>{item.label}</span>}
             </div>
           )}
         </div>
-      );
-    });
-
-  return <aside className={styles.sidebar}>{renderMenu()}</aside>;
+      ))}
+    </aside>
+  );
 }
-
-export default Sidebar;

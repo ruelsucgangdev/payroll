@@ -4,30 +4,24 @@ import { ReactNode, useState, useRef, useCallback } from "react";
 import Dashboard from "./Dashboard/Dashboard";
 import Sidebar from "./Sidebar/Sidebar";
 import EmployeeMasterFile from "./EmployeeMasterFile/EmployeeMasterFile";
+import DeductionSettingsTabs from "./DeductionSettingsTabs/DeductionSettingsTabs";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
-  // which screen to show
-  const [activeKey, setActiveKey] = useState<string>("");
-  // collapsed state
+  const [activeKey, setActiveKey] = useState<string>("dashboard");
   const [collapsed, setCollapsed] = useState<boolean>(false);
-  // sidebar width (when expanded)
   const [width, setWidth] = useState<number>(284);
-
-  // for tracking drag‐resize
   const isResizing = useRef<boolean>(false);
 
   const onMouseMove = useCallback((e: MouseEvent) => {
     if (!isResizing.current) return;
-    // clamp width between 200 and 400px
     const newWidth = Math.min(400, Math.max(200, e.clientX));
     setWidth(newWidth);
   }, []);
 
-  // on mouse up
   const onMouseUp = useCallback(() => {
     isResizing.current = false;
     window.removeEventListener("mousemove", onMouseMove);
@@ -51,7 +45,6 @@ export default function Layout({ children }: LayoutProps) {
         activeKey={activeKey}
       />
 
-      {/* drag‐handle */}
       {!collapsed && (
         <div
           onMouseDown={startResize}
@@ -76,6 +69,8 @@ export default function Layout({ children }: LayoutProps) {
           <Dashboard />
         ) : activeKey === "employee-masterfile" ? (
           <EmployeeMasterFile />
+        ) : activeKey === "deduction-settings" ? (
+          <DeductionSettingsTabs />
         ) : (
           children
         )}

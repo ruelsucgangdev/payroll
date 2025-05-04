@@ -39,3 +39,64 @@ model Employee {
   isPagibigMember    Boolean  @default(true)
   status             String
 }
+
+model SSSMatrix {
+  id             String   @id @default(uuid())
+  minSalary      Float
+  maxSalary      Float
+  employeeShare  Float
+  employerShare  Float
+  total          Float
+  effectivityDate DateTime
+  remarks        String?
+  createdAt      DateTime @default(now())
+}
+
+model PhilhealthMatrix {
+  id              String   @id @default(uuid())
+  minSalary       Float
+  maxSalary       Float
+  employeeShare   Float
+  employerShare   Float
+  total           Float
+  effectivityDate DateTime
+  remarks         String?
+  createdAt       DateTime @default(now())
+}
+
+model PagibigMatrix {
+  id              String   @id @default(uuid())
+  minSalary       Float
+  maxSalary       Float
+  employeeShare   Float
+  employerShare   Float
+  total           Float
+  effectivityDate DateTime
+  remarks         String?
+  createdAt       DateTime @default(now())
+}
+
+model TaxMatrix {
+  id              String   @id @default(uuid())
+  minSalary       Float
+  maxSalary       Float
+  baseTax         Float
+  percentOver     Float
+  effectivityDate DateTime
+  remarks         String?
+  createdAt       DateTime @default(now())
+}
+
+model EmployeeLoan {
+  id           String   @id @default(uuid())
+  employeeId   String
+  loanType     String
+  amountGranted Float
+  balance      Float
+  monthlyAmort Float
+  startDeduction DateTime
+  endDeduction   DateTime?
+  isActive     Boolean  @default(true)
+  remarks      String?
+  createdAt    DateTime @default(now())
+}
