@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import styles from "./sss-settings.module.scss";
 import { Plus, Pencil, Trash2, Save, XCircle, Table } from "lucide-react";
 
@@ -51,7 +51,7 @@ export default function SSSMatrixSettings() {
       isNew: true,
     };
     setData((prev) => [...prev, newEntry]);
-    setEditingIndex(data.length); // point to the newly added row
+    setEditingIndex(data.length);
   };
 
   const handleSave = (index: number) => {
@@ -64,7 +64,7 @@ export default function SSSMatrixSettings() {
   const handleCancel = (index: number) => {
     const updated = [...data];
     if (updated[index].isNew) {
-      updated.splice(index, 1); // remove new row
+      updated.splice(index, 1);
     }
     setData(updated);
     setEditingIndex(null);
@@ -77,6 +77,13 @@ export default function SSSMatrixSettings() {
   const handleDelete = (id: string) => {
     setData((prev) => prev.filter((item) => item.id !== id));
   };
+
+  const uniqueEffectivityDates = useMemo(() => {
+    const distinct = Array.from(
+      new Set(data.map((d) => d.effectivityDate).filter(Boolean))
+    );
+    return distinct.sort((a, b) => (a < b ? 1 : -1));
+  }, [data]);
 
   const filteredData = data.filter((item) => {
     const matchesMin =
@@ -108,13 +115,19 @@ export default function SSSMatrixSettings() {
             setFilters({ ...filters, minSalary: e.target.value })
           }
         />
-        <input
-          type="date"
+        <select
           value={filters.effectivityDate}
           onChange={(e) =>
             setFilters({ ...filters, effectivityDate: e.target.value })
           }
-        />
+        >
+          <option value="">-- Effectivity Date --</option>
+          {uniqueEffectivityDates.map((date) => (
+            <option key={date} value={date}>
+              {date}
+            </option>
+          ))}
+        </select>
       </div>
 
       <button onClick={handleAdd} className={styles.addButton}>
