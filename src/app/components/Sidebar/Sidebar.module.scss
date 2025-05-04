@@ -1,10 +1,12 @@
 .sidebar {
   width: 250px;
-  background-color: #1e3a1e; /* Dark green */
   height: 100vh;
   padding: 1rem;
   overflow-y: auto;
   color: #ffffff;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: #1c3c2f;
 }
 
 .menuGroup {
@@ -71,4 +73,11 @@
 /* Specifically enlarge the Dashboard font */
 .menuItem span {
   font-size: 1rem;
+}
+
+.toggleBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
 }

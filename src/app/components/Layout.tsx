@@ -36,7 +36,7 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
+    <div style={{ display: "flex", height: "100vh", width: "100vw" }}>
       <Sidebar
         collapsed={collapsed}
         width={width}
