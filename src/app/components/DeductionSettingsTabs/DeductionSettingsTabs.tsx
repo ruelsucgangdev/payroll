@@ -5,6 +5,8 @@ import { Settings } from "lucide-react";
 import SSSMatrixSettings from "../SSSMatrix/SSSMatrix";
 import styles from "./deduction-settings-tabs.module.scss";
 import PagibigMatrixSettings from "../PagibigMatrixSettings/PagibigMatrixSettings";
+import PhilhealthContributionMatrixSettings from "../Philhealth/PhilhealthContributionMatrixSettings";
+import TaxMatrixSettings from "../TaxMatrix/TaxMatrixSettings";
 
 // Uncomment these when ready:
 //import PagibigMatrixSettings from "./PagibigMatrix";
@@ -32,10 +34,10 @@ export default function DeductionSettingsTabs() {
           <Tabs.Trigger value="pagibig" className={styles.tab}>
             Pag-IBIG
           </Tabs.Trigger>
-          <Tabs.Trigger value="philhealth" className={styles.tab} disabled>
+          <Tabs.Trigger value="philhealth" className={styles.tab}>
             PhilHealth
           </Tabs.Trigger>
-          <Tabs.Trigger value="tax" className={styles.tab} disabled>
+          <Tabs.Trigger value="tax" className={styles.tab}>
             Tax
           </Tabs.Trigger>
         </Tabs.List>
@@ -45,6 +47,12 @@ export default function DeductionSettingsTabs() {
         </Tabs.Content>
         <Tabs.Content value="pagibig" className={styles.tabContent}>
           <PagibigMatrixSettings />
+        </Tabs.Content>
+        <Tabs.Content value="philhealth" className={styles.tabContent}>
+          <PhilhealthContributionMatrixSettings />
+        </Tabs.Content>
+        <Tabs.Content value="tax" className={styles.tabContent}>
+          <TaxMatrixSettings />
         </Tabs.Content>
       </Tabs.Root>
     </div>

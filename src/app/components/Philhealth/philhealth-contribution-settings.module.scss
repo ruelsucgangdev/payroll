@@ -1,0 +1,141 @@
+.container {
+  padding: 1rem;
+  background-color: #14342b;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  color: white;
+  font-size: 0.85rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+  }
+
+  .subtitle {
+    font-size: 0.875rem;
+    color: white;
+  }
+}
+
+.searchSection {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+
+  input,
+  select {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 0.85rem;
+    min-width: 120px;
+  }
+
+  select {
+    background-color: white;
+    color: black;
+  }
+}
+
+.addButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background-color: darkgreen;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  font-size: 0.85rem;
+
+  &:hover {
+    background-color: #0c591c;
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  background-color: #14342b;
+  color: white;
+
+  th {
+    background-color: #0a3d2e;
+    color: white;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+
+  td {
+    background-color: #14342b;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    vertical-align: top;
+    color: white;
+
+    button {
+      margin-right: 0.25rem;
+      background: transparent !important;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+
+      svg {
+        background: transparent !important;
+        color: white !important;
+      }
+    }
+  }
+
+  input[type="number"],
+  input[type="text"],
+  input[type="date"] {
+    width: 100%;
+    padding: 0.25rem;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+  }
+}
+
+.actionColumn {
+  text-align: center;
+}
+
+.readonlyField {
+  padding-top: 0.6rem;
+  font-weight: bold;
+  text-align: right;
+}
+
+.salaryColumn,
+.shareColumn {
+  text-align: right;
+}
+
+.dateColumn {
+  text-align: center;
+}
+
+.remarksColumn {
+  min-width: 150px;
+}
