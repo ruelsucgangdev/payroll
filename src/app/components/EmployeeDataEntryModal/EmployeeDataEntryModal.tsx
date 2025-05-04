@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UserCog } from "lucide-react";
 import ConfirmationModal from "../ConfirmationModal";
 import styles from "./EmployeeDataEntryModal.module.scss";
+
+import dayjs from "dayjs"; // ✅ ADD THIS
+import CustomDatePicker from "../CustomDatePicker/CustomDatePicker";
 
 type Mode = "add" | "edit" | "view";
 
@@ -43,17 +46,20 @@ export default function EmployeeDataEntryModal({
   onSave,
   onClose,
 }: Props) {
-  const [showConfirm, setShowConfirm] = useState(false);
   const isView = mode === "view";
+  const [showConfirm, setShowConfirm] = useState(false);
 
-  const formatDateForInput = (value?: string) => {
-    if (!value) return "";
-    const date = new Date(value);
-    const mm = String(date.getMonth() + 1).padStart(2, "0");
-    const dd = String(date.getDate()).padStart(2, "0");
-    const yyyy = date.getFullYear();
-    return `${mm}/${dd}/${yyyy}`;
-  };
+  // ✅ Date state with MM-DD-YYYY format
+  const [dateOfBirth, setDateOfBirth] = useState(
+    initialData.dateOfBirth
+      ? dayjs(initialData.dateOfBirth).format("MM-DD-YYYY")
+      : ""
+  );
+  const [dateHired, setDateHired] = useState(
+    initialData.dateHired
+      ? dayjs(initialData.dateHired).format("MM-DD-YYYY")
+      : ""
+  );
 
   const handleSubmit = () => {
     if (onSave) {
@@ -67,16 +73,13 @@ export default function EmployeeDataEntryModal({
         middleName: (document.getElementById("middleName") as HTMLInputElement)
           .value,
         gender: (document.getElementById("gender") as HTMLSelectElement).value,
-        dateOfBirth: (
-          document.getElementById("dateOfBirth") as HTMLInputElement
-        ).value,
+        dateOfBirth: dayjs(dateOfBirth, "MM-DD-YYYY").format("YYYY-MM-DD"),
         age: Number((document.getElementById("age") as HTMLInputElement).value),
         contactNumber: (
           document.getElementById("contactNumber") as HTMLInputElement
         ).value,
         address: (document.getElementById("address") as HTMLInputElement).value,
-        dateHired: (document.getElementById("dateHired") as HTMLInputElement)
-          .value,
+        dateHired: dayjs(dateHired, "MM-DD-YYYY").format("YYYY-MM-DD"),
         sss: (document.getElementById("sss") as HTMLInputElement).value,
         tin: (document.getElementById("tin") as HTMLInputElement).value,
         pagibig: (document.getElementById("pagibig") as HTMLInputElement).value,
@@ -124,7 +127,6 @@ export default function EmployeeDataEntryModal({
             />
           </label>
 
-          {/* Aligned Last, First, Middle */}
           <div className={styles.row3}>
             <label>
               Last Name
@@ -165,16 +167,14 @@ export default function EmployeeDataEntryModal({
             </select>
           </label>
 
-          <label>
-            Date of Birth
-            <input
-              id="dateOfBirth"
-              type="date"
-              className={styles.smallDate}
-              defaultValue={initialData.dateOfBirth || ""}
-              disabled={isView}
-            />
-          </label>
+          {/* ✅ Replaced date input with CustomDatePicker */}
+          <CustomDatePicker
+            label="Date of Birth"
+            id="dateOfBirth"
+            value={dateOfBirth}
+            onChange={setDateOfBirth}
+            disabled={isView}
+          />
 
           <label>
             Age
@@ -206,16 +206,13 @@ export default function EmployeeDataEntryModal({
             />
           </label>
 
-          <label>
-            Date Hired
-            <input
-              id="dateHired"
-              type="date"
-              className={styles.smallDate}
-              defaultValue={initialData.dateHired || ""}
-              disabled={isView}
-            />
-          </label>
+          <CustomDatePicker
+            label="Date Hired"
+            id="dateHired"
+            value={dateHired}
+            onChange={setDateHired}
+            disabled={isView}
+          />
 
           <label>
             SSS
