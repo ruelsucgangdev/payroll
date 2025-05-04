@@ -64,17 +64,17 @@ model PhilhealthMatrix {
   createdAt       DateTime @default(now())
 }
 
-model PagibigMatrix {
+model PagibigRateConfig  {
   id              String   @id @default(uuid())
-  minSalary       Float
-  maxSalary       Float
-  employeeShare   Float
-  employerShare   Float
-  total           Float
+  rateType        String   // 'PERCENT' or 'FIXED'
+  employeeRate    Float    // e.g. 2.0 means 2%
+  employerRate    Float    // e.g. 2.0 means 2%
+  rateCap         Float    // e.g. 5000 = maximum salary base for rate
   effectivityDate DateTime
   remarks         String?
   createdAt       DateTime @default(now())
 }
+
 
 model TaxMatrix {
   id              String   @id @default(uuid())

@@ -1,0 +1,156 @@
+.container {
+  padding: 1rem;
+  background-color: #14342b;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  color: white;
+  font-size: 0.85rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+  }
+
+  .subtitle {
+    font-size: 0.875rem;
+    color: white;
+  }
+}
+
+.searchSection {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+
+  input,
+  select {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    min-width: 120px;
+    background-color: white;
+    color: #000;
+  }
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.75rem;
+  background-color: #228b22;
+  color: white;
+  font-weight: bold;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #1a6e1a;
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #1f3b30; // dark green table background
+  color: white;
+  font-size: 0.85rem;
+
+  th {
+    background-color: #205339; // dark green header
+    color: white;
+    text-align: left;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    font-weight: 600;
+  }
+
+  td {
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+    height: 42px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  select {
+    width: 100%;
+    padding: 0.25rem;
+    font-size: 0.85rem;
+    box-sizing: border-box;
+    background-color: white;
+    color: #000;
+  }
+
+  td input[type="number"],
+  td input[type="date"] {
+    text-align: right;
+  }
+}
+
+.numberInput {
+  width: 100px;
+  padding: 0.25rem;
+  text-align: right;
+}
+
+.salaryColumn {
+  text-align: right;
+  width: 120px;
+}
+
+.shareColumn {
+  text-align: right;
+  width: 120px;
+}
+
+.dateColumn {
+  text-align: center;
+  width: 140px;
+}
+
+.remarksColumn {
+  width: 200px;
+}
+
+.actionColumn {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+  align-items: center;
+  height: 100%; // ensures full height
+  min-height: 42px; // adjust based on your input height
+
+  button {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+  }
+
+  svg {
+    color: white;
+  }
+}

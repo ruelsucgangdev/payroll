@@ -4,9 +4,10 @@ import * as Tabs from "@radix-ui/react-tabs";
 import { Settings } from "lucide-react";
 import SSSMatrixSettings from "../SSSMatrix/SSSMatrix";
 import styles from "./deduction-settings-tabs.module.scss";
+import PagibigMatrixSettings from "../PagibigMatrixSettings/PagibigMatrixSettings";
 
 // Uncomment these when ready:
-// import PagibigMatrixSettings from "./PagibigMatrix";
+//import PagibigMatrixSettings from "./PagibigMatrix";
 // import PhilhealthMatrixSettings from "./PhilhealthMatrix";
 // import TaxMatrixSettings from "./TaxMatrix";
 
@@ -28,7 +29,7 @@ export default function DeductionSettingsTabs() {
           <Tabs.Trigger value="sss" className={styles.tab}>
             SSS
           </Tabs.Trigger>
-          <Tabs.Trigger value="pagibig" className={styles.tab} disabled>
+          <Tabs.Trigger value="pagibig" className={styles.tab}>
             Pag-IBIG
           </Tabs.Trigger>
           <Tabs.Trigger value="philhealth" className={styles.tab} disabled>
@@ -41,6 +42,9 @@ export default function DeductionSettingsTabs() {
 
         <Tabs.Content value="sss" className={styles.tabContent}>
           <SSSMatrixSettings />
+        </Tabs.Content>
+        <Tabs.Content value="pagibig" className={styles.tabContent}>
+          <PagibigMatrixSettings />
         </Tabs.Content>
       </Tabs.Root>
     </div>
